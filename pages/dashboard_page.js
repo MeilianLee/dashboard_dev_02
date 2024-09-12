@@ -20,6 +20,7 @@ import { Timeline } from "@components/Timeline";
 import { MapSection } from "@components/MapSection";
 import { Header } from "@components/Header";
 import { Footer } from "@components/Footer";
+import { ScriptsImport } from "@components/ScriptsImport";
 
 import Script from "next/script";
 import Head from "next/head";
@@ -36,7 +37,9 @@ export default function Home() {
             </Head>
             <SEO title="RICE-MAP Dashboard" />
             <MapSection></MapSection>
-            <Script
+            <ScriptsImport></ScriptsImport>
+
+            {/* <Script
                 src="/js/Data_Yearly_country_1950_2016.js"
                 // strategy="afterInteractive"
             />
@@ -60,7 +63,7 @@ export default function Home() {
             <Script
                 src="/js/map.js"
                 // strategy="afterInteractive"
-            />
+            /> */}
         </>
 
         // <Layout className="">

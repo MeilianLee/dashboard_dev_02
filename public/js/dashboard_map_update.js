@@ -193,6 +193,40 @@ function changeVariable() {
                 currData = SPI3_yearly_prov_vie;
             }
         }
+        if (dataNameSelected == "SPI6") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI6_yearly_prov_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI6_yearly_prov_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI6_yearly_prov_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI6_yearly_prov_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI6_yearly_prov_vie;
+            }
+        }
+        if (dataNameSelected == "SPI12") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI12_yearly_prov_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI12_yearly_prov_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI12_yearly_prov_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI12_yearly_prov_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI12_yearly_prov_vie;
+            }
+        }
         if (dataNameSelected == "SMPct") {
             if (regionNameSelected == "Cambodia") {
                 currData = SMPct_yearly_prov_cam;
@@ -211,6 +245,78 @@ function changeVariable() {
             }
         }
     }
+
+    // // check parameters
+    // if (spaceresSelected == "National") {
+    //     if (dataNameSelected == "SPI1") {
+    //         currData = SPI1_Yearly_Country;
+    //     }
+    //     if (dataNameSelected == "SPI3") {
+    //         currData = SPI3_Yearly_Country;
+    //     }
+    //     if (dataNameSelected == "SPI6") {
+    //         currData = SPI6_Yearly_Country;
+    //     }
+    //     if (dataNameSelected == "SPI12") {
+    //         currData = SPI12_Yearly_Country;
+    //     }
+    //     if (dataNameSelected == "SMPct") {
+    //         currData = SMPct_Yearly_Country;
+    //     }
+    // }
+    // if (spaceresSelected == "Provincial") {
+    //     if (dataNameSelected == "SPI1") {
+    //         if (regionNameSelected == "Cambodia") {
+    //             currData = SPI1_yearly_prov_cam;
+    //         }
+    //         if (regionNameSelected == "Laos") {
+    //             currData = SPI1_yearly_prov_lao;
+    //         }
+    //         if (regionNameSelected == "Thailand") {
+    //             currData = SPI1_yearly_prov_tha;
+    //         }
+    //         if (regionNameSelected == "Myanmar") {
+    //             currData = SPI1_yearly_prov_mya;
+    //         }
+    //         if (regionNameSelected == "Vietnam") {
+    //             currData = SPI1_yearly_prov_vie;
+    //         }
+    //     }
+    //     if (dataNameSelected == "SPI3") {
+    //         if (regionNameSelected == "Cambodia") {
+    //             currData = SPI3_yearly_prov_cam;
+    //         }
+    //         if (regionNameSelected == "Laos") {
+    //             currData = SPI3_yearly_prov_lao;
+    //         }
+    //         if (regionNameSelected == "Thailand") {
+    //             currData = SPI3_yearly_prov_tha;
+    //         }
+    //         if (regionNameSelected == "Myanmar") {
+    //             currData = SPI3_yearly_prov_mya;
+    //         }
+    //         if (regionNameSelected == "Vietnam") {
+    //             currData = SPI3_yearly_prov_vie;
+    //         }
+    //     }
+    //     if (dataNameSelected == "SMPct") {
+    //         if (regionNameSelected == "Cambodia") {
+    //             currData = SMPct_yearly_prov_cam;
+    //         }
+    //         if (regionNameSelected == "Laos") {
+    //             currData = SMPct_yearly_prov_lao;
+    //         }
+    //         if (regionNameSelected == "Thailand") {
+    //             currData = SMPct_yearly_prov_tha;
+    //         }
+    //         if (regionNameSelected == "Myanmar") {
+    //             currData = SMPct_yearly_prov_mya;
+    //         }
+    //         if (regionNameSelected == "Vietnam") {
+    //             currData = SMPct_yearly_prov_vie;
+    //         }
+    //     }
+    // }
 
     console.log(dataNameSelected);
     console.log(spaceresSelected);
