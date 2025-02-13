@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { Header } from "@components/Header";
@@ -63,7 +63,8 @@ export default function Home() {
     const [additionalData, setAdditionalData] = useState(null); // 新数据
 
     // async fetching data
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
+        // const fetchData = async () => {
         const { varType, region, overview, adminLevel, dateType, date } =
             options;
         console.log(`${varType}_${dateType}_${adminLevel}_${region}`);
@@ -153,7 +154,7 @@ export default function Home() {
                 setTimeSeries([]); // 清空时间序列数据
             }
         }
-    };
+    }, [options]);
 
     // if sidebar is not open, switch the sidebar texts to invisible.
     // This function is required to be linked to /styles/core/components/_dashboard.scss.sidebar.sidebar-content{}
@@ -165,11 +166,11 @@ export default function Home() {
         }
     }, [sidebarOpen]);
 
-    // 当选项改变时，重新加载数据
+    // 当选项改变时，fetchData重新加载，fetchData重新加载，则重新加载数据
     useEffect(() => {
         console.log("Re-fetch start.");
         fetchData();
-    }, [options]);
+    }, [fetchData]);
 
     // remove old layer and add new layer
     useEffect(() => {
