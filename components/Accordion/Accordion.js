@@ -7,32 +7,26 @@ import clsx from "clsx";
 const accordionData = [
     {
         id: uuid(),
-        title: "What is Notion?",
+        title: "What is rice forecast?",
         isOpen: true,
         content:
             "Notion is an all-in-one productivity tool that allows you to create notes, databases, and collaborative workspaces, making it easy to organize and manage your tasks, projects, and ideas in one place."
     },
     {
         id: uuid(),
-        title: "Who is this template for?",
+        title: "How reliable is future forecast?",
         isOpen: false,
         content:
             "This template is made for people who want to make a website quickly with a Notion-themed style and prefer to use a template."
     },
     {
         id: uuid(),
-        title: "Do I need to pay for this?",
+        title: "Can I download data?",
         isOpen: false,
         content:
             "No, this is free. All content on this template are dummy data."
     },
-    {
-        id: uuid(),
-        title: "Where can I ask more questions about this template?",
-        isOpen: false,
-        content:
-            "If you have any further questions or need assistance regarding this template, please feel free to reach out to me on my website, or click the Contact within the navigation links."
-    }
+    
 ];
 
 const accordionItemType = {

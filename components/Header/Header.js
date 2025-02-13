@@ -14,13 +14,13 @@ export const Header = () => {
             <SectionContainer className="header--container wrap wrap-px ">
                 <div className="header-logo--container">
                     <h1 className="logo mb-0">
-                        <Link href="/">
+                        <Link href="/dashboard_page">
                             <Image
-                                src="/nutritrack.svg"
+                                src="/rice_logo.png"
                                 alt="logo"
-                                className="h-6 w-auto"
-                                height="24"
-                                width="100"
+                                className="h-12 w-auto"
+                                height="60"
+                                width="300"
                                 priority
                             />
                         </Link>
@@ -31,52 +31,15 @@ export const Header = () => {
                     <ButtonGroup className="hidden md:block">
                         <a
                             role="button"
-                            href="https://github.com/chrstnl-gh/nutritrack"
+                            href="/dashboard_page"
                             className="btn btn--secondary ml-4"
                         >
-                            Get Template
+                            Explore Dashboard
                             <Icon icon="material-symbols:arrow-forward-rounded" />
                         </a>
                     </ButtonGroup>
                 </SectionContainer>
             </SectionContainer>
-
-            {/* Import Independencies (from original project) */}
-            <link
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-                integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-                crossorigin="anonymous"
-                referrerpolicy="no-referrer"
-            />
-            {/* <!-- link for leaflet --> */}
-            <link
-                rel="stylesheet"
-                href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-            />
-            {/* <!-- Make sure you put this AFTER Leaflet's CSS --> */}
-            <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-            <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1.0"
-            />
-
-            {/* <!-- link for font "noto sans" from google --> */}
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link
-                rel="preconnect"
-                href="https://fonts.gstatic.com"
-                crossorigin
-            />
-            <link
-                href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-                rel="stylesheet"
-            />
-            {/* <!-- link for our style .css file --> */}
-            <link rel="stylesheet" href="/dashboard.css" />
-            <link rel="stylesheet" href="../leaflet_map/map.css" />
-            <link rel="stylesheet" href="./dashboard_timeline.css" />
-            <script src="https://registry.npmmirror.com/jquery/3.7.1/files/dist/jquery.min.js"></script>
         </header>
     );
 };

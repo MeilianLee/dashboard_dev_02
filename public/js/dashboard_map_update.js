@@ -7,6 +7,8 @@ const options_2 = document.querySelectorAll(".opt_2");
 const options_list_data = document.querySelector(".options_list_data");
 const options_list_region = document.querySelector(".options_list_region");
 
+// const datePicker = document.getElementById("date-picker");
+
 var map_titles = document.querySelector(".map_titles");
 // var map_subtitles = document.querySelector(".map_sub_title");
 
@@ -15,7 +17,7 @@ var currData;
 
 // Show/hide the 2nd menu
 function giveVarFullName(shortName) {
-    console.log(shortName);
+    console.log("shortname", shortName);
     if (shortName == "SPI1") {
         return "SPI (1 month)";
     }
@@ -30,6 +32,9 @@ function giveVarFullName(shortName) {
     }
     if (shortName == "SMPct") {
         return "Soil Moisture Percentile";
+    }
+    if (shortName == "Yield") {
+        return "Rice Yield";
     }
 }
 
@@ -58,7 +63,7 @@ options_1.forEach((option) => {
 
         // change selected data var
         changeVariable();
-        mapYearlyChanage();
+        mapYearlyChange();
 
         // clear all options_2 selected
         // options_2.forEach((option) => {
@@ -81,7 +86,7 @@ options_2.forEach((option) => {
 
         // change selected data var
         changeVariable();
-        mapYearlyChanage();
+        mapYearlyChange();
     });
 });
 
@@ -114,7 +119,7 @@ function addRadioChangeListener(radioGroupName) {
     radios.forEach((radio) => {
         radio.addEventListener("click", () => {
             changeVariable();
-            mapYearlyChanage();
+            mapYearlyChange();
             // selectedSpanContent = getCheckedRadioSpanContent(radioGroupName);
             // // 输出结果到某个元素，或在控制台中输出
             // console.log(selectedSpanContent);
@@ -122,17 +127,50 @@ function addRadioChangeListener(radioGroupName) {
     });
 }
 
-// set listeners for radios
+console.log("Listener added to window:", window);
 
+//
+
+//
+
+// START: function of fetching data from api
+
+async function fetchData(apiUrl) {
+    try {
+        // 使用 fetch 从 API 获取数据
+        const response = await fetch(apiUrl); // 替换为你的 API URL
+
+        // 检查响应是否成功
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        // 解析 JSON 数据
+        const data = await response.json();
+
+        // 将数据赋值给变量
+        currData = data; // 在这里赋值
+
+        // 你可以在这里使用 myData 变量
+        // console.log("fetch data is like:", currData);
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
+}
+// END: function of fetching data from api
+
+// set listeners for radios
 addRadioChangeListener("radio_time_res");
 addRadioChangeListener("radio_space_res");
 
 const radio_space_res = document.querySelectorAll(".radio_space_res");
-
 // change variable function
 function changeVariable() {
     // initialize parameters determining which data will be selected
     // src = "./data/prov_yearly/data_yearly_prov_1950_2016.js";
+
+    console.log("received date info:", date);
+
     var dataNameSelected =
         options_list_data.querySelector(".selected").innerHTML;
     var regionNameSelected =
@@ -140,8 +178,20 @@ function changeVariable() {
     console.log(regionNameSelected);
     var spaceresSelected = getCheckedRadioSpanContent("radio_space_res");
 
+    var timeresSelected = getCheckedRadioSpanContent("radio_time_res");
+    console.log("time resolution selected:", timeresSelected);
+
+    if (spaceresSelected == "Province/State") {
+        spaceresSelected = "Prov";
+    }
+
+    // 根据选择构造 API URL
+    const apiUrl = `/api/get_${dataNameSelected}_${timeresSelected}_${spaceresSelected}_${regionNameSelected}`;
+
+    console.log("Fetching data from:", apiUrl);
+
     // check parameters
-    if (spaceresSelected == "National") {
+    if (spaceresSelected == "Country") {
         if (dataNameSelected == "SPI1") {
             currData = SPI1_Yearly_Country;
         }
@@ -157,8 +207,11 @@ function changeVariable() {
         if (dataNameSelected == "SMPct") {
             currData = SMPct_Yearly_Country;
         }
+        if (dataNameSelected == "Yield") {
+            currData = Yield_Yearly_Country;
+        }
     }
-    if (spaceresSelected == "Provincial") {
+    if (spaceresSelected == "Province/State") {
         if (dataNameSelected == "SPI1") {
             if (regionNameSelected == "Cambodia") {
                 currData = SPI1_yearly_prov_cam;
@@ -195,36 +248,22 @@ function changeVariable() {
         }
         if (dataNameSelected == "SPI6") {
             if (regionNameSelected == "Cambodia") {
-                currData = SPI6_yearly_prov_cam;
+                fetchData("/api/get_SPI6_Yearly_Prov_Cambodia");
+            }
+            if (regionNameSelected == "India") {
+                fetchData("/api/get_SPI6_yearly_india");
             }
             if (regionNameSelected == "Laos") {
-                currData = SPI6_yearly_prov_lao;
+                fetchData("/api/get_SPI6_yearly_laos");
             }
             if (regionNameSelected == "Thailand") {
-                currData = SPI6_yearly_prov_tha;
+                fetchData("/api/get_SPI6_yearly_thailand");
             }
             if (regionNameSelected == "Myanmar") {
-                currData = SPI6_yearly_prov_mya;
+                fetchData("/api/get_SPI6_yearly_myanmar");
             }
             if (regionNameSelected == "Vietnam") {
-                currData = SPI6_yearly_prov_vie;
-            }
-        }
-        if (dataNameSelected == "SPI12") {
-            if (regionNameSelected == "Cambodia") {
-                currData = SPI12_yearly_prov_cam;
-            }
-            if (regionNameSelected == "Laos") {
-                currData = SPI12_yearly_prov_lao;
-            }
-            if (regionNameSelected == "Thailand") {
-                currData = SPI12_yearly_prov_tha;
-            }
-            if (regionNameSelected == "Myanmar") {
-                currData = SPI12_yearly_prov_mya;
-            }
-            if (regionNameSelected == "Vietnam") {
-                currData = SPI12_yearly_prov_vie;
+                fetchData("/api/get_SPI6_yearly_vietnam");
             }
         }
         if (dataNameSelected == "SMPct") {
@@ -245,84 +284,139 @@ function changeVariable() {
             }
         }
     }
+    if (spaceresSelected == "Grid") {
+        if (dataNameSelected == "SPI1") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI1_yearly_grid_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI1_yearly_grid_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI1_yearly_grid_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI1_yearly_grid_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI1_yearly_grid_vie;
+            }
+        }
+        if (dataNameSelected == "SPI3") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI3_yearly_grid_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI3_yearly_grid_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI3_yearly_grid_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI3_yearly_grid_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI3_yearly_grid_vie;
+            }
+        }
+        if (dataNameSelected == "SPI6") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI6_yearly_grid_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI6_yearly_grid_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI6_yearly_grid_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI6_yearly_grid_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI6_yearly_grid_vie;
+            }
+        }
+        if (dataNameSelected == "SPI12") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SPI12_yearly_grid_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SPI12_yearly_grid_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SPI12_yearly_grid_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SPI12_yearly_grid_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SPI12_yearly_grid_vie;
+            }
+        }
+        if (dataNameSelected == "SMPct") {
+            if (regionNameSelected == "Cambodia") {
+                currData = SMPct_yearly_grid_cam;
+            }
+            if (regionNameSelected == "Laos") {
+                currData = SMPct_yearly_grid_lao;
+            }
+            if (regionNameSelected == "Thailand") {
+                currData = SMPct_yearly_grid_tha;
+            }
+            if (regionNameSelected == "Myanmar") {
+                currData = SMPct_yearly_grid_mya;
+            }
+            if (regionNameSelected == "Vietnam") {
+                currData = SMPct_yearly_grid_vie;
+            }
+        }
+    }
 
-    // // check parameters
-    // if (spaceresSelected == "National") {
-    //     if (dataNameSelected == "SPI1") {
-    //         currData = SPI1_Yearly_Country;
-    //     }
-    //     if (dataNameSelected == "SPI3") {
-    //         currData = SPI3_Yearly_Country;
-    //     }
-    //     if (dataNameSelected == "SPI6") {
-    //         currData = SPI6_Yearly_Country;
-    //     }
-    //     if (dataNameSelected == "SPI12") {
-    //         currData = SPI12_Yearly_Country;
-    //     }
-    //     if (dataNameSelected == "SMPct") {
-    //         currData = SMPct_Yearly_Country;
-    //     }
-    // }
-    // if (spaceresSelected == "Provincial") {
-    //     if (dataNameSelected == "SPI1") {
-    //         if (regionNameSelected == "Cambodia") {
-    //             currData = SPI1_yearly_prov_cam;
-    //         }
-    //         if (regionNameSelected == "Laos") {
-    //             currData = SPI1_yearly_prov_lao;
-    //         }
-    //         if (regionNameSelected == "Thailand") {
-    //             currData = SPI1_yearly_prov_tha;
-    //         }
-    //         if (regionNameSelected == "Myanmar") {
-    //             currData = SPI1_yearly_prov_mya;
-    //         }
-    //         if (regionNameSelected == "Vietnam") {
-    //             currData = SPI1_yearly_prov_vie;
-    //         }
-    //     }
-    //     if (dataNameSelected == "SPI3") {
-    //         if (regionNameSelected == "Cambodia") {
-    //             currData = SPI3_yearly_prov_cam;
-    //         }
-    //         if (regionNameSelected == "Laos") {
-    //             currData = SPI3_yearly_prov_lao;
-    //         }
-    //         if (regionNameSelected == "Thailand") {
-    //             currData = SPI3_yearly_prov_tha;
-    //         }
-    //         if (regionNameSelected == "Myanmar") {
-    //             currData = SPI3_yearly_prov_mya;
-    //         }
-    //         if (regionNameSelected == "Vietnam") {
-    //             currData = SPI3_yearly_prov_vie;
-    //         }
-    //     }
-    //     if (dataNameSelected == "SMPct") {
-    //         if (regionNameSelected == "Cambodia") {
-    //             currData = SMPct_yearly_prov_cam;
-    //         }
-    //         if (regionNameSelected == "Laos") {
-    //             currData = SMPct_yearly_prov_lao;
-    //         }
-    //         if (regionNameSelected == "Thailand") {
-    //             currData = SMPct_yearly_prov_tha;
-    //         }
-    //         if (regionNameSelected == "Myanmar") {
-    //             currData = SMPct_yearly_prov_mya;
-    //         }
-    //         if (regionNameSelected == "Vietnam") {
-    //             currData = SMPct_yearly_prov_vie;
-    //         }
-    //     }
-    // }
+    fetchData(apiUrl);
+
+    // apply data change function
+    // mapYearlyChange();
 
     console.log(dataNameSelected);
     console.log(spaceresSelected);
-    console.log(currData);
+    console.log("current data", currData);
     //   return currData;
 }
 
 // var dataSelected = options_list_data.querySelector(".selected").innerHTML;
 // console.log(dataSelected);
+
+// // 日期更改事件监听器
+// document.getElementById("datepicker").addEventListener("change", (event) => {
+//     console.log("event listened: date has changed");
+//     date = event.target.value; // 更新全局日期变量
+//     var timeresSelected = getCheckedRadioSpanContent("radio_time_res");
+//     if ((timeresSelected = "Monthly")) {
+//         updateMapLayer(); // 根据新日期更新地图
+//     }
+// });
+
+// 监听自定义事件-日期改动
+addEventListener("datePickerChange", (event) => {
+    console.log("Received event of date change:", event);
+    date = event.detail.apiUrl;
+
+    // check selected time resolution,
+    var timeresSelected = getCheckedRadioSpanContent("radio_time_res");
+
+    console.log(timeresSelected);
+    // call responding map update function based on selected time resolution
+    if ((timeresSelected = "Monthly")) {
+        console.log("Detected 'Monthly' resolution is selected!");
+        changeVariable();
+        updateMapLayer(); // 根据新日期更新地图
+    } else if ((timeresSelected = "Yearly")) {
+        console.log("Detected 'Yearly' resolution is selected!");
+        changeVariable();
+        mapYearlyChange();
+    }
+
+    // // 调用地图更新逻辑
+    // changeVariable();
+    // mapYearlyChange();
+});

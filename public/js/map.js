@@ -14,11 +14,29 @@ var info; // 让 info 成为全局变量
 
 var map = L.map("chart_container").setView([20, 90], 5);
 
-var tileLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 12,
-  attribution:
-    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    maxZoom: 12,
+    attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
+
+// START: set boundary of dragging map
+
+var southWest = L.latLng(-10, 55); // 定义左下角的坐标
+var northEast = L.latLng(38, 125); // 定义右上角的坐标
+var bounds = L.latLngBounds(southWest, northEast);
+
+// 设置地图的拖动边界
+map.setMaxBounds(bounds);
+
+// lock inside a range and cannot drage outside
+map.on("drag", function () {
+    map.panInsideBounds(bounds, { animate: false });
+});
+
+map.options.minZoom = 4;
+
+// END: set boundary of dragging map
 
 // var geojson;
 // // ... our listeners
@@ -35,168 +53,171 @@ var tileLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 // }).addTo(map);
 
 function mapFunc_m03() {
-  if (map) {
-    // if (geojson) {
-    //   map.removeLayer(geojson); // 移除 geojson 图层
-    // }
-    // if (geojson_cambodia) {
-    //   map.removeLayer(geojson_cambodia); // 移除 geojson 图层
-    // }
-    // if (geojson_india) {
-    //   map.removeLayer(geojson_india); // 移除 geojson 图层
-    // }
-    // if (geojson_myanmar) {
-    //   map.removeLayer(geojson_myanmar); // 移除 geojson 图层
-    // }
-    // if (geojson_thailand) {
-    //   map.removeLayer(geojson_thailand); // 移除 geojson 图层
-    // }
-    // if (geojson_vietnam) {
-    //   map.removeLayer(geojson_vietnam); // 移除 geojson 图层
-    // }
-    if (legend) {
-      map.removeControl(legend); // 移除图例控件
+    if (map) {
+        // if (geojson) {
+        //   map.removeLayer(geojson); // 移除 geojson 图层
+        // }
+        // if (geojson_cambodia) {
+        //   map.removeLayer(geojson_cambodia); // 移除 geojson 图层
+        // }
+        // if (geojson_india) {
+        //   map.removeLayer(geojson_india); // 移除 geojson 图层
+        // }
+        // if (geojson_myanmar) {
+        //   map.removeLayer(geojson_myanmar); // 移除 geojson 图层
+        // }
+        // if (geojson_thailand) {
+        //   map.removeLayer(geojson_thailand); // 移除 geojson 图层
+        // }
+        // if (geojson_vietnam) {
+        //   map.removeLayer(geojson_vietnam); // 移除 geojson 图层
+        // }
+        if (legend) {
+            map.removeControl(legend); // 移除图例控件
+        }
+        if (info) {
+            map.removeControl(info); // 移除信息控件
+        }
+        map.remove(); // 销毁地图实例
     }
-    if (info) {
-      map.removeControl(info); // 移除信息控件
+    map = L.map("chart_container").setView([20, 90], 5);
+
+    L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+            maxZoom: 12,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }
+    ).addTo(map);
+
+    // 假设你有一个 myanmar GeoJSON 对象
+    function getColor(d) {
+        return d > 300
+            ? "#800026"
+            : d > 250
+            ? "#BD0026"
+            : d > 200
+            ? "#E31A1C"
+            : d > 150
+            ? "#FC4E2A"
+            : d > 50
+            ? "#FD8D3C"
+            : d > 30
+            ? "#FEB24C"
+            : d > 10
+            ? "#FED976"
+            : "#FFEDA0";
     }
-    map.remove(); // 销毁地图实例
-  }
-  map = L.map("chart_container").setView([20, 90], 5);
 
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 12,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.y1951),
+            weight: 2,
+            opacity: 1,
+            color: "white",
+            dashArray: "3",
+            fillOpacity: 0.7
+        };
+    }
 
-  // 假设你有一个 myanmar GeoJSON 对象
-  function getColor(d) {
-    return d > 300
-      ? "#800026"
-      : d > 250
-      ? "#BD0026"
-      : d > 200
-      ? "#E31A1C"
-      : d > 150
-      ? "#FC4E2A"
-      : d > 50
-      ? "#FD8D3C"
-      : d > 30
-      ? "#FEB24C"
-      : d > 10
-      ? "#FED976"
-      : "#FFEDA0";
-  }
+    function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 5,
+            color: "#666",
+            dashArray: "",
+            fillOpacity: 0.7
+        });
+        info.update(layer.feature.properties);
+        layer.bringToFront();
+    }
 
-  function style(feature) {
-    return {
-      fillColor: getColor(feature.properties.y1951),
-      weight: 2,
-      opacity: 1,
-      color: "white",
-      dashArray: "3",
-      fillOpacity: 0.7,
+    function resetHighlight(e) {
+        if (geojson) {
+            geojson.resetStyle(e.target);
+        }
+        if (geojson_myanmar) {
+            geojson_myanmar.resetStyle(e.target);
+        }
+        if (geojson_cambodia) {
+            geojson_cambodia.resetStyle(e.target);
+        }
+        if (geojson_india) {
+            geojson_india.resetStyle(e.target);
+        }
+        if (geojson_thailand) {
+            geojson_thailand.resetStyle(e.target);
+        }
+        if (geojson_vietnam) {
+            geojson_vietnam.resetStyle(e.target);
+        }
+        info.update();
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight
+        });
+    }
+
+    geojson = L.geoJson(precip_myanmar, {
+        style: style,
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    // 添加自定义信息控件
+    info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create("div", "info"); // 创建一个带有类 "info" 的 div
+        this.update();
+        return this._div;
     };
-  }
 
-  function highlightFeature(e) {
-    var layer = e.target;
-    layer.setStyle({
-      weight: 5,
-      color: "#666",
-      dashArray: "",
-      fillOpacity: 0.7,
-    });
-    info.update(layer.feature.properties);
-    layer.bringToFront();
-  }
+    info.update = function (props) {
+        this._div.innerHTML =
+            "<h4>Myanmar Precipitation<h4>" +
+            (props
+                ? "<b>" +
+                  props.name +
+                  "</b><br />" +
+                  "Precipitation " +
+                  props.precip +
+                  " mm"
+                : "Hover over a state");
+    };
 
-  function resetHighlight(e) {
-    if (geojson) {
-      geojson.resetStyle(e.target);
-    }
-    if (geojson_myanmar) {
-      geojson_myanmar.resetStyle(e.target);
-    }
-    if (geojson_cambodia) {
-      geojson_cambodia.resetStyle(e.target);
-    }
-    if (geojson_india) {
-      geojson_india.resetStyle(e.target);
-    }
-    if (geojson_thailand) {
-      geojson_thailand.resetStyle(e.target);
-    }
-    if (geojson_vietnam) {
-      geojson_vietnam.resetStyle(e.target);
-    }
-    info.update();
-  }
+    info.addTo(map);
 
-  function onEachFeature(feature, layer) {
-    layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-    });
-  }
+    // 添加自定义图例控件
+    legend = L.control({ position: "bottomright" });
 
-  geojson = L.geoJson(precip_myanmar, {
-    style: style,
-    onEachFeature: onEachFeature,
-  }).addTo(map);
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "info legend"),
+            grades = [0, 50, 75, 100, 150, 200, 250, 300],
+            labels = [];
 
-  // 添加自定义信息控件
-  info = L.control();
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' +
+                getColor(grades[i] + 1) +
+                '"></i> ' +
+                grades[i] +
+                (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+        }
 
-  info.onAdd = function (map) {
-    this._div = L.DomUtil.create("div", "info"); // 创建一个带有类 "info" 的 div
-    this.update();
-    return this._div;
-  };
+        return div;
+    };
 
-  info.update = function (props) {
-    this._div.innerHTML =
-      "<h4>Myanmar Precipitation<h4>" +
-      (props
-        ? "<b>" +
-          props.name +
-          "</b><br />" +
-          "Precipitation " +
-          props.precip +
-          " mm"
-        : "Hover over a state");
-  };
+    legend.addTo(map);
 
-  info.addTo(map);
-
-  // 添加自定义图例控件
-  legend = L.control({ position: "bottomright" });
-
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "info legend"),
-      grades = [0, 50, 75, 100, 150, 200, 250, 300],
-      labels = [];
-
-    for (var i = 0; i < grades.length; i++) {
-      div.innerHTML +=
-        '<i style="background:' +
-        getColor(grades[i] + 1) +
-        '"></i> ' +
-        grades[i] +
-        (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
-    }
-
-    return div;
-  };
-
-  legend.addTo(map);
-
-  // 添加 GeoJSON 图层
-  // geojson_myanmar = L.geoJson(precip_myanmar, {
-  //   style: style,
-  //   onEachFeature: onEachFeature,
-  // }).addTo(map);
+    // 添加 GeoJSON 图层
+    // geojson_myanmar = L.geoJson(precip_myanmar, {
+    //   style: style,
+    //   onEachFeature: onEachFeature,
+    // }).addTo(map);
 }
 
 // function mapFunc_m02() {
@@ -364,182 +385,185 @@ function mapFunc_m03() {
 // }
 
 function mapFunc_m02() {
-  if (map) {
-    // if (geojson) {
-    //   map.removeLayer(geojson); // 移除 geojson 图层
-    // }
-    // if (geojson_cambodia) {
-    //   map.removeLayer(geojson_cambodia); // 移除 geojson 图层
-    // }
-    // if (geojson_india) {
-    //   map.removeLayer(geojson_india); // 移除 geojson 图层
-    // }
-    // if (geojson_myanmar) {
-    //   map.removeLayer(geojson_myanmar); // 移除 geojson 图层
-    // }
-    // if (geojson_thailand) {
-    //   map.removeLayer(geojson_thailand); // 移除 geojson 图层
-    // }
-    // if (geojson_vietnam) {
-    //   map.removeLayer(geojson_vietnam); // 移除 geojson 图层
-    // }
-    if (legend) {
-      map.removeControl(legend); // 移除图例控件
+    if (map) {
+        // if (geojson) {
+        //   map.removeLayer(geojson); // 移除 geojson 图层
+        // }
+        // if (geojson_cambodia) {
+        //   map.removeLayer(geojson_cambodia); // 移除 geojson 图层
+        // }
+        // if (geojson_india) {
+        //   map.removeLayer(geojson_india); // 移除 geojson 图层
+        // }
+        // if (geojson_myanmar) {
+        //   map.removeLayer(geojson_myanmar); // 移除 geojson 图层
+        // }
+        // if (geojson_thailand) {
+        //   map.removeLayer(geojson_thailand); // 移除 geojson 图层
+        // }
+        // if (geojson_vietnam) {
+        //   map.removeLayer(geojson_vietnam); // 移除 geojson 图层
+        // }
+        if (legend) {
+            map.removeControl(legend); // 移除图例控件
+        }
+        if (info) {
+            map.removeControl(info); // 移除信息控件
+        }
+        map.remove(); // 销毁地图实例
     }
-    if (info) {
-      map.removeControl(info); // 移除信息控件
+    map = L.map("chart_container").setView([20, 90], 5);
+
+    L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+            maxZoom: 12,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }
+    ).addTo(map);
+
+    // 假设你有一个 myanmar GeoJSON 对象
+    function getColor(d) {
+        return d > 300
+            ? "#800026"
+            : d > 250
+            ? "#BD0026"
+            : d > 200
+            ? "#E31A1C"
+            : d > 150
+            ? "#FC4E2A"
+            : d > 50
+            ? "#FD8D3C"
+            : d > 30
+            ? "#FEB24C"
+            : d > 10
+            ? "#FED976"
+            : "#FFEDA0";
     }
-    map.remove(); // 销毁地图实例
-  }
-  map = L.map("chart_container").setView([20, 90], 5);
 
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 12,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.y1950),
+            weight: 2,
+            opacity: 1,
+            color: "white",
+            dashArray: "3",
+            fillOpacity: 0.7
+        };
+    }
 
-  // 假设你有一个 myanmar GeoJSON 对象
-  function getColor(d) {
-    return d > 300
-      ? "#800026"
-      : d > 250
-      ? "#BD0026"
-      : d > 200
-      ? "#E31A1C"
-      : d > 150
-      ? "#FC4E2A"
-      : d > 50
-      ? "#FD8D3C"
-      : d > 30
-      ? "#FEB24C"
-      : d > 10
-      ? "#FED976"
-      : "#FFEDA0";
-  }
+    function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 5,
+            color: "#666",
+            dashArray: "",
+            fillOpacity: 0.7
+        });
+        info.update(layer.feature.properties);
+        layer.bringToFront();
+    }
 
-  function style(feature) {
-    return {
-      fillColor: getColor(feature.properties.y1950),
-      weight: 2,
-      opacity: 1,
-      color: "white",
-      dashArray: "3",
-      fillOpacity: 0.7,
+    function resetHighlight(e) {
+        if (geojson) {
+            geojson.resetStyle(e.target);
+        }
+        if (geojson_myanmar) {
+            geojson_myanmar.resetStyle(e.target);
+        }
+        if (geojson_cambodia) {
+            geojson_cambodia.resetStyle(e.target);
+        }
+        if (geojson_india) {
+            geojson_india.resetStyle(e.target);
+        }
+        if (geojson_thailand) {
+            geojson_thailand.resetStyle(e.target);
+        }
+        if (geojson_vietnam) {
+            geojson_vietnam.resetStyle(e.target);
+        }
+        info.update();
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight
+        });
+    }
+
+    geojson = L.geoJson(precip_myanmar, {
+        style: style,
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    // 添加自定义信息控件
+    info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create("div", "info"); // 创建一个带有类 "info" 的 div
+        this.update();
+        return this._div;
     };
-  }
 
-  function highlightFeature(e) {
-    var layer = e.target;
-    layer.setStyle({
-      weight: 5,
-      color: "#666",
-      dashArray: "",
-      fillOpacity: 0.7,
-    });
-    info.update(layer.feature.properties);
-    layer.bringToFront();
-  }
+    info.update = function (props) {
+        this._div.innerHTML =
+            "<h4>Myanmar Precipitation<h4>" +
+            (props
+                ? "<b>" +
+                  props.name +
+                  "</b><br />" +
+                  "Precipitation " +
+                  props.precip +
+                  " mm"
+                : "Hover over a state");
+    };
 
-  function resetHighlight(e) {
-    if (geojson) {
-      geojson.resetStyle(e.target);
-    }
-    if (geojson_myanmar) {
-      geojson_myanmar.resetStyle(e.target);
-    }
-    if (geojson_cambodia) {
-      geojson_cambodia.resetStyle(e.target);
-    }
-    if (geojson_india) {
-      geojson_india.resetStyle(e.target);
-    }
-    if (geojson_thailand) {
-      geojson_thailand.resetStyle(e.target);
-    }
-    if (geojson_vietnam) {
-      geojson_vietnam.resetStyle(e.target);
-    }
-    info.update();
-  }
+    info.addTo(map);
 
-  function onEachFeature(feature, layer) {
-    layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-    });
-  }
+    // 添加自定义图例控件
+    legend = L.control({ position: "bottomright" });
 
-  geojson = L.geoJson(precip_myanmar, {
-    style: style,
-    onEachFeature: onEachFeature,
-  }).addTo(map);
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "info legend"),
+            grades = [0, 50, 75, 100, 150, 200, 250, 300],
+            labels = [];
 
-  // 添加自定义信息控件
-  info = L.control();
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' +
+                getColor(grades[i] + 1) +
+                '"></i> ' +
+                grades[i] +
+                (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+        }
 
-  info.onAdd = function (map) {
-    this._div = L.DomUtil.create("div", "info"); // 创建一个带有类 "info" 的 div
-    this.update();
-    return this._div;
-  };
+        return div;
+    };
 
-  info.update = function (props) {
-    this._div.innerHTML =
-      "<h4>Myanmar Precipitation<h4>" +
-      (props
-        ? "<b>" +
-          props.name +
-          "</b><br />" +
-          "Precipitation " +
-          props.precip +
-          " mm"
-        : "Hover over a state");
-  };
+    legend.addTo(map);
 
-  info.addTo(map);
-
-  // 添加自定义图例控件
-  legend = L.control({ position: "bottomright" });
-
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "info legend"),
-      grades = [0, 50, 75, 100, 150, 200, 250, 300],
-      labels = [];
-
-    for (var i = 0; i < grades.length; i++) {
-      div.innerHTML +=
-        '<i style="background:' +
-        getColor(grades[i] + 1) +
-        '"></i> ' +
-        grades[i] +
-        (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
-    }
-
-    return div;
-  };
-
-  legend.addTo(map);
-
-  // 添加 GeoJSON 图层
-  // geojson_myanmar = L.geoJson(precip_myanmar, {
-  //   style: style,
-  //   onEachFeature: onEachFeature,
-  // }).addTo(map);
+    // 添加 GeoJSON 图层
+    // geojson_myanmar = L.geoJson(precip_myanmar, {
+    //   style: style,
+    //   onEachFeature: onEachFeature,
+    // }).addTo(map);
 }
 
 function mapFunc_m01() {
-  if (map) {
-    if (geojson_myanmar) {
-      map.removeLayer(geojson_myanmar); // 移除 geojson 图层
+    if (map) {
+        if (geojson_myanmar) {
+            map.removeLayer(geojson_myanmar); // 移除 geojson 图层
+        }
+        // if (legend) {
+        //   map.removeControl(legend); // 移除图例控件
+        // }
+        // if (info) {
+        //   map.removeControl(info); // 移除信息控件
+        // }
     }
-    // if (legend) {
-    //   map.removeControl(legend); // 移除图例控件
-    // }
-    // if (info) {
-    //   map.removeControl(info); // 移除信息控件
-    // }
-  }
 }
 
 // function mapFunc_m02() {

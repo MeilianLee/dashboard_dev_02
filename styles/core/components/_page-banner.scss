@@ -7,6 +7,7 @@
         &--inner-container {
         }
         &---image {
+            
         }
         &--background {
             @apply absolute left-0 top-0 right-0 bottom-0 -z-[1] h-[50vh] md:h-[60vh] lg:h-screen min-h-[720px] bg-top bg-cover bg-no-repeat bg-hero-pattern;

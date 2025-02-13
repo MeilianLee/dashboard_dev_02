@@ -6,15 +6,15 @@ import { Icon } from "@iconify/react";
 
 const DATA = [
     {
-        title: "Template",
+        title: "Keys",
         items: [
+            {
+                label: "Countries",
+                href: "#countries"
+            },
             {
                 label: "Features",
                 href: "#features"
-            },
-            {
-                label: "Testimonials",
-                href: "#testimonials"
             },
             {
                 label: "FAQ",
@@ -61,13 +61,13 @@ export const Footer = () => {
                     <div className="footer-links mb-12 grid grid-cols-2 gap-8 md:mb-16 md:grid-cols-8 lg:grid-cols-12">
                         <div className="col-span-6">
                             <div className="footer--logo grid gap-8">
-                                <Link href="/">
+                                <Link href="/dashboard_page">
                                     <Image
-                                        src="/nutritrack.svg"
+                                        src="/rice_logo.png"
                                         alt="logo"
-                                        className="h-10 w-auto"
+                                        className="h-50 w-auto"
                                         height="25"
-                                        width="100"
+                                        width="200"
                                         priority
                                     />
                                 </Link>
@@ -75,10 +75,10 @@ export const Footer = () => {
                                 <ButtonGroup alignment="left">
                                     <a
                                         role="button"
-                                        href="https://github.com/christian-luntok/nutritrack"
+                                        href="/dashboard_page"
                                         className="btn btn--secondary"
                                     >
-                                        Get Template
+                                        Explore Dashboard
                                         <Icon icon="material-symbols:arrow-forward-rounded" />
                                     </a>
                                 </ButtonGroup>

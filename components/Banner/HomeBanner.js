@@ -7,8 +7,6 @@ import { PageTitle } from "@components/Title";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 
-import Link from "next/link";
-
 export const HomeBanner = () => {
     return (
         <SectionContainer className="page-banner--container py-16">
@@ -16,37 +14,38 @@ export const HomeBanner = () => {
                 {/* Appear First */}
                 <MotionBTTContainer transition={{ delay: 0.2, duration: 0.5 }}>
                     <BadgeGroup alignment="center">
-                        <BadgeMessage>Discover NutriTrack!</BadgeMessage>
-                        <BadgeIcon icon="game-icons:meal" />
+                        <BadgeMessage >Discover RICE-MAP!</BadgeMessage>
+                        <BadgeIcon icon="mdi:sprout" />
                     </BadgeGroup>
                 </MotionBTTContainer>
                 {/* Appear Second */}
                 <MotionBTTContainer transition={{ delay: 0.4, duration: 0.5 }}>
-                    <PageTitle className="text-center mx-auto" type="heavy">
-                        The effortless way to plan your meals with the power of
-                        Notion.
+                    <PageTitle className="text-center mx-auto text-xl md:text-xl lg:text-3xl xl:text-4xl" type="heavy">
+                    Rice Information & Climate Evaluation 
+                    </PageTitle>
+                    <PageTitle className="text-center mx-auto text-lg md:text-lg lg:text-2xl xl:text-3xl mt-2" type="heavy">
+                    - Monitoring And Prediction
                     </PageTitle>
                 </MotionBTTContainer>
                 {/* Appear Third */}
                 <MotionBTTContainer transition={{ delay: 0.6, duration: 0.5 }}>
                     <Content className="text-center" alignment="center">
                         <p>
-                            Streamline your nutrition journey and achieve your
-                            health goals with ease.{" "}
+                        Gain insights into rice production trends and optimize agricultural strategies 
+                        with accurate yield forecasts for key Southeast Asian countries.{" "}
                         </p>
                     </Content>
                     <div className="mt-6 mb-16 text-center">
                         <ButtonGroup alignment="center">
-                            <Button href="#features">Features</Button>
+                            <Button href="#countries">Countries</Button>
                             <a
                                 role="button"
-                                // href="https://github.com/chrstnl-gh/nutritrack"
                                 href="/dashboard_page"
                                 className="btn btn--secondary"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                Get Template
+                                Explore Dashboard
                                 <Icon icon="material-symbols:arrow-forward-rounded" />
                             </a>
                         </ButtonGroup>
@@ -56,7 +55,7 @@ export const HomeBanner = () => {
                 <MotionBTTContainer transition={{ delay: 0.8, duration: 0.5 }}>
                     <div className="page-banner--image">
                         <Image
-                            src="/nutritrack-hero-banner.png"
+                            src="/landing_page.png"
                             width={1024}
                             height={680}
                             alt="Page Banner"

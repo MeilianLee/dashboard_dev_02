@@ -4,7 +4,7 @@ import Script from "next/script";
 export const ScriptsImport = () => {
     return (
         <>
-            <Script
+            {/* <Script
                 src="/js/Data_Yearly_country_1950_2016.js"
                 // strategy="afterInteractive"
             />
@@ -90,7 +90,7 @@ export const ScriptsImport = () => {
             <Script
                 src="/js/prov_yearly/SPI12_Yearly_myanmar_1950_2016.js"
                 strategy="afterInteractive"
-            />
+            /> */}
 
             <Script
                 src="/js/dashboard_map_update.js"

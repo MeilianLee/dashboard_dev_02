@@ -1,0 +1,83 @@
+@layer components {
+    .dashboard-container {
+        display: flex;
+        height: 100vh; // 使地图和侧边栏共同占据整个屏幕高度
+    }
+
+    .sidebar {
+        width: 300px;
+        background-color: #f8f9fa;
+        overflow: hidden;
+        transition: width 0.3s ease;
+
+        &.collapsed {
+            width: 50px;
+        }
+
+        .toggle-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .sidebar-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+
+            opacity: 0;
+            transition: opacity 0.1s ease-in-out;
+
+            &.visible {
+                opacity: 1;
+            }
+
+            &.hidden {
+                opacity: 0;
+            }
+        }
+    }
+
+    .map-container {
+        flex-grow: 1;
+        height: 100vh;
+        position: relative;
+
+        .scroll-to-details-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            z-index: 999;
+        }
+    }
+
+    .details-container {
+        padding: 20px;
+        background: #fff;
+        border-top: 2px solid #ccc;
+        text-align: center;
+
+        .back-to-map-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .info-panel,
+        .chart-panel {
+            margin-top: 20px;
+        }
+    }
+}
