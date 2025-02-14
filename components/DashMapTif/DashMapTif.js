@@ -451,7 +451,7 @@ function LegendControl({ data }) {
         },
         Temp: {
             title: "Temperature (℃)",
-            grades: [1, 5, 10, 20, 30],
+            grades: [15, 20, 25, 30],
             colors: [
                 "#00f", // Blue for 1°C (cool)
                 "#0099ff", // Light blue for 5°C
@@ -608,36 +608,34 @@ function LegendControl({ data }) {
                   ${labels}
                 </div>`;
             } else if (vartype === "Temp") {
-                // Continuous color gradient legend for Temperature (Blue to Red)
                 const gradientBar = `
-        <div style="
-          background: linear-gradient(to right, blue, white, red);
-          width: 100%;
-          height: 20px;
-          border: 1px solid #000;
-          margin-bottom: 8px;">
-        </div>
-        
-      `;
+                <div style="
+                  background: linear-gradient(to right, hsl(0, 30%, 90%), hsl(0, 100%, 40%));
+                  width: 20vw;
+                  height: 20px;
+                  border: 1px solid #000;
+                  margin-bottom: 8px;">
+                </div>`;
 
                 div.innerHTML += gradientBar;
 
-                // Ensure that the number of labels matches the number of gradient stops
+                // 计算标签刻度
                 const numLabels = grades.length;
-                const step = Math.floor(100 / (numLabels - 1)); // Spread labels across the gradient
+                const step = Math.floor(100 / (numLabels - 1)); // 均匀分布标签
 
-                // Add labels below the gradient bar (Temperature labels)
+                // 生成标签
                 const labels = grades
                     .map((grade) => `<span>${grade}</span>`)
                     .join(" ");
+
                 div.innerHTML += `
-        <div style="
-          display: flex;
-          justify-content: space-between;
-          font-size: 12px;
-          margin-top: 4px;">
-          ${labels}
-        </div>`;
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-size: 12px;
+                  margin-top: 4px;">
+                  ${labels}
+                </div>`;
             } else {
                 // Default legend
                 div.innerHTML += `
@@ -748,17 +746,27 @@ function getColorPrcp(d) {
 }
 
 function getColorTemp(d) {
-    return d > 30
-        ? "#730000" // Dark red for temperatures > 30°C
-        : d > 20
-        ? "#E60000" // Red for temperatures between 20°C and 30°C
-        : d > 10
-        ? "#FFAA00" // Orange for temperatures between 10°C and 20°C
-        : d > 5
-        ? "#FCD37F" // Yellow for temperatures between 5°C and 10°C
-        : d > 1
-        ? "#FFFF00" // Light yellow for temperatures between 1°C and 5°C
-        : "#fff"; // White for temperatures <= 1°C or no temperature data
+    if (d <= 0) return "#333"; // if no value
+
+    // define data range
+    const minVal = 15; // min
+    const maxVal = 30; // max
+
+    // HSL
+    const minSaturation = 30;
+    const maxSaturation = 100;
+    const minLightness = 90;
+    const maxLightness = 40;
+
+    // 归一化 d 值到 [0, 1]
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+
+    // 计算 HSL 颜色值
+    let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+    let lightness = minLightness - ratio * (minLightness - maxLightness);
+
+    // 返回计算出的 HSL 颜色值
+    return `hsl(0, ${saturation}%, ${lightness}%)`;
 }
 
 function getColorYield(d) {
