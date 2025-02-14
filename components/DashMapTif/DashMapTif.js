@@ -51,13 +51,13 @@ export default function DashMapTif({
         <MapContainer
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
             key={`map-${data.url}`}
-            center={[20.5937, 90]}
+            center={[20, 93]}
             zoom={5}
             minZoom={4} // 设置最小缩放
             maxZoom={11} // 设置最大缩放
             maxBounds={[
-                [-10, 60],
-                [20, 160]
+                [-10, 20],
+                [40, 150]
             ]} // 设置拖拽边界（南西和东北角的坐标）
             // style={{ height: "500px", width: "100%" }}
             // id="map_container"
@@ -341,7 +341,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
         Prcp: getColorPrcp,
         Temp: getColorTemp,
         SPI: getColor,
-        Yield: getColorYield
+        Yield: getColorYield,
+        SMPct: getColorSMPct
     };
     // Function to get color based on vartype and pixel value
     function getColorByVartype(data_url, pixelValue) {
@@ -457,6 +458,17 @@ function LegendControl({ data }) {
                 "#ffcc00", // Orange for 20°C
                 "#ff3300" // Red for 30°C (hot)],
             ]
+        },
+        SMPct: {
+            title: "SMPct",
+            grades: [0, 25, 50, 75, 100],
+            colors: [
+                "#00f", // Blue for 1°C (cool)
+                "#0099ff", // Light blue for 5°C
+                "#ffff00", // Yellow for 10°C
+                "#ffcc00", // Orange for 20°C
+                "#ff3300" // Red for 30°C (hot)],
+            ]
         }
     };
 
@@ -528,7 +540,7 @@ function LegendControl({ data }) {
             } else if (vartype === "Yield") {
                 const gradientBar = `
                 <div style="
-                  background: linear-gradient(to right, blue, white, red);
+                  background: linear-gradient(to right, hsl(60, 100%, 40%), hsl(120, 100%, 40%));
                   width: 20vw;
                   height: 20px;
                   border: 1px solid #000;
@@ -537,23 +549,52 @@ function LegendControl({ data }) {
 
                 div.innerHTML += gradientBar;
 
-                // Ensure that the number of labels matches the number of gradient stops
+                // 确保标签数匹配渐变步数
                 const numLabels = grades.length;
-                const step = Math.floor(100 / (numLabels - 1)); // Spread labels across the gradient
+                const step = Math.floor(100 / (numLabels - 1)); // 让标签均匀分布
 
-                // Add labels below the gradient bar (Temperature labels)
+                // 生成刻度标签
                 const labels = grades
                     .map((grade) => `<span>${Math.floor(grade / 1000)}</span>`)
                     .join(" ");
+
                 div.innerHTML += `
-        <div style="
-          display: flex;
-          justify-content: space-between;
-          font-size: 12px;
-          margin-top: 4px;">
-          
-          ${labels}
-        </div>`;
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-size: 12px;
+                  margin-top: 4px;">
+                  ${labels}
+                </div>`;
+            } else if (vartype === "SMPct") {
+                const gradientBar = `
+                <div style="
+                  background: linear-gradient(to right, hsl(210, 10%, 90%), hsl(210, 100%, 40%));
+                  width: 20vw;
+                  height: 20px;
+                  border: 1px solid #000;
+                  margin-bottom: 8px;">
+                </div>`;
+
+                div.innerHTML += gradientBar;
+
+                // 确保标签数匹配渐变步数
+                const numLabels = grades.length;
+                const step = Math.floor(100 / (numLabels - 1)); // 让标签均匀分布
+
+                // 生成刻度标签
+                const labels = grades
+                    .map((grade) => `<span>${Math.floor(grade)}</span>`)
+                    .join(" ");
+
+                div.innerHTML += `
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-size: 12px;
+                  margin-top: 4px;">
+                  ${labels}
+                </div>`;
             } else if (vartype === "Temp") {
                 // Continuous color gradient legend for Temperature (Blue to Red)
                 const gradientBar = `
@@ -709,17 +750,58 @@ function getColorTemp(d) {
 }
 
 function getColorYield(d) {
-    return d > 100000000
-        ? "#730000" // Dark red for temperatures > 30°C
-        : d > 10000000
-        ? "#E60000" // Red for temperatures between 20°C and 30°C
-        : d > 5000000
-        ? "#FFAA00" // Orange for temperatures between 10°C and 20°C
-        : d > 1000000
-        ? "#FCD37F" // Yellow for temperatures between 5°C and 10°C
-        : d > 500000
-        ? "#FFFF00" // Light yellow for temperatures between 1°C and 5°C
-        : "#fff"; // White for temperatures <= 1°C or no temperature data
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    // 定义颜色范围：HSL（色相、饱和度、亮度）
+    const minVal = 0; // 最小降水量
+    const maxVal = 100000000; // 最大降水量（超过 100mm 按 100 计算）
+
+    const minHue = 60;
+    const maxHue = 120;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 90%, 40%)`;
+
+    // return `hsl(${hue}, 70%, 50%)`; // 保持饱和度 100%，亮度 50%
+
+    // return d > 100000000
+    //     ? "#730000" // Dark red for temperatures > 30°C
+    //     : d > 10000000
+    //     ? "#E60000" // Red for temperatures between 20°C and 30°C
+    //     : d > 5000000
+    //     ? "#FFAA00" // Orange for temperatures between 10°C and 20°C
+    //     : d > 1000000
+    //     ? "#FCD37F" // Yellow for temperatures between 5°C and 10°C
+    //     : d > 500000
+    //     ? "#FFFF00" // Light yellow for temperatures between 1°C and 5°C
+    //     : "#fff"; // White for temperatures <= 1°C or no temperature data
+}
+
+function getColorSMPct(d) {
+    if (d <= 0) return "hsl(210, 10%, 90%)"; // 最浅色（灰蓝）
+
+    // 定义数据范围
+    const minVal = 0; // 最小值
+    const maxVal = 100; // 最大值
+
+    // HSL 颜色范围
+    const minSaturation = 10; // 最小饱和度
+    const maxSaturation = 100; // 最大饱和度
+    const minLightness = 90; // 最小亮度（最浅色）
+    const maxLightness = 40; // 最大亮度（最深色）
+
+    // 归一化数据 d 到 [0, 1]
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+
+    // 计算 HSL 颜色值
+    let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+    let lightness = minLightness - ratio * (minLightness - maxLightness);
+
+    // 返回计算出的 HSL 颜色值
+    return `hsl(210, ${saturation}%, ${lightness}%)`;
 }
 
 // const MapComponent = ({ map, geojsonData, geoRasterData }) => {

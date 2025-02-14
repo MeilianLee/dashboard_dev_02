@@ -43,7 +43,7 @@ export default function Home() {
         varType: "Yield", // Var Type
         region: "SEA", // Region
         overview: "hist", // Overview
-        adminLevel: "Country", // Administrative Level
+        adminLevel: "Prov", // Administrative Level
         dateType: "Yearly", // Date
         date: "2010" // Date Picker Value
     });
@@ -61,7 +61,22 @@ export default function Home() {
     const [timeSeries, setTimeSeries] = useState([]);
 
     // 动态改变日期
-    const [selectedDate, setSelectedDate] = useState("2010"); // 默认日期
+    const [selectedDate, setSelectedDate] = useState("20100101"); // 默认年
+    const [selectedYear, setSelectedYear] = useState("2010"); // 默认年
+    const [selectedMonth, setSelectedMonth] = useState("01"); // 默认月
+    const [selectedDay, setSelectedDay] = useState("01"); // 默认日
+
+    useEffect(() => {
+        let formattedDate = selectedYear; // 默认 Yearly 模式
+        if (options.dateType === "Monthly") {
+            formattedDate = `${selectedYear}${selectedMonth}`;
+        } else if (options.dateType === "Daily") {
+            formattedDate = `${selectedYear}${selectedMonth}${selectedDay}`;
+        }
+
+        setSelectedDate(formattedDate);
+        setOptions((prev) => ({ ...prev, date: formattedDate })); // 确保 options.date 也同步更新
+    }, [selectedYear, selectedMonth, selectedDay, options.dateType]);
 
     const [additionalData, setAdditionalData] = useState(null); // 新数据
 
@@ -78,33 +93,53 @@ export default function Home() {
                 `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&date=${selectedDate}`
                 // "/api/get_yield"
             );
-            if (varType.startsWith("SPI") && adminLevel !== "Grid") {
-                const data = await response.json();
-                console.log("fetched geoJSON data:", data);
-                setGeojsonData(data);
-                // mapData is passed to DashMapTif
-                setMapData({
-                    data: data,
-                    url: response.url,
-                    datatype: "geojson",
-                    data_vartype: varType
-                });
-                setSelectedProvince(null); // 清空选中状态
-                setTimeSeries([]); // 清空时间序列数据
-            } else if (varType === "Yield") {
-                const data = await response.json();
-                console.log("fetched geoJSON data:", data);
-                setGeojsonData(data);
-                // mapData is passed to DashMapTif
-                setMapData({
-                    data: data,
-                    url: response.url,
-                    datatype: "geojson",
-                    data_vartype: varType
-                });
-                setSelectedProvince(null); // 清空选中状态
-                setTimeSeries([]); // 清空时间序列数据
-            } else {
+
+            // if (varType.startsWith("SPI") && adminLevel !== "Grid") {
+            //     const data = await response.json();
+            //     console.log("fetched geoJSON data:", data);
+            //     setGeojsonData(data);
+            //     // mapData is passed to DashMapTif
+            //     setMapData({
+            //         data: data,
+            //         url: response.url,
+            //         datatype: "geojson",
+            //         data_vartype: varType
+            //     });
+            //     setSelectedProvince(null); // 清空选中状态
+            //     setTimeSeries([]); // 清空时间序列数据
+            // } else if (varType === "Yield") {
+            //     const data = await response.json();
+            //     console.log("fetched geoJSON data:", data);
+            //     setGeojsonData(data);
+            //     // mapData is passed to DashMapTif
+            //     setMapData({
+            //         data: data,
+            //         url: response.url,
+            //         datatype: "geojson",
+            //         data_vartype: varType
+            //     });
+            //     setSelectedProvince(null); // 清空选中状态
+            //     setTimeSeries([]); // 清空时间序列数据
+            // } else if (adminLevel === "Grid") {
+            //     console.log("Response URL:", response); // Log the URL for debugging
+            //     // const data = await response.json();
+            //     // console.log("fetched geoRaster data:", data);
+            //     setGeoRasterData({
+            //         data: await response.arrayBuffer(),
+            //         url: response.url, // Storing the URL here for later use
+            //         datatype: "geotiff"
+            //     });
+            //     setMapData({
+            //         url: response.url,
+            //         datatype: "geotiff",
+            //         data_vartype: varType
+            //     });
+            //     // setGeoRasterData(dummyRaster);
+            //     setSelectedProvince(null); // 清空选中状态
+            //     setTimeSeries([]); // 清空时间序列数据
+            // }
+
+            if (adminLevel === "Grid") {
                 console.log("Response URL:", response); // Log the URL for debugging
                 // const data = await response.json();
                 // console.log("fetched geoRaster data:", data);
@@ -119,6 +154,19 @@ export default function Home() {
                     data_vartype: varType
                 });
                 // setGeoRasterData(dummyRaster);
+                setSelectedProvince(null); // 清空选中状态
+                setTimeSeries([]); // 清空时间序列数据
+            } else {
+                const data = await response.json();
+                console.log("fetched geoJSON data:", data);
+                setGeojsonData(data);
+                // mapData is passed to DashMapTif
+                setMapData({
+                    data: data,
+                    url: response.url,
+                    datatype: "geojson",
+                    data_vartype: varType
+                });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
             }
@@ -172,10 +220,7 @@ export default function Home() {
 
     // check if geojsonData or geoRasterData are null, if so, give error message box
     useEffect(() => {
-        if (
-            (geojsonData && geojsonData.error) ||
-            (geoRasterData && geoRasterData.error)
-        ) {
+        if (options.varType === "Yield" && options.region !== "SEA") {
             setErrorMessage(
                 "No matched data for the options, please check and select again"
             );
@@ -435,7 +480,7 @@ export default function Home() {
                                 <option value="SPI3">SPI3</option>
                                 <option value="SPI6">SPI6</option>
                                 <option value="SPI12">SPI12</option>
-                                <option value="SMPCT">
+                                <option value="SMPct">
                                     Soil Moisture Percentile
                                 </option>
                                 <option value="Yield">Rice Yield</option>
@@ -507,7 +552,52 @@ export default function Home() {
                             </select>
                         </label>
 
+                        {/* 年份选择 */}
                         <label className="flex flex-col text-sm font-medium text-gray-700">
+                            <span>Select Year:</span>
+                            <select
+                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedYear}
+                                onChange={(e) =>
+                                    setSelectedYear(e.target.value)
+                                }
+                            >
+                                {Array.from(
+                                    { length: 67 },
+                                    (_, i) => 1950 + i
+                                ).map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        {/* 月份选择（仅当 Monthly 或 Daily 可见） */}
+                        {options.dateType !== "Yearly" && (
+                            <label className="flex flex-col text-sm font-medium text-gray-700">
+                                <span>Select Month:</span>
+                                <select
+                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    value={selectedMonth}
+                                    onChange={(e) =>
+                                        setSelectedMonth(
+                                            e.target.value.padStart(2, "0")
+                                        )
+                                    }
+                                >
+                                    {Array.from({ length: 12 }, (_, i) =>
+                                        (i + 1).toString().padStart(2, "0")
+                                    ).map((month) => (
+                                        <option key={month} value={month}>
+                                            {month}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        )}
+
+                        {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Select Date:</span>
 
                             <select
@@ -531,7 +621,7 @@ export default function Home() {
                                     </option>
                                 ))}
                             </select>
-                        </label>
+                        </label> */}
                     </div>
                 </div>
 

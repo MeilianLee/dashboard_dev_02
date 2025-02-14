@@ -34,14 +34,17 @@ export default function handler(req, res) {
         case "Country":
         case "Prov":
             switch (true) {
-                case varType === "Yield":
+                case varType === "Yield" && region === "SEA":
                     fileName = `yield_country.json`;
                     break;
                 case varType === "Prcp":
-                    fileName = `Precipitation/${varType}_${region}.json`;
+                    fileName = `${region}_Precipitation.geojson`;
                     break;
                 case varType === "Temp":
                     fileName = `Temp_Asia.json`;
+                    break;
+                case varType === "SMPct":
+                    fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
                     break;
                 case varType.startsWith("SPI"):
                     fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
