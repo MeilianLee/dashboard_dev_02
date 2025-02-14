@@ -56,8 +56,8 @@ export default function DashMapTif({
             minZoom={4} // 设置最小缩放
             maxZoom={11} // 设置最大缩放
             maxBounds={[
-                [-5, 50],
-                [35, 140]
+                [-10, 60],
+                [20, 160]
             ]} // 设置拖拽边界（南西和东北角的坐标）
             // style={{ height: "500px", width: "100%" }}
             // id="map_container"

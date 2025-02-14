@@ -28,7 +28,8 @@ export default function handler(req, res) {
 
     switch (adminLevel) {
         case "Grid":
-            fileName = `precipitation_month_1.tif`;
+            switch (true) {
+            }
             break;
         case "Country":
         case "Prov":
@@ -37,7 +38,7 @@ export default function handler(req, res) {
                     fileName = `yield_country.json`;
                     break;
                 case varType === "Prcp":
-                    fileName = `precipitation_month_1.tif`;
+                    fileName = `Precipitation/${varType}_${region}.json`;
                     break;
                 case varType === "Temp":
                     fileName = `Temp_Asia.json`;
