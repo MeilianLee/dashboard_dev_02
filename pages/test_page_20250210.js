@@ -415,6 +415,7 @@ export default function Home() {
                     >
                         {sidebarOpen ? "❮" : "❯"}
                     </button>
+
                     <div
                         className={`sidebar-content ${
                             sidebarTextVisible ? "visible" : "hidden"
