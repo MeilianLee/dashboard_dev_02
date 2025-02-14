@@ -28,29 +28,47 @@ export default function handler(req, res) {
 
     switch (adminLevel) {
         case "Grid":
-            switch (true) {
+            switch (dateType) {
+                case "Yearly":
+
+                case "Monthly":
             }
             break;
         case "Country":
-        case "Prov":
             switch (true) {
                 case varType === "Yield" && region === "SEA":
                     fileName = `yield_country.json`;
                     break;
-                case varType === "Prcp":
-                    fileName = `${region}_Precipitation.geojson`;
-                    break;
-                case varType === "Temp":
-                    fileName = `Temp_Asia.json`;
-                    break;
-                case varType === "SMPct":
-                    fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
-                    break;
-                case varType.startsWith("SPI"):
-                    fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
-                    break;
                 default:
-                    fileName = `${varType}_${dateType}_${region}_1950_2016xxxx.json`;
+                    fileName = `no_data.json`;
+            }
+            break;
+        case "Prov":
+            switch (dateType) {
+                case "Yearly":
+                    switch (true) {
+                        // case varType === "Yield" && region === "SEA":
+                        //     fileName = `yield_country.json`;
+                        //     break;
+
+                        case varType === "SMPct":
+                            fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
+                            break;
+                        case varType.startsWith("SPI"):
+                            fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
+                            break;
+                        default:
+                            fileName = `no_data.json`;
+                    }
+                case "Monthly":
+                    switch (true) {
+                        case varType === "Prcp":
+                            fileName = `${region}_Precipitation.geojson`;
+                            break;
+                        case varType === "Temp":
+                            fileName = `${region}_Temperature.geojson`;
+                            break;
+                    }
             }
     }
 

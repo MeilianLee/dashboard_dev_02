@@ -43,7 +43,7 @@ export default function Home() {
         varType: "Yield", // Var Type
         region: "SEA", // Region
         overview: "hist", // Overview
-        adminLevel: "Prov", // Administrative Level
+        adminLevel: "Country", // Administrative Level
         dateType: "Yearly", // Date
         date: "2010" // Date Picker Value
     });

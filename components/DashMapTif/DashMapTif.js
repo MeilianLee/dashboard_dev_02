@@ -36,6 +36,10 @@ export default function DashMapTif({
             ? getColor
             : data_url.data_vartype === "Yield"
             ? getColorYield
+            : data_url.data_vartype === "Temp"
+            ? getColorTemp
+            : data_url.data_vartype === "SMPct"
+            ? getColorSMPct
             : getColor; // 默认使用 getColor
 
         return {
@@ -182,6 +186,10 @@ function GeoJSONLayer({
                 ? getColor
                 : data_url.data_vartype === "Yield"
                 ? getColorYield
+                : data_url.data_vartype === "Temp"
+                ? getColorTemp
+                : data_url.data_vartype === "SMPct"
+                ? getColorSMPct
                 : getColor; // 默认使用 getColor
 
             return {
@@ -238,6 +246,10 @@ function GeoJSONLayer({
                             ? getColor
                             : data_url.data_vartype === "Yield"
                             ? getColorYield
+                            : data_url.data_vartype === "Temp"
+                            ? getColorTemp
+                            : data_url.data_vartype === "SMPct"
+                            ? getColorSMPct
                             : getColor; // 默认使用 getColor
 
                         // 绑定 Tooltip，显示地块名称和值
@@ -461,7 +473,7 @@ function LegendControl({ data }) {
         },
         SMPct: {
             title: "SMPct",
-            grades: [0, 25, 50, 75, 100],
+            grades: [20, 40, 60, 80],
             colors: [
                 "#00f", // Blue for 1°C (cool)
                 "#0099ff", // Light blue for 5°C
@@ -781,11 +793,11 @@ function getColorYield(d) {
 }
 
 function getColorSMPct(d) {
-    if (d <= 0) return "hsl(210, 10%, 90%)"; // 最浅色（灰蓝）
+    if (d <= 0) return "hsl(210, 10%, 100%)"; // 最浅色（灰蓝）
 
     // 定义数据范围
-    const minVal = 0; // 最小值
-    const maxVal = 100; // 最大值
+    const minVal = 20; // 最小值
+    const maxVal = 80; // 最大值
 
     // HSL 颜色范围
     const minSaturation = 10; // 最小饱和度
