@@ -50,7 +50,9 @@ export default function handler(req, res) {
                         // case varType === "Yield" && region === "SEA":
                         //     fileName = `yield_country.json`;
                         //     break;
-
+                        case varType === "Yield":
+                            fileName = `${region}_yield.geojson`;
+                            break;
                         case varType === "SMPct":
                             fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
                             break;

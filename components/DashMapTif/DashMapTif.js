@@ -18,7 +18,8 @@ export default function DashMapTif({
         data = {
             url: "/api/get_Yield_Yearly_Country_SEA",
             datatype: "geojson",
-            data_vartype: "Yield"
+            data_vartype: "Yield",
+            data_adminLevel: "Country"
         }; // Set default URL if data is null
     }
 
@@ -34,8 +35,12 @@ export default function DashMapTif({
         // 根据 options.varType 选择颜色函数
         const colorFunction = data_url.data_vartype.startsWith("SPI")
             ? getColor
-            : data_url.data_vartype === "Yield"
+            : data_url.data_vartype === "Yield" &&
+              data_url.data_adminLevel === "Country"
             ? getColorYield
+            : data_url.data_vartype === "Yield" &&
+              data_url.data_adminLevel === "Prov"
+            ? getColorYieldProv
             : data_url.data_vartype === "Temp"
             ? getColorTemp
             : data_url.data_vartype === "SMPct"
@@ -184,8 +189,12 @@ function GeoJSONLayer({
             // 根据 options.varType 选择颜色函数
             const colorFunction = data_url.data_vartype.startsWith("SPI")
                 ? getColor
-                : data_url.data_vartype === "Yield"
+                : data_url.data_vartype === "Yield" &&
+                  data_url.data_adminLevel === "Country"
                 ? getColorYield
+                : data_url.data_vartype === "Yield" &&
+                  data_url.data_adminLevel === "Prov"
+                ? getColorYieldProv
                 : data_url.data_vartype === "Temp"
                 ? getColorTemp
                 : data_url.data_vartype === "SMPct"
@@ -244,8 +253,12 @@ function GeoJSONLayer({
                             "SPI"
                         )
                             ? getColor
-                            : data_url.data_vartype === "Yield"
+                            : data_url.data_vartype === "Yield" &&
+                              data_url.data_adminLevel === "Country"
                             ? getColorYield
+                            : data_url.data_vartype === "Yield" &&
+                              data_url.data_adminLevel === "Prov"
+                            ? getColorYieldProv
                             : data_url.data_vartype === "Temp"
                             ? getColorTemp
                             : data_url.data_vartype === "SMPct"
@@ -494,9 +507,12 @@ function LegendControl({ data }) {
 
         legend.onAdd = function () {
             const div = L.DomUtil.create("div", "info legend");
-            const vartype = data.data_vartype.startsWith("SPI")
+            let vartype = data.data_vartype.startsWith("SPI")
                 ? "SPI"
                 : data.data_vartype || "Default";
+
+            // vartype = `${vartype}_${data.}`
+            const adminLevel = data.data_adminLevel;
             const config = legendConfig[vartype] || legendConfig.Default;
 
             const { title, grades, colors, labels } = config;
@@ -549,7 +565,7 @@ function LegendControl({ data }) {
               <span class="text-sm">${labels[i]} (${grades[i]})</span>
             </div>`;
                 }
-            } else if (vartype === "Yield") {
+            } else if (vartype === "Yield" && adminLevel === "Country") {
                 const gradientBar = `
                 <div style="
                   background: linear-gradient(to right, hsl(60, 100%, 40%), hsl(120, 100%, 40%));
@@ -568,6 +584,40 @@ function LegendControl({ data }) {
                 // 生成刻度标签
                 const labels = grades
                     .map((grade) => `<span>${Math.floor(grade / 1000)}</span>`)
+                    .join(" ");
+
+                div.innerHTML += `
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-size: 12px;
+                  margin-top: 4px;">
+                  ${labels}
+                </div>`;
+            } else if (vartype === "Yield" && adminLevel === "Prov") {
+                const title = "Yield (k ha)";
+                const grades = [1, 2.5, 4, 5.5, 7];
+
+                const gradientBar = `
+                <div style="
+                  background: linear-gradient(to right, hsl(60, 100%, 40%), hsl(120, 100%, 40%));
+                  width: 20vw;
+                  height: 20px;
+                  border: 1px solid #000;
+                  margin-bottom: 8px;">
+                </div>`;
+
+                div.innerHTML += gradientBar;
+
+                // 确保标签数匹配渐变步数
+                const numLabels = grades.length;
+                const step = Math.floor(100 / (numLabels - 1)); // 让标签均匀分布
+
+                // 生成刻度标签
+                const labels = grades
+                    .map(
+                        (grade) => `<span>${Math.floor(grade / 1000000)}</span>`
+                    )
                     .join(" ");
 
                 div.innerHTML += `
@@ -784,20 +834,23 @@ function getColorYield(d) {
     let hue = minHue - ratio * (minHue - maxHue);
 
     return `hsl(${hue}, 90%, 40%)`;
+}
 
-    // return `hsl(${hue}, 70%, 50%)`; // 保持饱和度 100%，亮度 50%
+function getColorYieldProv(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
 
-    // return d > 100000000
-    //     ? "#730000" // Dark red for temperatures > 30°C
-    //     : d > 10000000
-    //     ? "#E60000" // Red for temperatures between 20°C and 30°C
-    //     : d > 5000000
-    //     ? "#FFAA00" // Orange for temperatures between 10°C and 20°C
-    //     : d > 1000000
-    //     ? "#FCD37F" // Yellow for temperatures between 5°C and 10°C
-    //     : d > 500000
-    //     ? "#FFFF00" // Light yellow for temperatures between 1°C and 5°C
-    //     : "#fff"; // White for temperatures <= 1°C or no temperature data
+    // 定义颜色范围：HSL（色相、饱和度、亮度）
+    const minVal = 1; // 最小降水量
+    const maxVal = 7; // 最大降水量（超过 100mm 按 100 计算）
+
+    const minHue = 30;
+    const maxHue = 100;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 90%, 40%)`;
 }
 
 function getColorSMPct(d) {

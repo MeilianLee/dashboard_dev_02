@@ -151,7 +151,8 @@ export default function Home() {
                 setMapData({
                     url: response.url,
                     datatype: "geotiff",
-                    data_vartype: varType
+                    data_vartype: varType,
+                    data_adminLevel: adminLevel
                 });
                 // setGeoRasterData(dummyRaster);
                 setSelectedProvince(null); // 清空选中状态
@@ -165,7 +166,8 @@ export default function Home() {
                     data: data,
                     url: response.url,
                     datatype: "geojson",
-                    data_vartype: varType
+                    data_vartype: varType,
+                    data_adminLevel: adminLevel
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -183,7 +185,8 @@ export default function Home() {
                 setMapData({
                     data: data,
                     url: response.url,
-                    datatype: "geojson"
+                    datatype: "geojson",
+                    data_adminLevel: adminLevel
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -194,13 +197,15 @@ export default function Home() {
                 setGeoRasterData({
                     data: await response.arrayBuffer(),
                     url: response.url, // Storing the URL here for later use
-                    datatype: "geotiff"
+                    datatype: "geotiff",
+                    data_adminLevel: adminLevel
                 });
 
                 setMapData({
                     url: response.url,
                     datatype: "geotiff",
-                    data_vartype: varType
+                    data_vartype: varType,
+                    data_adminLevel: adminLevel
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -220,7 +225,10 @@ export default function Home() {
 
     // check if geojsonData or geoRasterData are null, if so, give error message box
     useEffect(() => {
-        if (options.varType === "Yield" && options.region !== "SEA") {
+        if (
+            options.dateType === "Yearly" &&
+            (options.varType === "Prcp") | (options.varType === "Temp")
+        ) {
             setErrorMessage(
                 "No matched data for the options, please check and select again"
             );
