@@ -17,6 +17,10 @@
             width: 50px;
         }
 
+        h2 {
+            font-weight: 600;
+        }
+
         // .toggle-btn {
         //     background: #007bff;
         //     color: white;
@@ -135,6 +139,8 @@
         border: 1px solid #ccc;
         border-radius: 8px;
         padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         font-size: 16px;
         transition: all 0.1s ease-in-out;
         background-color: white;

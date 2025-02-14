@@ -43,10 +43,10 @@ export default function handler(req, res) {
                     fileName = `Temp_Asia.json`;
                     break;
                 case varType.startsWith("SPI"):
-                    fileName = `${varType}_${dateType}_${region}_1950_2016.json`;
+                    fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
                     break;
                 default:
-                    fileName = `${varType}_${dateType}_${region}_1950_2016.json`;
+                    fileName = `${varType}_${dateType}_${region}_1950_2016xxxx.json`;
             }
     }
 

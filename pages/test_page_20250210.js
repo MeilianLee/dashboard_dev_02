@@ -36,7 +36,7 @@ export default function Home() {
     const [sidebarTextVisible, setSidebarTextVisible] = useState(true); // when sidebar is closed, texts not visible
 
     const [mapNullCheck, setMapNullCheck] = useState(false); // Record status of sidebar's open or not
-    const [errorMessage, setErrorMessage] = useState("ERROR MESSAGE"); // control the error message box when wrong api or no matched data
+    const [errorMessage, setErrorMessage] = useState("ERROR MESSAGE TEST"); // control the error message box when wrong api or no matched data
 
     // 动态改变选项
     const [options, setOptions] = useState({
