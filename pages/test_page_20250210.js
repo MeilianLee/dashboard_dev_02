@@ -37,9 +37,9 @@ export default function Home() {
 
     // 动态改变选项
     const [options, setOptions] = useState({
-        varType: "SPI1", // Var Type
+        varType: "Yield", // Var Type
         region: "SEA", // Region
-        overview: "forecast", // Overview
+        overview: "hist", // Overview
         adminLevel: "Country", // Administrative Level
         dateType: "Yearly", // Date
         date: "2010" // Date Picker Value
