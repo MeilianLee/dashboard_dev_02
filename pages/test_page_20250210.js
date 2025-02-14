@@ -35,6 +35,9 @@ export default function Home() {
     const [sidebarOpen, setSidebarOpen] = useState(true); // Record status of sidebar's open or not
     const [sidebarTextVisible, setSidebarTextVisible] = useState(true); // when sidebar is closed, texts not visible
 
+    const [mapNullCheck, setMapNullCheck] = useState(false); // Record status of sidebar's open or not
+    const [errorMessage, setErrorMessage] = useState("ERROR MESSAGE"); // control the error message box when wrong api or no matched data
+
     // 动态改变选项
     const [options, setOptions] = useState({
         varType: "Yield", // Var Type
@@ -71,7 +74,8 @@ export default function Home() {
         // generate request
         if (overview === "hist") {
             const response = await fetch(
-                `/api/get_${varType}_${dateType}_${adminLevel}_${region}`
+                // `/api/get_${varType}_${dateType}_${adminLevel}_${region}`
+                `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&date=${selectedDate}`
                 // "/api/get_yield"
             );
             if (varType.startsWith("SPI") && adminLevel !== "Grid") {
@@ -165,6 +169,19 @@ export default function Home() {
             setTimeout(() => setSidebarTextVisible(true), 300);
         }
     }, [sidebarOpen]);
+
+    // check if geojsonData or geoRasterData are null, if so, give error message box
+    useEffect(() => {
+        if (
+            (geojsonData && geojsonData.error) ||
+            (geoRasterData && geoRasterData.error)
+        ) {
+            setErrorMessage(
+                "No matched data for the options, please check and select again"
+            );
+            setTimeout(() => setErrorMessage(""), 3000); // 3秒后自动消失
+        }
+    }, [options, geojsonData, geoRasterData]);
 
     // 当选项改变时，fetchData重新加载，fetchData重新加载，则重新加载数据
     useEffect(() => {
@@ -581,6 +598,9 @@ export default function Home() {
                     )}
                 </div>
             </div>
+
+            {/* 错误信息弹窗 */}
+            {errorMessage && <div className="error-popup">{errorMessage}</div>}
         </>
     );
 }
