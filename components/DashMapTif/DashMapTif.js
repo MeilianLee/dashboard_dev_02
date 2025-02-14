@@ -51,7 +51,7 @@ export default function DashMapTif({
         <MapContainer
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
             key={`map-${data.url}`}
-            center={[20.5937, 78.9629]}
+            center={[20.5937, 90]}
             zoom={5}
             minZoom={4} // 设置最小缩放
             maxZoom={11} // 设置最大缩放
