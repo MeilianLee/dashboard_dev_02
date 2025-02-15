@@ -929,7 +929,7 @@ function getColorPrcp(d) {
 
     // 定义颜色范围：HSL（色相、饱和度、亮度）
     const minVal = 0; // 最小降水量
-    const maxVal = 150; // 最大降水量（超过 150mm 按 100 计算）
+    const maxVal = 1000; // 最大降水量（超过 150mm 按 100 计算）
 
     const minHue = 200; // 蓝色 (H=240)
     const maxHue = 0; // 红色 (H=0)
