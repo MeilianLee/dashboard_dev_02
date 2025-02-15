@@ -95,10 +95,28 @@ export default function handler(req, res) {
         case "Grid":
             switch (dateType) {
                 case "Yearly":
-                    fileName = "grid_yearly_data.json";
+                    switch (varType) {
+                        case "Prcp":
+                            fileName = `${region}_precipitation_${selectedDate}.tif`;
+                            break;
+                        case "Temp":
+                            fileName = `${region}_temperature_${selectedDate}.tif`;
+                            break;
+                    }
                     break;
                 case "Monthly":
-                    fileName = "grid_monthly_data.json";
+                    switch (varType) {
+                        case varType.startsWith("SPI") ? varType : null:
+                            fileName = `${region}_${varType}_${selectedDate}.tif`;
+                            break;
+                        case "Prcp":
+                            fileName = `${region}_precipitation_${selectedDate}.tif`;
+                            break;
+                        case "Temp":
+                            fileName = `${region}_temperature_${selectedDate}.tif`;
+                            break;
+                    }
+
                     break;
                 default:
                     fileName = `no_data.json`;
@@ -168,7 +186,9 @@ export default function handler(req, res) {
     let directory;
 
     if (varType === "Prcp" && adminLevel === "Grid") {
-        directory = "Precipitation";
+        directory = "weatherGrid";
+    } else if (varType === "Temp" && adminLevel === "Grid") {
+        directory = "weatherGrid";
     }
 
     // **security check**：防止路径遍历攻击
@@ -192,7 +212,7 @@ export default function handler(req, res) {
     if (!fs.existsSync(filePath)) {
         return res
             .status(400)
-            .json({ error: `Data file not found: ${fileName}` });
+            .json({ error: `Data file not found: ${filePath}` });
     }
 
     // 读取文件内容

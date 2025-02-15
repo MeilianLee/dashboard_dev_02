@@ -165,3 +165,79 @@
         color: white; // 选中项文字变白
     }
 }
+
+// START: tooltip styles for legends
+.legend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+/* 第一行内容：问号图标 + 颜色块 */
+.legend-top {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 间距 */
+    padding: 6px;
+}
+
+/* 美观的问号图标 */
+.info-icon {
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    background-color: #2d336b;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: relative;
+}
+
+.info-icon:hover {
+    background-color: #0056b3;
+}
+
+/* 颜色块 */
+.color-box {
+    width: 10vw;
+    height: 20px;
+    border: 2px solid #000;
+}
+
+/* 文字标签 */
+.legend-text {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* Tooltip 默认隐藏，并加上透明度和位移动画 */
+.tooltip {
+    width: 10vw;
+    position: absolute;
+    left: -500%;
+    top: 50%;
+    transform: translateY(-50%) translateX(0%);
+    background-color: #2d336b;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out,
+        visibility 0.3s ease-in-out;
+}
+
+/* 鼠标悬停时显示 Tooltip，透明度和位移动画 */
+.info-icon:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0px);
+}

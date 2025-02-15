@@ -90,7 +90,7 @@ export default function Home() {
         if (overview === "hist") {
             const response = await fetch(
                 // `/api/get_${varType}_${dateType}_${adminLevel}_${region}`
-                `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&date=${selectedDate}`
+                `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`
                 // "/api/get_yield"
             );
 

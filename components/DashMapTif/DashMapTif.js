@@ -665,20 +665,71 @@ function LegendControl({ data }) {
                                   ${labels}
                                 </div>`;
             } else if (vartype === "SPI") {
+                //     // Discrete color boxes for SPI
+                //     for (let i = 0; i < grades.length; i++) {
+                //         div.innerHTML += `
+                // <div class="flex flex-col items-center" style="margin-bottom: 4px;">
+                // <div class="flex flex-col items-center mb-4">
+                //   <div style="
+                //     width: 6vw;
+                //     height: 20px;
+                //     background-color: ${colors[i]};
+                //     border: 2px solid #000;
+                //     margin-bottom: 8px;">
+                //   </div>
+
+                //   <span class="text-sm">${labels[i]} (${grades[i]})</span>
+
+                // <span class="info-icon" data-info="Detailed info for ${labels[i]} (${grades[i]})">!</span>
+
+                // <div class="tooltip">${labels[i]} represents a specific SPI range.</div>
+
+                // </div>`;
+
+                const tooltipTexts = {
+                    D4: "Widespread agricultural and hydrological failure.",
+                    D3: "Extreme Drought Major crop losses, widespread water shortages.",
+                    D2: "Severe Drought Likely crop loss, water restrictions may be needed.",
+                    D1: "Some damage to crops, low streamflow, water shortages possible.",
+                    D0: "Short-term dryness, possible delayed planting or crop stress."
+                };
+
+                const legendTexts = {
+                    D4: "Exceptional drought",
+                    D3: "Extreme drought",
+                    D2: "Severe drought",
+                    D1: "Moderate drought",
+                    D0: "Abnormally dry"
+                };
+
                 // Discrete color boxes for SPI
                 for (let i = 0; i < grades.length; i++) {
+                    // extract coresponding detail information
+                    const tooltipText =
+                        tooltipTexts[labels[i]] || "No information available";
+
                     div.innerHTML += `
-            <div class="flex flex-col items-center" style="margin-bottom: 4px;">
-            <div class="flex flex-col items-center mb-4">
-              <div style="
-                width: 30px;
-                height: 20px;
-                background-color: ${colors[i]};
-                border: 2px solid #000;
-                margin-bottom: 8px;">
-              </div>
-              <span class="text-sm">${labels[i]} (${grades[i]})</span>
-            </div>`;
+                    <div class="legend-item">
+                        <!-- 问号图标 -->
+                        <div class="legend-top">
+                            <div class="info-icon" data-info="Detailed info for ${
+                                labels[i]
+                            } (${grades[i]})">
+                                ?
+                                <div class="tooltip">${tooltipText}</div>
+                            </div>
+                            
+                            <!-- 颜色块 -->
+                            <div class="color-box" style="background-color: ${
+                                colors[i]
+                            };"></div>
+                        </div>
+
+                        <!-- 标签文本 -->
+                        <span class="legend-text">${legendTexts[labels[i]]} (${
+                        grades[i]
+                    })</span>
+                    </div>`;
                 }
             } else if (vartype === "Yield" && adminLevel === "Country") {
                 const gradientBar = `
