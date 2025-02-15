@@ -152,7 +152,8 @@ export default function Home() {
                     url: response.url,
                     datatype: "geotiff",
                     data_vartype: varType,
-                    data_adminLevel: adminLevel
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
                 });
                 // setGeoRasterData(dummyRaster);
                 setSelectedProvince(null); // 清空选中状态
@@ -167,7 +168,8 @@ export default function Home() {
                     url: response.url,
                     datatype: "geojson",
                     data_vartype: varType,
-                    data_adminLevel: adminLevel
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -186,7 +188,8 @@ export default function Home() {
                     data: data,
                     url: response.url,
                     datatype: "geojson",
-                    data_adminLevel: adminLevel
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -198,14 +201,16 @@ export default function Home() {
                     data: await response.arrayBuffer(),
                     url: response.url, // Storing the URL here for later use
                     datatype: "geotiff",
-                    data_adminLevel: adminLevel
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
                 });
 
                 setMapData({
                     url: response.url,
                     datatype: "geotiff",
                     data_vartype: varType,
-                    data_adminLevel: adminLevel
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
                 });
                 setSelectedProvince(null); // 清空选中状态
                 setTimeSeries([]); // 清空时间序列数据
@@ -225,10 +230,7 @@ export default function Home() {
 
     // check if geojsonData or geoRasterData are null, if so, give error message box
     useEffect(() => {
-        if (
-            options.dateType === "Yearly" &&
-            (options.varType === "Prcp") | (options.varType === "Temp")
-        ) {
+        if (options.dateType === "Monthly" && options.varType === "Yield") {
             setErrorMessage(
                 "No matched data for the options, please check and select again"
             );

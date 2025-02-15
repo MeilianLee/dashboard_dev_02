@@ -42,8 +42,13 @@ export default function DashMapTif({
               data_url.data_adminLevel === "Prov"
             ? getColorYieldProv
             : data_url.data_vartype === "Prcp" &&
-              data_url.data_adminLevel === "Prov"
+              data_url.data_adminLevel === "Prov" &&
+              data_url.data_dateType === "Yearly"
             ? getColorPrcpProv
+            : data_url.data_vartype === "Prcp" &&
+              data_url.data_adminLevel === "Prov" &&
+              data_url.data_dateType === "Monthly"
+            ? getColorPrcpProvMonthly
             : data_url.data_vartype === "Temp"
             ? getColorTemp
             : data_url.data_vartype === "SMPct"
@@ -199,8 +204,13 @@ function GeoJSONLayer({
                   data_url.data_adminLevel === "Prov"
                 ? getColorYieldProv
                 : data_url.data_vartype === "Prcp" &&
-                  data_url.data_adminLevel === "Prov"
+                  data_url.data_adminLevel === "Prov" &&
+                  data_url.data_dateType === "Yearly"
                 ? getColorPrcpProv
+                : data_url.data_vartype === "Prcp" &&
+                  data_url.data_adminLevel === "Prov" &&
+                  data_url.data_dateType === "Monthly"
+                ? getColorPrcpProvMonthly
                 : data_url.data_vartype === "Temp"
                 ? getColorTemp
                 : data_url.data_vartype === "SMPct"
@@ -266,8 +276,13 @@ function GeoJSONLayer({
                               data_url.data_adminLevel === "Prov"
                             ? getColorYieldProv
                             : data_url.data_vartype === "Prcp" &&
-                              data_url.data_adminLevel === "Prov"
+                              data_url.data_adminLevel === "Prov" &&
+                              data_url.data_dateType === "Yearly"
                             ? getColorPrcpProv
+                            : data_url.data_vartype === "Prcp" &&
+                              data_url.data_adminLevel === "Prov" &&
+                              data_url.data_dateType === "Monthly"
+                            ? getColorPrcpProvMonthly
                             : data_url.data_vartype === "Temp"
                             ? getColorTemp
                             : data_url.data_vartype === "SMPct"
@@ -466,7 +481,19 @@ function LegendControl({ data }) {
         },
         PrcpProv: {
             title: "Precipitation (mm)",
-            grades: [0, 5000, 10000, 15000, 20000],
+            grades: [0, 600, 1200, 1800, 2400, 3000],
+            colors: [
+                "#D3D3D3",
+                "#ADD8E6",
+                "#00FFFF",
+                "#FFFF00",
+                "#FF4500",
+                "#4B0082"
+            ]
+        },
+        PrcpProvMonthly: {
+            title: "Precipitation (mm)",
+            grades: [0, 100, 200, 300, 400, 500],
             colors: [
                 "#D3D3D3",
                 "#ADD8E6",
@@ -538,8 +565,13 @@ function LegendControl({ data }) {
                   data.data_adminLevel === "Prov"
                 ? "YieldProv"
                 : data.data_vartype === "Prcp" &&
-                  data.data_adminLevel === "Prov"
+                  data.data_adminLevel === "Prov" &&
+                  data.data_dateType === "Yearly"
                 ? "PrcpProv"
+                : data.data_vartype === "Prcp" &&
+                  data.data_adminLevel === "Prov" &&
+                  data.data_dateType === "Monthly"
+                ? "PrcpProvMonthly"
                 : data.data_vartype || "Default";
 
             // if (data.data_adminLevel === "Prov") {
@@ -585,6 +617,34 @@ function LegendControl({ data }) {
             ${labels}
           </div>`;
             } else if (vartype === "PrcpProv") {
+                // Continuous color gradient legend
+                const gradientBar = `
+                                <div style="
+                                  background: linear-gradient(to right, ${colors.join(
+                                      ", "
+                                  )});
+                                  width: 100%;
+                                  height: 20px;
+                                  border: 1px solid #000;
+                                  margin-bottom: 8px;">
+                                </div>
+                              `;
+
+                div.innerHTML += gradientBar;
+
+                // Add labels below the gradient bar
+                const labels = grades
+                    .map((grade) => `<span>${grade}</span>`)
+                    .join(" ");
+                div.innerHTML += `
+                                <div style="
+                                  display: flex;
+                                  justify-content: space-between;
+                                  font-size: 12px;
+                                  margin-top: 4px;">
+                                  ${labels}
+                                </div>`;
+            } else if (vartype === "PrcpProvMonthly") {
                 // Continuous color gradient legend
                 const gradientBar = `
                                 <div style="
@@ -662,7 +722,7 @@ function LegendControl({ data }) {
 
                 const gradientBar = `
                 <div style="
-                  background: linear-gradient(to right, hsl(60, 100%, 40%), hsl(120, 100%, 40%));
+                  background: linear-gradient(to right, hsl(30, 100%, 40%), hsl(100, 100%, 40%));
                   width: 20vw;
                   height: 20px;
                   border: 1px solid #000;
@@ -858,18 +918,33 @@ function getColorPrcp(d) {
 function getColorPrcpProv(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
-    // 定义颜色范围：HSL（色相、饱和度、亮度）
+    // define color range：HSL
     const minVal = 0; // 最小降水量
-    const maxVal = 50000; // 最大降水量（超过 100mm 按 100 计算）
+    const maxVal = 3000; // 最大降水量
 
-    const minHue = 200; // 蓝色 (H=240)
-    const maxHue = 0; // 红色 (H=0)
+    const minHue = 200;
+    const maxHue = 0;
 
-    // 归一化 d 值到 [0, 1]，并计算插值色相
     let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
-    let hue = minHue + ratio * (maxHue - minHue); // 从蓝色到红色
+    let hue = minHue + ratio * (maxHue - minHue);
 
-    return `hsl(${hue}, 100%, 50%)`; // 保持饱和度 100%，亮度 50%
+    return `hsl(${hue}, 100%, 50%)`;
+}
+
+function getColorPrcpProvMonthly(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    // define color range：HSL
+    const minVal = 0; // 最小降水量
+    const maxVal = 500; // 最大降水量
+
+    const minHue = 200;
+    const maxHue = 0;
+
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue + ratio * (maxHue - minHue);
+
+    return `hsl(${hue}, 100%, 50%)`;
 }
 
 function getColorTemp(d) {
@@ -899,9 +974,8 @@ function getColorTemp(d) {
 function getColorYield(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
-    // 定义颜色范围：HSL（色相、饱和度、亮度）
-    const minVal = 0; // 最小降水量
-    const maxVal = 100000000; // 最大降水量（超过 100mm 按 100 计算）
+    const minVal = 0;
+    const maxVal = 100000000;
 
     const minHue = 60;
     const maxHue = 120;
@@ -910,7 +984,7 @@ function getColorYield(d) {
     let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
     let hue = minHue - ratio * (minHue - maxHue);
 
-    return `hsl(${hue}, 90%, 40%)`;
+    return `hsl(${hue}, 100%, 40%)`;
 }
 
 function getColorYieldProv(d) {
@@ -927,7 +1001,7 @@ function getColorYieldProv(d) {
     let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
     let hue = minHue - ratio * (minHue - maxHue);
 
-    return `hsl(${hue}, 90%, 40%)`;
+    return `hsl(${hue}, 100%, 40%)`;
 }
 
 function getColorSMPct(d) {
