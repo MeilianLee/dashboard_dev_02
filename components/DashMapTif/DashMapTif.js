@@ -469,14 +469,13 @@ function LegendControl({ data }) {
     const legendConfig = {
         Prcp: {
             title: "Precipitation (mm)",
-            grades: [0, 1, 2, 5, 10, 50, 100],
+            grades: [0, 30, 60, 90, 120, 150],
             colors: [
-                "#D3D3D3",
-                "#ADD8E6",
-                "#00FFFF",
-                "#FFFF00",
-                "#FF4500",
-                "#4B0082"
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
             ]
         },
         PrcpProv: {
@@ -925,28 +924,12 @@ function getColor(d) {
         : "#c7e9c0"; // Light green
 }
 
-// function getColorPrcp(d) {
-//     return d > 100
-//         ? "#4B0082" // Indigo for extreme precipitation (>100mm)
-//         : d > 50
-//         ? "#FF4500" // Orange-Red for 51-100mm
-//         : d > 10
-//         ? "#FFFF00" // Yellow for moderate rainfall (10-50mm)
-//         : d > 5
-//         ? "#00FFFF" // Aqua for light rainfall (5-10mm)
-//         : d > 1
-//         ? "#ADD8E6" // Light Blue for very low rainfall (1-5mm)
-//         : d > 0
-//         ? "#D3D3D3" // Light Grey for no precipitation (0-1mm)
-//         : "#FFFFFF"; // White as a fallback
-// }
-
 function getColorPrcp(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     // 定义颜色范围：HSL（色相、饱和度、亮度）
     const minVal = 0; // 最小降水量
-    const maxVal = 11; // 最大降水量（超过 100mm 按 100 计算）
+    const maxVal = 150; // 最大降水量（超过 150mm 按 100 计算）
 
     const minHue = 200; // 蓝色 (H=240)
     const maxHue = 0; // 红色 (H=0)
