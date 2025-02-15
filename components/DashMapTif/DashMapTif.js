@@ -503,13 +503,14 @@ function LegendControl({ data }) {
         },
         Temp: {
             title: "Temperature (℃)",
-            grades: [15, 20, 25, 30],
+            grades: [10, 15, 20, 25, 30, 35],
             colors: [
-                "#00f", // Blue for 1°C (cool)
-                "#0099ff", // Light blue for 5°C
-                "#ffff00", // Yellow for 10°C
-                "#ffcc00", // Orange for 20°C
-                "#ff3300" // Red for 30°C (hot)],
+                "#08306B",
+                "#4292C6",
+                "#41AB5D",
+                "#F7DC6F",
+                "#E67E22",
+                "#C0392B"
             ]
         },
         Yield: {
@@ -825,7 +826,7 @@ function LegendControl({ data }) {
             } else if (vartype === "Temp") {
                 const gradientBar = `
                 <div style="
-                  background: linear-gradient(to right, hsl(0, 30%, 90%), hsl(0, 100%, 40%));
+                  background: linear-gradient(to right, ${colors.join(", ")});
                   width: 20vw;
                   height: 20px;
                   border: 1px solid #000;
@@ -976,28 +977,60 @@ function getColorPrcpProvMonthly(d) {
     return `hsl(${hue}, 100%, 50%)`;
 }
 
-function getColorTemp(d) {
-    if (d <= 0) return "#333"; // if no value
+function getColorTemp(temp) {
+    // if (d <= 0) return "#333"; // if no value
 
-    // define data range
-    const minVal = 15; // min
-    const maxVal = 30; // max
+    // // define data range
+    // const minVal = 15; // min
+    // const maxVal = 30; // max
 
-    // HSL
-    const minSaturation = 30;
-    const maxSaturation = 100;
-    const minLightness = 90;
-    const maxLightness = 40;
+    // // HSL
+    // const minSaturation = 30;
+    // const maxSaturation = 100;
+    // const minLightness = 90;
+    // const maxLightness = 40;
 
-    // 归一化 d 值到 [0, 1]
-    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    // // 归一化 d 值到 [0, 1]
+    // let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
 
-    // 计算 HSL 颜色值
-    let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
-    let lightness = minLightness - ratio * (minLightness - maxLightness);
+    // // 计算 HSL 颜色值
+    // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+    // let lightness = minLightness - ratio * (minLightness - maxLightness);
 
-    // 返回计算出的 HSL 颜色值
-    return `hsl(0, ${saturation}%, ${lightness}%)`;
+    // // 返回计算出的 HSL 颜色值
+    // return `hsl(0, ${saturation}%, ${lightness}%)`;
+
+    if (temp == null || temp == 0 || isNaN(temp)) {
+        console.error("getColorTemp received invalid temperature:", temp);
+        return "#333"; // 默认灰色，避免错误
+    }
+
+    const colorStops = [
+        { temp: 10, color: "#08306B" }, // Dark Blue - Unusually Cold
+        { temp: 20, color: "#4292C6" }, // Light Blue - Cool
+        { temp: 25, color: "#41AB5D" }, // Green - Moderate
+        { temp: 30, color: "#F7DC6F" }, // Yellow - Warm
+        { temp: 35, color: "#E67E22" }, // Orange - Hot
+        { temp: 40, color: "#C0392B" } // Red - Extreme Heat
+    ];
+
+    // 遍历颜色映射表，找到温度所在区间
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        const t1 = colorStops[i].temp;
+        const t2 = colorStops[i + 1].temp;
+
+        if (temp <= t1) return colorStops[i].color;
+        if (temp <= t2) {
+            const factor = (temp - t1) / (t2 - t1);
+            return interpolateColor(
+                colorStops[i].color,
+                colorStops[i + 1].color,
+                factor
+            );
+        }
+    }
+
+    return colorStops[colorStops.length - 1].color;
 }
 
 function getColorYield(d) {
@@ -1055,6 +1088,27 @@ function getColorSMPct(d) {
 
     // 返回计算出的 HSL 颜色值
     return `hsl(210, ${saturation}%, ${lightness}%)`;
+}
+
+function interpolateColor(color1, color2, factor) {
+    if (factor > 1) factor = 1;
+    if (factor < 0) factor = 0;
+
+    const c1 = parseInt(color1.slice(1), 16);
+    const c2 = parseInt(color2.slice(1), 16);
+
+    const r1 = (c1 >> 16) & 255,
+        g1 = (c1 >> 8) & 255,
+        b1 = c1 & 255;
+    const r2 = (c2 >> 16) & 255,
+        g2 = (c2 >> 8) & 255,
+        b2 = c2 & 255;
+
+    const r = Math.round(r1 + factor * (r2 - r1));
+    const g = Math.round(g1 + factor * (g2 - g1));
+    const b = Math.round(b1 + factor * (b2 - b1));
+
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 // const MapComponent = ({ map, geojsonData, geoRasterData }) => {
