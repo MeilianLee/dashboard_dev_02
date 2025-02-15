@@ -514,8 +514,8 @@ function LegendControl({ data }) {
             ]
         },
         Yield: {
-            title: "Yield (k ha)",
-            grades: [500000, 1000000, 5000000, 10000000, 100000000],
+            title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
             colors: [
                 "#00f", // Blue for 1°C (cool)
                 "#0099ff", // Light blue for 5°C
@@ -683,7 +683,7 @@ function LegendControl({ data }) {
             } else if (vartype === "Yield" && adminLevel === "Country") {
                 const gradientBar = `
                 <div style="
-                  background: linear-gradient(to right, hsl(60, 100%, 40%), hsl(120, 100%, 40%));
+                  background: linear-gradient(to right, hsl(30, 100%, 40%), hsl(75, 100%, 40%), hsl(120, 100%, 40%));
                   width: 20vw;
                   height: 20px;
                   border: 1px solid #000;
@@ -698,7 +698,7 @@ function LegendControl({ data }) {
 
                 // 生成刻度标签
                 const labels = grades
-                    .map((grade) => `<span>${Math.floor(grade / 1000)}</span>`)
+                    .map((grade) => `<span>${Math.floor(grade)}</span>`)
                     .join(" ");
 
                 div.innerHTML += `
@@ -966,10 +966,10 @@ function getColorTemp(d) {
 function getColorYield(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
-    const minVal = 0;
-    const maxVal = 100000000;
+    const minVal = 1;
+    const maxVal = 7;
 
-    const minHue = 60;
+    const minHue = 30;
     const maxHue = 120;
 
     // 归一化 d 值到 [0, 1]，并计算插值色相

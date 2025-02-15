@@ -110,7 +110,7 @@ export default function handler(req, res) {
                 case "Yearly":
                     switch (true) {
                         case varType === "Yield" && region === "SEA":
-                            fileName = `yield_country.json`;
+                            fileName = `SEA_yield.geojson`;
                             break;
                         default:
                             fileName = `no_data.json`;
