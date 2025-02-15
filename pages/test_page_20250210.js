@@ -291,11 +291,19 @@ export default function Home() {
         // }
         else if (
             options.overview === "forecast" &&
-            (options.dateType !== "Monthly") |
-                !options.varType.startsWith("SPI")
+            options.varType.startsWith("SPI") &&
+            (options.dateType !== "Monthly") | (options.adminLevel !== "Grid")
         ) {
             setErrorMessage(
-                "Note that Currently forecast data is only available for Monthly SPI"
+                "Note that only 'Monthly' and 'Grid' SPI forecast data is available currently"
+            );
+        } else if (
+            options.overview === "forecast" &&
+            (options.varType === "Prcp") | (options.varType === "Temp") &&
+            options.adminLevel === "Grid"
+        ) {
+            setErrorMessage(
+                "Note that only 'Country' and 'Prov' are available for Precipitation and Temperature currently"
             );
         } else if (
             options.adminLevel === "Grid" &&
