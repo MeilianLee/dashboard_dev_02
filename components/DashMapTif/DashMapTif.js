@@ -41,6 +41,9 @@ export default function DashMapTif({
             : data_url.data_vartype === "Yield" &&
               data_url.data_adminLevel === "Prov"
             ? getColorYieldProv
+            : data_url.data_vartype === "Prcp" &&
+              data_url.data_adminLevel === "Prov"
+            ? getColorPrcpProv
             : data_url.data_vartype === "Temp"
             ? getColorTemp
             : data_url.data_vartype === "SMPct"
@@ -195,6 +198,9 @@ function GeoJSONLayer({
                 : data_url.data_vartype === "Yield" &&
                   data_url.data_adminLevel === "Prov"
                 ? getColorYieldProv
+                : data_url.data_vartype === "Prcp" &&
+                  data_url.data_adminLevel === "Prov"
+                ? getColorPrcpProv
                 : data_url.data_vartype === "Temp"
                 ? getColorTemp
                 : data_url.data_vartype === "SMPct"
@@ -259,6 +265,9 @@ function GeoJSONLayer({
                             : data_url.data_vartype === "Yield" &&
                               data_url.data_adminLevel === "Prov"
                             ? getColorYieldProv
+                            : data_url.data_vartype === "Prcp" &&
+                              data_url.data_adminLevel === "Prov"
+                            ? getColorPrcpProv
                             : data_url.data_vartype === "Temp"
                             ? getColorTemp
                             : data_url.data_vartype === "SMPct"
@@ -455,6 +464,18 @@ function LegendControl({ data }) {
                 "#4B0082"
             ]
         },
+        PrcpProv: {
+            title: "Precipitation (mm)",
+            grades: [0, 5000, 10000, 15000, 20000],
+            colors: [
+                "#D3D3D3",
+                "#ADD8E6",
+                "#00FFFF",
+                "#FFFF00",
+                "#FF4500",
+                "#4B0082"
+            ]
+        },
         SPI: {
             title: "SPI",
             grades: [-2, -1.6, -1.3, -0.8, -0.5],
@@ -484,9 +505,9 @@ function LegendControl({ data }) {
                 "#ff3300" // Red for 30°C (hot)],
             ]
         },
-        SMPct: {
-            title: "SMPct",
-            grades: [20, 40, 60, 80],
+        YieldProv: {
+            title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
             colors: [
                 "#00f", // Blue for 1°C (cool)
                 "#0099ff", // Light blue for 5°C
@@ -494,6 +515,10 @@ function LegendControl({ data }) {
                 "#ffcc00", // Orange for 20°C
                 "#ff3300" // Red for 30°C (hot)],
             ]
+        },
+        SMPct: {
+            title: "SMPct",
+            grades: [20, 40, 60, 80]
         }
     };
 
@@ -509,7 +534,17 @@ function LegendControl({ data }) {
             const div = L.DomUtil.create("div", "info legend");
             let vartype = data.data_vartype.startsWith("SPI")
                 ? "SPI"
+                : data.data_vartype === "Yield" &&
+                  data.data_adminLevel === "Prov"
+                ? "YieldProv"
+                : data.data_vartype === "Prcp" &&
+                  data.data_adminLevel === "Prov"
+                ? "PrcpProv"
                 : data.data_vartype || "Default";
+
+            // if (data.data_adminLevel === "Prov") {
+            //     vartype = "YieldProv";
+            // }
 
             // vartype = `${vartype}_${data.}`
             const adminLevel = data.data_adminLevel;
@@ -549,6 +584,34 @@ function LegendControl({ data }) {
             margin-top: 4px;">
             ${labels}
           </div>`;
+            } else if (vartype === "PrcpProv") {
+                // Continuous color gradient legend
+                const gradientBar = `
+                                <div style="
+                                  background: linear-gradient(to right, ${colors.join(
+                                      ", "
+                                  )});
+                                  width: 100%;
+                                  height: 20px;
+                                  border: 1px solid #000;
+                                  margin-bottom: 8px;">
+                                </div>
+                              `;
+
+                div.innerHTML += gradientBar;
+
+                // Add labels below the gradient bar
+                const labels = grades
+                    .map((grade) => `<span>${grade}</span>`)
+                    .join(" ");
+                div.innerHTML += `
+                                <div style="
+                                  display: flex;
+                                  justify-content: space-between;
+                                  font-size: 12px;
+                                  margin-top: 4px;">
+                                  ${labels}
+                                </div>`;
             } else if (vartype === "SPI") {
                 // Discrete color boxes for SPI
                 for (let i = 0; i < grades.length; i++) {
@@ -594,9 +657,8 @@ function LegendControl({ data }) {
                   margin-top: 4px;">
                   ${labels}
                 </div>`;
-            } else if (vartype === "Yield" && adminLevel === "Prov") {
-                const title = "Yield (k ha)";
-                const grades = [1, 2.5, 4, 5.5, 7];
+            } else if (vartype === "YieldProv") {
+                // const grades = [1, 2.5, 4, 5.5, 7];
 
                 const gradientBar = `
                 <div style="
@@ -615,9 +677,7 @@ function LegendControl({ data }) {
 
                 // 生成刻度标签
                 const labels = grades
-                    .map(
-                        (grade) => `<span>${Math.floor(grade / 1000000)}</span>`
-                    )
+                    .map((grade) => `<span>${Math.floor(grade)}</span>`)
                     .join(" ");
 
                 div.innerHTML += `
@@ -784,6 +844,23 @@ function getColorPrcp(d) {
     // 定义颜色范围：HSL（色相、饱和度、亮度）
     const minVal = 0; // 最小降水量
     const maxVal = 11; // 最大降水量（超过 100mm 按 100 计算）
+
+    const minHue = 200; // 蓝色 (H=240)
+    const maxHue = 0; // 红色 (H=0)
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue + ratio * (maxHue - minHue); // 从蓝色到红色
+
+    return `hsl(${hue}, 100%, 50%)`; // 保持饱和度 100%，亮度 50%
+}
+
+function getColorPrcpProv(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    // 定义颜色范围：HSL（色相、饱和度、亮度）
+    const minVal = 0; // 最小降水量
+    const maxVal = 50000; // 最大降水量（超过 100mm 按 100 计算）
 
     const minHue = 200; // 蓝色 (H=240)
     const maxHue = 0; // 红色 (H=0)

@@ -30,26 +30,28 @@ export default function handler(req, res) {
         case "Grid":
             switch (dateType) {
                 case "Yearly":
-
+                    break;
                 case "Monthly":
+                    break;
             }
             break;
         case "Country":
-            switch (true) {
-                case varType === "Yield" && region === "SEA":
-                    fileName = `yield_country.json`;
-                    break;
-                default:
-                    fileName = `no_data.json`;
+            switch (dateType) {
+                case "Yearly":
+                    switch (true) {
+                        case varType === "Yield" && region === "SEA":
+                            fileName = `yield_country.json`;
+                            break;
+                        default:
+                            fileName = `no_data.json`;
+                    }
             }
+
             break;
         case "Prov":
             switch (dateType) {
                 case "Yearly":
                     switch (true) {
-                        // case varType === "Yield" && region === "SEA":
-                        //     fileName = `yield_country.json`;
-                        //     break;
                         case varType === "Yield":
                             fileName = `${region}_yield.geojson`;
                             break;
@@ -63,15 +65,18 @@ export default function handler(req, res) {
                             fileName = `no_data.json`;
                     }
                 case "Monthly":
-                    switch (true) {
-                        case varType === "Prcp":
+                    switch (varType) {
+                        case "Prcp":
                             fileName = `${region}_Precipitation.geojson`;
                             break;
-                        case varType === "Temp":
+                        case "Temp":
                             fileName = `${region}_Temperature.geojson`;
                             break;
                     }
             }
+            break;
+        default:
+            fileName = `no_data.json`;
     }
 
     const filePath = path.join(process.cwd(), "data", fileName);
