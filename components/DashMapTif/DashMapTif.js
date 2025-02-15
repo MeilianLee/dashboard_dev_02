@@ -469,7 +469,7 @@ function LegendControl({ data }) {
     const legendConfig = {
         Prcp: {
             title: "Precipitation (mm)",
-            grades: [0, 30, 60, 90, 120, 150],
+            grades: [0, 200, 400, 600, 800, 1000],
             colors: [
                 "hsl(200, 100%, 50%)",
                 "hsl(150, 100%, 50%)",
