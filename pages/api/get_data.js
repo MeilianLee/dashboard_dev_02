@@ -112,8 +112,90 @@ export default function handler(req, res) {
                             fileName = `no_data.json`;
                     }
                     break;
-                // default:
-                //     fileName = `no_data.json`;
+                case "Country":
+                    switch (dateType) {
+                        case "Yearly":
+                            switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `currently_no_data.json`;
+                                    break;
+                                case "Prcp":
+                                    fileName = `${region}_country_Precipitation_annual.geojson`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_country_Temperature_annual.geojson`;
+                                    break;
+                                default:
+                                    fileName = `no_data.json`;
+                            }
+                            break;
+                        case "Monthly":
+                            switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `currently_no_data.json`;
+                                    break;
+                                case "Prcp":
+                                    fileName = `${region}_country_Precipitation_monthly.geojson`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_country_Temperature_monthly.geojson`;
+                                    break;
+                                default:
+                                    fileName = `no_data.json`;
+                            }
+                            break;
+                        default:
+                            fileName = `no_data.json`;
+                    }
+                    break;
+                case "Prov":
+                    switch (dateType) {
+                        case "Yearly":
+                            switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `currently_no_data.json`;
+                                    break;
+                                case "Prcp":
+                                    fileName = `${region}_Precipitation_annual.geojson`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_Temperature_annual.geojson`;
+                                    break;
+                                default:
+                                    fileName = `no_data.json`;
+                            }
+                            break;
+                        case "Monthly":
+                            switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `currently_no_data.json`;
+                                    break;
+                                case "Prcp":
+                                    fileName = `${region}_Precipitation_monthly.geojson`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_Temperature_monthly.geojson`;
+                                    break;
+                                default:
+                                    fileName = `no_data.json`;
+                            }
+                            break;
+                        default:
+                            fileName = `no_data.json`;
+                    }
+                    break;
             }
             break;
         case "hist":
@@ -371,11 +453,15 @@ export default function handler(req, res) {
     let directory;
 
     if (varType === "Prcp" && adminLevel === "Grid") {
-        directory = "weatherGrid";
+        directory = "weatherGrid"; //Prcp raster forecast has its own directory
     } else if (varType === "Temp" && adminLevel === "Grid") {
-        directory = "weatherGrid";
+        directory = "weatherGrid"; //Temp raster forecast has its own directory
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
-        directory = "SPI_monthly_grid";
+        directory = "SPI_monthly_grid"; //SPI raster forecast has its own directory
+    } else if (overview === "forecast" && varType === "Prcp") {
+        directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
+    } else if (overview === "forecast" && varType === "Temp") {
+        directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
     }
 
     // **security check**：防止路径遍历攻击
