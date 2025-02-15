@@ -242,6 +242,13 @@ export default function Home() {
             setErrorMessage(
                 "Forecast data is under development, please check and select again"
             );
+        } else if (
+            options.adminLevel === "Country" &&
+            options.region !== "SEA"
+        ) {
+            setErrorMessage(
+                "There is no individual country data, please select region-SEA for country-wide details"
+            );
         }
         setTimeout(() => setErrorMessage(""), 3000); // 3秒后自动消失
     }, [options, geojsonData, geoRasterData]);
@@ -494,10 +501,18 @@ export default function Home() {
                                 }
                                 value={options.varType}
                             >
-                                <option value="SPI1">SPI1</option>
-                                <option value="SPI3">SPI3</option>
-                                <option value="SPI6">SPI6</option>
-                                <option value="SPI12">SPI12</option>
+                                <option value="SPI1">
+                                    Standard Precipitation Index 1 month
+                                </option>
+                                <option value="SPI3">
+                                    Standard Precipitation Index 3 month
+                                </option>
+                                <option value="SPI6">
+                                    Standard Precipitation Index 6 month
+                                </option>
+                                <option value="SPI12">
+                                    Standard Precipitation Index 12 month
+                                </option>
                                 <option value="SMPct">
                                     Soil Moisture Percentile
                                 </option>
