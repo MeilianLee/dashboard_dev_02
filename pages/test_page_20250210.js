@@ -66,6 +66,14 @@ export default function Home() {
     const [selectedMonth, setSelectedMonth] = useState("01"); // 默认月
     const [selectedDay, setSelectedDay] = useState("01"); // 默认日
 
+    // 当切换成forecast 模式时，自动设置日期数据
+    useEffect(() => {
+        if (options.overview === "forecast") {
+            setSelectedYear("2025");
+            setSelectedMonth("02");
+        }
+    }, [options.overview]);
+
     useEffect(() => {
         let formattedDate = selectedYear; // 默认 Yearly 模式
         if (options.dateType === "Monthly") {
@@ -89,9 +97,7 @@ export default function Home() {
         // generate request
         if (overview === "hist") {
             const response = await fetch(
-                // `/api/get_${varType}_${dateType}_${adminLevel}_${region}`
                 `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`
-                // "/api/get_yield"
             );
 
             // if (varType.startsWith("SPI") && adminLevel !== "Grid") {
@@ -177,9 +183,68 @@ export default function Home() {
         } else {
             // forecast data
             const response = await fetch(
-                `/api/get_${varType}_${dateType}_${adminLevel}_${region}_${overview}`
+                `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`
             );
-            if (varType.startsWith("SPI") && adminLevel !== "Grid") {
+
+            // // // OLD logic
+            // if (varType.startsWith("SPI") && adminLevel !== "Grid") {
+            //     const data = await response.json();
+            //     console.log("fetched geoJSON data:", data);
+            //     setGeojsonData(data);
+            //     // mapData is passed to DashMapTif
+            //     setMapData({
+            //         data: data,
+            //         url: response.url,
+            //         datatype: "geojson",
+            //         data_adminLevel: adminLevel,
+            //         data_dateType: dateType
+            //     });
+            //     setSelectedProvince(null); // 清空选中状态
+            //     setTimeSeries([]); // 清空时间序列数据
+            // } else {
+            //     console.log("Response URL:", response); // Log the URL for debugging
+            //     // const data = await response.json();
+            //     // console.log("fetched geoRaster data:", data);
+            //     setGeoRasterData({
+            //         data: await response.arrayBuffer(),
+            //         url: response.url, // Storing the URL here for later use
+            //         datatype: "geotiff",
+            //         data_adminLevel: adminLevel,
+            //         data_dateType: dateType
+            //     });
+            //
+            //     setMapData({
+            //         url: response.url,
+            //         datatype: "geotiff",
+            //         data_vartype: varType,
+            //         data_adminLevel: adminLevel,
+            //         data_dateType: dateType
+            //     });
+            //     setSelectedProvince(null); // 清空选中状态
+            //     setTimeSeries([]); // 清空时间序列数据
+            // }
+            // // // OLD LOGIC
+
+            if (adminLevel === "Grid") {
+                console.log("Response URL:", response); // Log the URL for debugging
+                // const data = await response.json();
+                // console.log("fetched geoRaster data:", data);
+                setGeoRasterData({
+                    data: await response.arrayBuffer(),
+                    url: response.url, // Storing the URL here for later use
+                    datatype: "geotiff"
+                });
+                setMapData({
+                    url: response.url,
+                    datatype: "geotiff",
+                    data_vartype: varType,
+                    data_adminLevel: adminLevel,
+                    data_dateType: dateType
+                });
+                // setGeoRasterData(dummyRaster);
+                setSelectedProvince(null); // 清空选中状态
+                setTimeSeries([]); // 清空时间序列数据
+            } else {
                 const data = await response.json();
                 console.log("fetched geoJSON data:", data);
                 setGeojsonData(data);
@@ -188,26 +253,6 @@ export default function Home() {
                     data: data,
                     url: response.url,
                     datatype: "geojson",
-                    data_adminLevel: adminLevel,
-                    data_dateType: dateType
-                });
-                setSelectedProvince(null); // 清空选中状态
-                setTimeSeries([]); // 清空时间序列数据
-            } else {
-                console.log("Response URL:", response); // Log the URL for debugging
-                // const data = await response.json();
-                // console.log("fetched geoRaster data:", data);
-                setGeoRasterData({
-                    data: await response.arrayBuffer(),
-                    url: response.url, // Storing the URL here for later use
-                    datatype: "geotiff",
-                    data_adminLevel: adminLevel,
-                    data_dateType: dateType
-                });
-
-                setMapData({
-                    url: response.url,
-                    datatype: "geotiff",
                     data_vartype: varType,
                     data_adminLevel: adminLevel,
                     data_dateType: dateType

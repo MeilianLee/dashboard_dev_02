@@ -96,9 +96,12 @@ export default function handler(req, res) {
             switch (adminLevel) {
                 case "Grid":
                     switch (dateType) {
-                        case "Yearly":
+                        case "Monthly":
                             switch (varType) {
-                                case varType.startsWith("SPI") ? varType : null:
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
                                     fileName = `${region}_${varType}_${selectedDate}.tif`;
                                     break;
                                 default:
@@ -108,8 +111,9 @@ export default function handler(req, res) {
                         default:
                             fileName = `no_data.json`;
                     }
-                default:
-                    fileName = `no_data.json`;
+                    break;
+                // default:
+                //     fileName = `no_data.json`;
             }
             break;
         case "hist":

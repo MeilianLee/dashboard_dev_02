@@ -49,6 +49,14 @@ export default function DashMapTif({
               data_url.data_adminLevel === "Prov" &&
               data_url.data_dateType === "Monthly"
             ? getColorPrcpProvMonthly
+            : data_url.data_vartype === "Prcp" &&
+              data_url.data_adminLevel === "Country" &&
+              data_url.data_dateType === "Yearly"
+            ? getColorPrcpProv
+            : data_url.data_vartype === "Prcp" &&
+              data_url.data_adminLevel === "Country" &&
+              data_url.data_dateType === "Monthly"
+            ? getColorPrcpProvMonthly
             : data_url.data_vartype === "Temp"
             ? getColorTemp
             : data_url.data_vartype === "SMPct"
@@ -211,6 +219,14 @@ function GeoJSONLayer({
                   data_url.data_adminLevel === "Prov" &&
                   data_url.data_dateType === "Monthly"
                 ? getColorPrcpProvMonthly
+                : data_url.data_vartype === "Prcp" &&
+                  data_url.data_adminLevel === "Country" &&
+                  data_url.data_dateType === "Yearly"
+                ? getColorPrcpProv
+                : data_url.data_vartype === "Prcp" &&
+                  data_url.data_adminLevel === "Country" &&
+                  data_url.data_dateType === "Monthly"
+                ? getColorPrcpProvMonthly
                 : data_url.data_vartype === "Temp"
                 ? getColorTemp
                 : data_url.data_vartype === "SMPct"
@@ -281,6 +297,14 @@ function GeoJSONLayer({
                             ? getColorPrcpProv
                             : data_url.data_vartype === "Prcp" &&
                               data_url.data_adminLevel === "Prov" &&
+                              data_url.data_dateType === "Monthly"
+                            ? getColorPrcpProvMonthly
+                            : data_url.data_vartype === "Prcp" &&
+                              data_url.data_adminLevel === "Country" &&
+                              data_url.data_dateType === "Yearly"
+                            ? getColorPrcpProv
+                            : data_url.data_vartype === "Prcp" &&
+                              data_url.data_adminLevel === "Country" &&
                               data_url.data_dateType === "Monthly"
                             ? getColorPrcpProvMonthly
                             : data_url.data_vartype === "Temp"
@@ -562,16 +586,21 @@ function LegendControl({ data }) {
                   data.data_dateType === "Yearly"
                 ? "PrcpProv"
                 : data.data_vartype === "Prcp" &&
+                  data.data_adminLevel === "Country" &&
+                  data.data_dateType === "Yearly"
+                ? "PrcpProv"
+                : data.data_vartype === "Prcp" &&
                   data.data_adminLevel === "Prov" &&
+                  data.data_dateType === "Monthly"
+                ? "PrcpProvMonthly"
+                : data.data_vartype === "Prcp" &&
+                  data.data_adminLevel === "Country" &&
                   data.data_dateType === "Monthly"
                 ? "PrcpProvMonthly"
                 : data.data_vartype || "Default";
 
-            // if (data.data_adminLevel === "Prov") {
-            //     vartype = "YieldProv";
-            // }
+            // note that here country prcp data is just using pro data styles because they seems OK to apply
 
-            // vartype = `${vartype}_${data.}`
             const adminLevel = data.data_adminLevel;
             const config = legendConfig[vartype] || legendConfig.Default;
 
