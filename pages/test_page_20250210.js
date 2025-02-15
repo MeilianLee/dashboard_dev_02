@@ -588,13 +588,13 @@ export default function Home() {
                                     Standard Precipitation Index 1 month
                                 </option>
                                 <option value="SPI3">
-                                    Standard Precipitation Index 3 month
+                                    Standard Precipitation Index 3 months
                                 </option>
                                 <option value="SPI6">
-                                    Standard Precipitation Index 6 month
+                                    Standard Precipitation Index 6 months
                                 </option>
                                 <option value="SPI12">
-                                    Standard Precipitation Index 12 month
+                                    Standard Precipitation Index 12 months
                                 </option>
                                 {/* <option value="SMPct">
                                     Soil Moisture Percentile
