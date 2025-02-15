@@ -731,11 +731,11 @@ function LegendControl({ data }) {
 
                 const legendTexts = {
                     D3: "Severly Dry",
-                    D2: "Severely dry",
-                    D1: "Moderately dry",
+                    D2: "Severely Dry",
+                    D1: "Moderately Dry",
                     D0: "Near Normal",
                     W1: "Moderately Wet",
-                    W2: "Severly Dry",
+                    W2: "Severly Wet",
                     W3: "Extremely Wet"
                 };
 
@@ -748,6 +748,7 @@ function LegendControl({ data }) {
                     div.innerHTML += `
                     <div class="legend-item">
                         <!-- 问号图标 -->
+ 
                         <div class="legend-top">
                             <div class="info-icon" data-info="Detailed info for ${
                                 labels[i]
