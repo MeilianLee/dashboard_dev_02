@@ -694,6 +694,10 @@ export default function Home() {
                                 Selected {options.adminLevel}:{" "}
                                 {selectedProvince}
                             </h2>
+                            <p>
+                                Please click "Update Chart" after you switch
+                                some options
+                            </p>
                             {/* <ChartComponent data={timeSeries} /> */}
                             {/* this is for sample plot, replace the data and options with your real data
                             and options when they are prepared */}
