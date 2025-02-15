@@ -483,25 +483,17 @@ function LegendControl({ data }) {
             title: "Precipitation (mm)",
             grades: [0, 600, 1200, 1800, 2400, 3000],
             colors: [
-                "#D3D3D3",
-                "#ADD8E6",
-                "#00FFFF",
-                "#FFFF00",
-                "#FF4500",
-                "#4B0082"
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
             ]
         },
         PrcpProvMonthly: {
             title: "Precipitation (mm)",
             grades: [0, 100, 200, 300, 400, 500],
-            colors: [
-                "#D3D3D3",
-                "#ADD8E6",
-                "#00FFFF",
-                "#FFFF00",
-                "#FF4500",
-                "#4B0082"
-            ]
+            colors: ["hsl(200, 100%, 50%)", "hsl(0, 100%, 50%)"]
         },
         SPI: {
             title: "SPI",
@@ -648,9 +640,9 @@ function LegendControl({ data }) {
                 // Continuous color gradient legend
                 const gradientBar = `
                                 <div style="
-                                  background: linear-gradient(to right, ${colors.join(
-                                      ", "
-                                  )});
+                                  background: linear-gradient(to right, hsl(200, 100%, 50%),hsl(150, 100%, 50%),hsl(100, 100%, 50%),hsl(50, 100%, 50%), hsl(0, 100%, 50%));
+
+                                  
                                   width: 100%;
                                   height: 20px;
                                   border: 1px solid #000;

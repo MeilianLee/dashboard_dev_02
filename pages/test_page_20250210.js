@@ -238,6 +238,10 @@ export default function Home() {
             setErrorMessage(
                 "Daily data is under development, please check and select again"
             );
+        } else if (options.overview === "forecast") {
+            setErrorMessage(
+                "Forecast data is under development, please check and select again"
+            );
         }
         setTimeout(() => setErrorMessage(""), 3000); // 3秒后自动消失
     }, [options, geojsonData, geoRasterData]);
@@ -684,14 +688,21 @@ export default function Home() {
                     )}
                 </div>
                 <div className="chart-panel">
-                    {selectedProvince ? (
+                    {selectedProvince && options.adminLevel ? (
                         <>
-                            <h2>Selected Province: {selectedProvince}</h2>
+                            <h2>
+                                Selected {options.adminLevel}:{" "}
+                                {selectedProvince}
+                            </h2>
                             {/* <ChartComponent data={timeSeries} /> */}
                             {/* this is for sample plot, replace the data and options with your real data
                             and options when they are prepared */}
-                            <ChartComponent
+                            {/* <ChartComponent
                                 data={sampleData}
+                                options={options}
+                            /> */}
+                            <ChartComponent
+                                data={timeSeries}
                                 options={options}
                             />
                         </>
