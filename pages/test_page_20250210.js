@@ -513,9 +513,9 @@ export default function Home() {
                                 <option value="SPI12">
                                     Standard Precipitation Index 12 month
                                 </option>
-                                <option value="SMPct">
+                                {/* <option value="SMPct">
                                     Soil Moisture Percentile
-                                </option>
+                                </option> */}
                                 <option value="Yield">Rice Yield</option>
                                 <option value="Prcp">Precipitation</option>
                                 <option value="Temp">Temperature</option>
