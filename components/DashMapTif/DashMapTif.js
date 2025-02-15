@@ -679,10 +679,6 @@ function LegendControl({ data }) {
 
                 //   <span class="text-sm">${labels[i]} (${grades[i]})</span>
 
-                // <span class="info-icon" data-info="Detailed info for ${labels[i]} (${grades[i]})">!</span>
-
-                // <div class="tooltip">${labels[i]} represents a specific SPI range.</div>
-
                 // </div>`;
 
                 const tooltipTexts = {
@@ -725,9 +721,16 @@ function LegendControl({ data }) {
                         </div>
 
                         <!-- 标签文本 -->
-                        <span class="legend-text">${legendTexts[labels[i]]} (${
-                        grades[i]
-                    })</span>
+                        <!-- <span class="text-sm">${
+                            legendTexts[labels[i]]
+                        }</span> -->
+                        
+                        <span class="legend-text">${
+                            legendTexts[labels[i]]
+                        }</span>
+
+                        
+
                     </div>`;
                 }
             } else if (vartype === "Yield" && adminLevel === "Country") {

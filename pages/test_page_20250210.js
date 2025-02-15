@@ -243,6 +243,15 @@ export default function Home() {
                 "Forecast data is under development, please check and select again"
             );
         } else if (
+            options.adminLevel === "Grid" &&
+            options.dateType === "Yearly" &&
+            (options.varType === "Prcp") | (options.varType === "Temp") &&
+            (Number(selectedDate) > 2010) | (Number(selectedDate) < 1990)
+        ) {
+            setErrorMessage(
+                "Grid data for this varType is only available for 1990-2010, please check and select again"
+            );
+        } else if (
             options.adminLevel === "Country" &&
             options.region !== "SEA"
         ) {
@@ -491,7 +500,7 @@ export default function Home() {
                             sidebarTextVisible ? "visible" : "hidden"
                         }`}
                     >
-                        <h2>Options</h2>
+                        <h2>Data Selection Panel</h2>
                         <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Variables:</span>
                             <select
@@ -709,6 +718,10 @@ export default function Home() {
                                 Selected {options.adminLevel}:{" "}
                                 {selectedProvince}
                             </h2>
+                            <h5>
+                                More details showing and plots are under
+                                development
+                            </h5>
                             <p>
                                 Please click "Update Chart" after you switch
                                 some options
