@@ -413,7 +413,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                     pixelValuesToColorFn: (values) => {
                         const pixelValue =
                             data_url.data_vartype === "Prcp" ||
-                            data_url.data_vartype === "Temp"
+                            data_url.data_vartype === "Temp" ||
+                            data_url.data_vartype.startsWith("SPI")
                                 ? values[0]
                                 : values[bandIndex];
                         if (pixelValue === 0 || isNaN(pixelValue)) {

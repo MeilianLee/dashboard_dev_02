@@ -189,6 +189,8 @@ export default function handler(req, res) {
         directory = "weatherGrid";
     } else if (varType === "Temp" && adminLevel === "Grid") {
         directory = "weatherGrid";
+    } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
+        directory = "SPI_monthly_grid";
     }
 
     // **security check**：防止路径遍历攻击
