@@ -96,6 +96,9 @@ export default function handler(req, res) {
             switch (dateType) {
                 case "Yearly":
                     switch (varType) {
+                        case varType.startsWith("SPI") ? varType : null:
+                            fileName = `${region}_${varType}_${selectedDate}.tif`;
+                            break;
                         case "Prcp":
                             fileName = `${region}_precipitation_${selectedDate}.tif`;
                             break;
@@ -126,8 +129,17 @@ export default function handler(req, res) {
         case "Country":
             switch (dateType) {
                 case "Yearly":
-                    switch (true) {
-                        case varType === "Yield" && region === "SEA":
+                    switch (varType) {
+                        case "Yield":
+                            switch (region) {
+                                case "SEA":
+                                    fileName = `SEA_yield.geojson`;
+                                    break;
+                                default:
+                                    fileName = `${region}_yield_country.geojson`;
+                            }
+                            break;
+                        case varType === "Yield":
                             fileName = `SEA_yield.geojson`;
                             break;
                         default:
