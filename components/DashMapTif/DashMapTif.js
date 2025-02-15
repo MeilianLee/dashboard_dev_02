@@ -521,10 +521,17 @@ function LegendControl({ data }) {
         },
         SPI: {
             title: "SPI",
-            grades: [-2, -1.6, -1.3, -0.8, -0.5],
-            labels: ["D4", "D3", "D2", "D1", "D0"],
-            // colors: ['#d3d3d3', '#f7fcf0', '#ccebc5', '#a8ddb5', '#7bccc4', '#2b8cbe', '#084081'],
-            colors: ["#730000", "#E60000", "#FFAA00", "#FCD37F", "#FFFF00"]
+            grades: [2, 1.5, 1, 0, -1, -1.5, -2],
+            labels: ["W3", "W2", "W1", "D0", "D1", "D2", "D3"],
+            colors: [
+                "#14713d",
+                "#3cb371",
+                "#98fb98",
+                "#FFF",
+                "#f5deb3",
+                "#d2691e",
+                "#b22222"
+            ]
         },
         Temp: {
             title: "Temperature (℃)",
@@ -713,19 +720,23 @@ function LegendControl({ data }) {
                 // </div>`;
 
                 const tooltipTexts = {
-                    D4: "Widespread agricultural and hydrological failure.",
                     D3: "Extreme Drought Major crop losses, widespread water shortages.",
                     D2: "Severe Drought Likely crop loss, water restrictions may be needed.",
                     D1: "Some damage to crops, low streamflow, water shortages possible.",
-                    D0: "Short-term dryness, possible delayed planting or crop stress."
+                    D0: "Typical climate conditions, no significant anomalies.",
+                    W1: "Above-normal precipitation, beneficial for agriculture and water supply.",
+                    W2: "High rainfall, increased runoff, risk of localized flooding.",
+                    W3: "Unusual flooding, excessive soil moisture, potential waterlogging."
                 };
 
                 const legendTexts = {
-                    D4: "Exceptional drought",
-                    D3: "Extreme drought",
-                    D2: "Severe drought",
-                    D1: "Moderate drought",
-                    D0: "Abnormally dry"
+                    D3: "Severly Dry",
+                    D2: "Severely dry",
+                    D1: "Moderately dry",
+                    D0: "Near Normal",
+                    W1: "Moderately Wet",
+                    W2: "Severly Dry",
+                    W3: "Extremely Wet"
                 };
 
                 // Discrete color boxes for SPI
@@ -945,18 +956,37 @@ function ZoomControl() {
 
 // Function to generate color based on value
 function getColor(d) {
-    return d > -0.5
-        ? "#fff"
-        : d > -0.8
-        ? "#FFFF00"
-        : d > -1.3
-        ? "#FCD37F"
-        : d > -1.6
-        ? "#FFAA00"
-        : d > -2
-        ? "#74c476"
-        : "#c7e9c0"; // Light green
+    return d > 2
+        ? "#14713d" // Dark Blue - Extremely Wet
+        : d > 1.5
+        ? "#3cb371" // Light Blue - Very Wet
+        : d > 1
+        ? "#98fb98" // Green - Moderately Wet
+        : d >= -0.99
+        ? "#FFF" // Yellow - Near Normal
+        : d >= -1.49
+        ? "#f5deb3" // Orange - Moderately Dry
+        : d >= -1.99
+        ? "#d2691e" // Deep Orange - Severely Dry
+        : "#b22222"; // Red - Extremely Dry
 }
+
+// OLD getColor() function
+// function getColor(d) {
+//     return d > 2
+//         ? "#fff"
+//         : d > 1.5
+//         ? "#FFFF00"
+//         : d > 1
+//         ? "#FFFF00"
+//         : d > -1.0
+//         ? "#FCD37F"
+//         : d > -1.5
+//         ? "#FFAA00"
+//         : d > -2
+//         ? "#74c476"
+//         : "#eee"; // Light green
+// }
 
 function getColorPrcp(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
