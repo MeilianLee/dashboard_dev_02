@@ -234,8 +234,12 @@ export default function Home() {
             setErrorMessage(
                 "No matched data for the options, please check and select again"
             );
-            setTimeout(() => setErrorMessage(""), 3000); // 3秒后自动消失
+        } else if (options.dateType === "Daily") {
+            setErrorMessage(
+                "Daily data is under development, please check and select again"
+            );
         }
+        setTimeout(() => setErrorMessage(""), 3000); // 3秒后自动消失
     }, [options, geojsonData, geoRasterData]);
 
     // 当选项改变时，fetchData重新加载，fetchData重新加载，则重新加载数据
