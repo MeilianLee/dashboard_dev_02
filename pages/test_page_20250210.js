@@ -42,10 +42,10 @@ export default function Home() {
     const [options, setOptions] = useState({
         varType: "Yield", // Var Type
         region: "SEA", // Region
-        overview: "hist", // Overview
-        adminLevel: "Country", // Administrative Level
-        dateType: "Yearly", // Date
-        date: "2010" // Date Picker Value
+        overview: "forecast", // Overview
+        adminLevel: "Grid", // Administrative Level
+        dateType: "Monthly", // Date
+        date: "202502" // Date Picker Value
     });
 
     const geoJsonLayerRef = useRef(null); // 引用 GeoJSON 图层
