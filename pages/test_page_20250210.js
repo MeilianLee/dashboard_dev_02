@@ -66,11 +66,17 @@ export default function Home() {
     const [selectedMonth, setSelectedMonth] = useState("01"); // 默认月
     const [selectedDay, setSelectedDay] = useState("01"); // 默认日
 
+    const [selectedYearEnd, setSelectedYearEnd] = useState("1950");
+    const [selectedMonthEnd, setSelectedMonthEnd] = useState("01");
+    const [selectedDayEnd, setSelectedDayEnd] = useState("01"); // 默认日
+
     // 当切换成forecast 模式时，自动设置日期数据
     useEffect(() => {
         if (options.overview === "forecast") {
             setSelectedYear("2025");
             setSelectedMonth("02");
+            setSelectedYearEnd("2025");
+            setSelectedMonthEnd("02");
         }
     }, [options.overview]);
 
@@ -805,6 +811,129 @@ export default function Home() {
 
                 {/* 地图容器 */}
                 <div className="map-container">
+                    <div className="date-selector-container">
+                        {/* 起始日期选择 */}
+                        <div className="date-picker">
+                            <label className="text-sm font-medium text-gray-700">
+                                Start Date:
+                            </label>
+                            <select
+                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedYear}
+                                onChange={(e) =>
+                                    setSelectedYear(e.target.value)
+                                }
+                            >
+                                {options.overview === "forecast" ? (
+                                    <option value="2025">2025</option>
+                                ) : (
+                                    Array.from(
+                                        { length: 67 },
+                                        (_, i) => 1950 + i
+                                    ).map((year) => (
+                                        <option key={year} value={year}>
+                                            {year}
+                                        </option>
+                                    ))
+                                )}
+                            </select>
+                            {options.dateType !== "Yearly" && (
+                                <select
+                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    value={selectedMonth}
+                                    onChange={(e) =>
+                                        setSelectedMonth(
+                                            e.target.value.padStart(2, "0")
+                                        )
+                                    }
+                                >
+                                    {options.overview === "forecast"
+                                        ? [
+                                              "02",
+                                              "03",
+                                              "04",
+                                              "05",
+                                              "06",
+                                              "07"
+                                          ].map((month) => (
+                                              <option key={month} value={month}>
+                                                  {month}
+                                              </option>
+                                          ))
+                                        : Array.from({ length: 12 }, (_, i) =>
+                                              (i + 1)
+                                                  .toString()
+                                                  .padStart(2, "0")
+                                          ).map((month) => (
+                                              <option key={month} value={month}>
+                                                  {month}
+                                              </option>
+                                          ))}
+                                </select>
+                            )}
+                        </div>
+                        {/* 结束日期选择 */}
+                        <div className="date-picker">
+                            <label className="text-sm font-medium text-gray-700">
+                                End Date:
+                            </label>
+                            <select
+                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedYearEnd}
+                                onChange={(e) =>
+                                    setSelectedYearEnd(e.target.value)
+                                }
+                            >
+                                {options.overview === "forecast" ? (
+                                    <option value="2025">2025</option>
+                                ) : (
+                                    Array.from(
+                                        { length: 67 },
+                                        (_, i) => 1950 + i
+                                    ).map((year) => (
+                                        <option key={year} value={year}>
+                                            {year}
+                                        </option>
+                                    ))
+                                )}
+                            </select>
+                            {options.dateType !== "Yearly" && (
+                                <select
+                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    value={selectedMonthEnd}
+                                    onChange={(e) =>
+                                        setSelectedMonthEnd(
+                                            e.target.value.padStart(2, "0")
+                                        )
+                                    }
+                                >
+                                    {options.overview === "forecast"
+                                        ? [
+                                              "02",
+                                              "03",
+                                              "04",
+                                              "05",
+                                              "06",
+                                              "07"
+                                          ].map((month) => (
+                                              <option key={month} value={month}>
+                                                  {month}
+                                              </option>
+                                          ))
+                                        : Array.from({ length: 12 }, (_, i) =>
+                                              (i + 1)
+                                                  .toString()
+                                                  .padStart(2, "0")
+                                          ).map((month) => (
+                                              <option key={month} value={month}>
+                                                  {month}
+                                              </option>
+                                          ))}
+                                </select>
+                            )}
+                        </div>
+                    </div>
+
                     <DashMapTif
                         data={mapData}
                         selectedDate={selectedDate}

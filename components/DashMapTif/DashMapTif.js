@@ -438,6 +438,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                         const pixelValue =
                             data_url.data_vartype === "Prcp" ||
                             data_url.data_vartype === "Temp" ||
+                            data_url.data_vartype === "Yield" ||
                             data_url.data_vartype.startsWith("SPI")
                                 ? values[0]
                                 : values[bandIndex];
@@ -585,8 +586,7 @@ function LegendControl({ data }) {
             const div = L.DomUtil.create("div", "info legend");
             let vartype = data.data_vartype.startsWith("SPI")
                 ? "SPI"
-                : data.data_vartype === "Yield" &&
-                  data.data_adminLevel === "Prov"
+                : data.data_vartype === "Yield"
                 ? "YieldProv"
                 : data.data_vartype === "Prcp" &&
                   data.data_adminLevel === "Prov" &&

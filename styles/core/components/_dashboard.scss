@@ -249,3 +249,42 @@
     visibility: visible;
     transform: translateY(-50%) translateX(0px);
 }
+
+// START: 日期选择器样式
+.date-selector-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 20px;
+    z-index: 1000;
+}
+
+.date-picker {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-picker label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.date-picker select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+// END: 日期选择器样式

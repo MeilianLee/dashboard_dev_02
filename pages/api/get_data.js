@@ -104,6 +104,9 @@ export default function handler(req, res) {
                                 case "SPI12":
                                     fileName = `${region}_${varType}_${selectedDate}.tif`;
                                     break;
+                                case "Yield":
+                                    fileName = `SEA_rice_yield.tif`;
+                                    break;
                                 default:
                                     fileName = `no_data.json`;
                             }
@@ -309,7 +312,7 @@ export default function handler(req, res) {
                                     fileName = `${region}_Temperature_annual.geojson`;
                                     break;
                                 case "Yield":
-                                    fileName = `${region}_yield.geojson`;
+                                    fileName = `${region}_yield_prov.geojson`;
                                     break;
                                 case "SMPct":
                                 case varType.startsWith("SPI") ? varType : null:
@@ -345,110 +348,6 @@ export default function handler(req, res) {
         default:
             fileName = `no_data.json`;
     }
-
-    // switch (adminLevel) {
-    //     case "Grid":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 switch (varType) {
-    //                     case varType.startsWith("SPI") ? varType : null:
-    //                         fileName = `${region}_${varType}_${selectedDate}.tif`;
-    //                         break;
-    //                     case "Prcp":
-    //                         fileName = `${region}_precipitation_${selectedDate}.tif`;
-    //                         break;
-    //                     case "Temp":
-    //                         fileName = `${region}_temperature_${selectedDate}.tif`;
-    //                         break;
-    //                 }
-    //                 break;
-    //             case "Monthly":
-    //                 switch (varType) {
-    //                     case varType.startsWith("SPI") ? varType : null:
-    //                         fileName = `${region}_${varType}_${selectedDate}.tif`;
-    //                         break;
-    //                     case "Prcp":
-    //                         fileName = `${region}_precipitation_${selectedDate}.tif`;
-    //                         break;
-    //                     case "Temp":
-    //                         fileName = `${region}_temperature_${selectedDate}.tif`;
-    //                         break;
-    //                 }
-
-    //                 break;
-    //             default:
-    //                 fileName = `no_data.json`;
-    //         }
-    //         break;
-
-    //     case "Country":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 switch (varType) {
-    //                     case "Yield":
-    //                         switch (region) {
-    //                             case "SEA":
-    //                                 fileName = `SEA_yield.geojson`;
-    //                                 break;
-    //                             default:
-    //                                 fileName = `${region}_yield_country.geojson`;
-    //                         }
-    //                         break;
-    //                     case varType === "Yield":
-    //                         fileName = `SEA_yield.geojson`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //                 break;
-    //             default:
-    //                 fileName = `no_data.json`;
-    //         }
-    //         break;
-
-    //     case "Prov":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 switch (varType) {
-    //                     case "Prcp":
-    //                         fileName = `${region}_Precipitation_annual.geojson`;
-    //                         break;
-    //                     case "Temp":
-    //                         fileName = `${region}_Temperature_annual.geojson`;
-    //                         break;
-    //                     case "Yield":
-    //                         fileName = `${region}_yield.geojson`;
-    //                         break;
-    //                     case "SMPct":
-    //                     case varType.startsWith("SPI") ? varType : null:
-    //                         fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //                 break;
-
-    //             case "Monthly":
-    //                 switch (varType) {
-    //                     case "Prcp":
-    //                         fileName = `${region}_Precipitation_monthly.geojson`;
-    //                         break;
-    //                     case "Temp":
-    //                         fileName = `${region}_Temperature_monthly.geojson`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //                 break;
-
-    //             default:
-    //                 fileName = `no_data.json`;
-    //         }
-    //         break;
-
-    //     default:
-    //         fileName = `no_data.json`;
-    // }
 
     let directory;
 
