@@ -442,7 +442,11 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                             data_url.data_vartype.startsWith("SPI")
                                 ? values[0]
                                 : values[bandIndex];
-                        if (pixelValue === 0 || isNaN(pixelValue)) {
+                        if (
+                            pixelValue === 0 ||
+                            pixelValue === -99999 ||
+                            isNaN(pixelValue)
+                        ) {
                             return null;
                         }
                         return getColorByVartype(data_url, pixelValue);
