@@ -251,15 +251,18 @@
 }
 
 // START: 日期选择器样式
-.date-selector-container {
+.date-mainshow-container {
     position: absolute;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: #333;
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px 20px;
+    // background: rgba(255, 255, 255, 0.9);
+    padding: 20px 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     gap: 20px;
     z-index: 1000;
@@ -288,7 +291,7 @@
 }
 
 .date-selector-text-box {
-    text-align: right;
-    width: 80px;
+    // text-align: right;
+    width: 70px;
 }
 // END: 日期选择器样式

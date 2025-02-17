@@ -912,7 +912,11 @@ export default function Home() {
 
                 {/* 地图容器 */}
                 <div className="map-container">
-                    <div className="date-selector-container"></div>
+                    <div className="date-mainshow-container">
+                        <p>
+                            {selectedYear}/{selectedMonth}
+                        </p>
+                    </div>
 
                     <DashMapTif
                         data={mapData}
