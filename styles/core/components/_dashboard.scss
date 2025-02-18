@@ -304,9 +304,9 @@
 
     /* Tooltip 默认隐藏，并加上透明度和位移动画 */
     .tooltip {
-        width: 10vw;
+        width: 150px;
         position: absolute;
-        left: -500%;
+        left: -150px;
         top: 50%;
         transform: translateY(-50%) translateX(0%);
         background-color: #2d336b;
