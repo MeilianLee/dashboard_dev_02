@@ -207,18 +207,12 @@ export default function handler(req, res) {
                                     break;
                                 case "Prcp":
                                     switch (region) {
-                                        case "SEA":
-                                            fileName = `SEA_country_Precipitation_annual.geojson`;
-                                            break;
                                         default:
                                             fileName = `${region}_country_Precipitation_annual.geojson`;
                                     }
                                     break;
                                 case "Temp":
                                     switch (region) {
-                                        case "SEA":
-                                            fileName = `SEA_country_Temperature_annual.geojson`;
-                                            break;
                                         default:
                                             fileName = `${region}_country_Temperature_annual.geojson`;
                                     }
@@ -229,20 +223,19 @@ export default function handler(req, res) {
                             break;
                         case "Monthly":
                             switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `${region}_prov_${varType}_hist_monthly.geojson`;
+
                                 case "Yield":
-                                    switch (region) {
-                                        default:
-                                            fileName = `${region}_monthly_yield_country.geojson`;
-                                    }
+                                    fileName = `${region}_monthly_yield_country.geojson`;
+
                                     break;
                                 case "Prcp":
-                                    switch (region) {
-                                        case "SEA":
-                                            fileName = `SEA_country_Precipitation_monthly.geojson`;
-                                            break;
-                                        default:
-                                            fileName = `${region}_country_Precipitation_monthly.geojson`;
-                                    }
+                                    fileName = `${region}_country_Precipitation_monthly.geojson`;
+
                                     break;
                                 case "Temp":
                                     switch (region) {
@@ -286,6 +279,11 @@ export default function handler(req, res) {
 
                         case "Monthly":
                             switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `${region}_${varType}_hist_monthly.geojson`;
                                 case "Yield":
                                     switch (region) {
                                         default:
@@ -330,6 +328,12 @@ export default function handler(req, res) {
         overview === "forecast"
     ) {
         directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
+    } else if (
+        varType.startsWith("SPI") &&
+        overview === "hist" &&
+        dateType === "monthly"
+    ) {
+        directory = "SPI_json_hist"; //SPI prov forecast has its own directory
     } else if (varType === "Yield" && overview === "forecast") {
         directory = "yield_forecast"; //yield prov/country forecast has its own directory
     } else if (overview === "forecast" && varType === "Prcp") {
