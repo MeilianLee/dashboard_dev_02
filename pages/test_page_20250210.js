@@ -588,7 +588,7 @@ export default function Home() {
                     >
                         <h2>Data Selection Panel</h2>
                         {/* 起始日期选择 */}
-                        <div className="date-picker">
+                        {/* <div className="date-picker">
                             <label className="text-sm font-medium text-gray-700 date-selector-text-box">
                                 Start Date:
                             </label>
@@ -646,9 +646,9 @@ export default function Home() {
                                           ))}
                                 </select>
                             )}
-                        </div>
+                        </div> */}
                         {/* 结束日期选择 */}
-                        <div className="date-picker">
+                        {/* <div className="date-picker">
                             <label className="text-sm font-medium text-gray-700 date-selector-text-box">
                                 End Date:
                             </label>
@@ -706,7 +706,7 @@ export default function Home() {
                                           ))}
                                 </select>
                             )}
-                        </div>
+                        </div> */}
 
                         <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Variables:</span>
@@ -749,7 +749,7 @@ export default function Home() {
                             >
                                 <option value="Thailand">Thailand</option>
                                 <option value="Cambodia">Cambodia</option>
-                                <option value="India">India</option>
+                                {/*<option value="India">India</option> */}
                                 <option value="Laos">Laos</option>
                                 <option value="Myanmar">Myanmar</option>
                                 <option value="Vietnam">Vietnam</option>
@@ -797,7 +797,7 @@ export default function Home() {
                             >
                                 <option value="Yearly">Yearly</option>
                                 <option value="Monthly">Monthly</option>
-                                <option value="Daily">Daily</option>
+                                {/* <option value="Daily">Daily</option> */}
                             </select>
                         </label>
 
