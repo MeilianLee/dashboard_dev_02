@@ -11,85 +11,7 @@ export default function handler(req, res) {
         selectedDate = "2010"
     } = req.query;
 
-    // Apply special case list to check options
-    // // check different name rules, if like left thing, then use right thing as file path
-    // const specialCases = {
-    //     Yield_SEA: `yield_country.json`,
-    //     Yield_SEA: `${region}_${varType}_${adminLevel}_${dateType}_${overview}_${selectedDate}.json`
-    // };
-
-    // // 选择文件路径逻辑
-    // const fileKey = `${region}_${varType}_${adminLevel}_${dateType}_${overview}_${selectedDate}`;
-    // const fileName =
-    //     specialCases[fileKey] ||
-    //     `${varType}_${dateType}_${region}_1950_2016.json`;
-
     let fileName;
-
-    // switch (adminLevel) {
-    //     case "Grid":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 break;
-    //             case "Monthly":
-    //                 break;
-    //             default:
-    //                 fileName = `no_data.json`;
-    //         }
-    //         break;
-    //     case "Country":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 switch (true) {
-    //                     case varType === "Yield" && region === "SEA":
-    //                         fileName = `yield_country.json`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //         }
-
-    //         break;
-    //     case "Prov":
-    //         switch (dateType) {
-    //             case "Yearly":
-    //                 switch (true) {
-    //                     case varType === "Prcp":
-    //                         fileName = `${region}_Precipitation_annual.geojson`;
-    //                         break;
-    //                     case varType === "Temp":
-    //                         fileName = `${region}_Temperature_annual.geojson`;
-    //                         break;
-    //                     case varType === "Yield":
-    //                         fileName = `${region}_yield.geojson`;
-    //                         break;
-    //                     case varType === "SMPct":
-    //                         fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
-    //                         break;
-    //                     case varType.startsWith("SPI"):
-    //                         fileName = `${region}_${varType}_${dateType}_${adminLevel}.json`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //                 break;
-    //             case "Monthly":
-    //                 switch (varType) {
-    //                     case "Prcp":
-    //                         fileName = `${region}_Precipitation.geojson`;
-    //                         break;
-    //                     case "Temp":
-    //                         fileName = `${region}_Temperature.geojson`;
-    //                         break;
-    //                     default:
-    //                         fileName = `no_data.json`;
-    //                 }
-    //                 break;
-    //         }
-    //         break;
-    //     default:
-    //         fileName = `no_data.json`;
-    // }
 
     switch (overview) {
         case "forecast":
@@ -192,7 +114,7 @@ export default function handler(req, res) {
                                 case "SPI3":
                                 case "SPI6":
                                 case "SPI12":
-                                    fileName = `currently_no_data.json`;
+                                    fileName = `${region}_${varType}_annual.geojson`;
                                     break;
                                 case "Prcp":
                                     fileName = `${region}_Precipitation_annual.geojson`;
@@ -210,7 +132,7 @@ export default function handler(req, res) {
                                 case "SPI3":
                                 case "SPI6":
                                 case "SPI12":
-                                    fileName = `currently_no_data.json`;
+                                    fileName = `${region}_${varType}.geojson`;
                                     break;
                                 case "Prcp":
                                     fileName = `${region}_Precipitation_monthly.geojson`;
@@ -383,7 +305,13 @@ export default function handler(req, res) {
     } else if (varType === "Temp" && adminLevel === "Grid") {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
-        directory = "SPI_monthly_grid"; //SPI raster forecast has its own directory
+        directory = "SPI_grid_forecast"; //SPI raster forecast has its own directory
+    } else if (
+        varType.startsWith("SPI") &&
+        adminLevel === "Prov" &&
+        overview === "forecast"
+    ) {
+        directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
     } else if (overview === "forecast" && varType === "Prcp") {
         directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
     } else if (overview === "forecast" && varType === "Temp") {

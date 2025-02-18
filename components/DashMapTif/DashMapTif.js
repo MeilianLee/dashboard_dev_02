@@ -162,8 +162,8 @@ export default function DashMapTif({
     // 国家边界样式
     const countryBoundaryStyle = (color) => ({
         color: color,
-        weight: 3,
-        opacity: 0.7,
+        weight: 2,
+        opacity: 1,
         fillOpacity: 0
     });
 
@@ -187,19 +187,11 @@ export default function DashMapTif({
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>;'
             />
-            {/* 渲染国家边界 */}
-            {/* {countryBoundaries.myanmar && (
-                <GeoJSON
-                    data={countryBoundaries.myanmar}
-                    style={countryBoundaryStyle("#333")}
-                />
-            )} */}
-            {/* 仅当 adminLevel === "Grid" 时绘制国家边界 */}
             {/* 仅当 adminLevel === "Grid" 且数据存在时绘制国家边界 */}
             {options.adminLevel === "Grid" && filteredBoundaries && (
                 <GeoJSON
                     data={filteredBoundaries}
-                    style={{ color: "black", weight: 2, fillOpacity: 0 }}
+                    style={countryBoundaryStyle("#333")}
                 />
             )}
             {data.datatype === "geojson" && (

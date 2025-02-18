@@ -302,22 +302,83 @@ export default function Home() {
     };
 
     // 点击省份时处理时间序列数据
+    // const handleProvClickToGenerateTimeSeries = (feature) => {
+    //     const { properties } = feature;
+    //     setSelectedProvince(properties.name);
+
+    //     const timeSeriesData = Object.keys(properties)
+    //         .filter((key) => key.startsWith("y"))
+    //         .map((key) => ({
+    //             year: parseInt(key.replace("y", ""), 10),
+    //             value: properties[key]
+    //         }));
+
+    //     setTimeSeries(timeSeriesData);
+    // };
+
+    const [selectedFeature, setSelectedFeature] = useState(null); // 记录选中的地块
+
+    // 当selectedFeature改变时，打印调试信息
+    useEffect(() => {
+        if (selectedFeature) {
+            const { properties } = selectedFeature;
+
+            const timeSeriesData = Object.keys(properties)
+
+                .filter((key) => /^y\d+_\d+$/.test(key)) // 只匹配 "y202502_1" 这样的 key
+                .map((key) => {
+                    const match = key.match(/^y(\d+)_(\d+)$/); // 提取 year 和 ensemble member
+                    return match
+                        ? {
+                              year: parseInt(match[1], 10),
+                              ensemble: parseInt(match[2], 10),
+                              value: properties[key]
+                          }
+                        : null;
+                })
+                .filter((item) => item !== null); // 过滤掉 null 值
+
+            setTimeSeries(timeSeriesData);
+
+            console.log("打印keys", Object.keys(properties)); // 打印所有 keys，看是否有 "y202502_1" 之类的键
+
+            console.log(
+                "Filtered keys:",
+                Object.keys(properties).filter((key) => /^y\d+_\d+$/.test(key))
+            );
+
+            // console.log(
+            //     "Match result:",
+            //     Object.keys(properties).match(/^y(\d+)_(\d+)$/)
+            // );
+            console.log("Processed time series data:", timeSeriesData); // 调试输出}
+
+            console.log("Final set time series data:", timeSeriesData); // 调试输出}
+        }
+    }, [selectedFeature]);
+
     const handleProvClickToGenerateTimeSeries = (feature) => {
         const { properties } = feature;
         setSelectedProvince(properties.name);
 
-        const timeSeriesData = Object.keys(properties)
-            .filter((key) => key.startsWith("y"))
-            .map((key) => ({
-                year: parseInt(key.replace("y", ""), 10),
-                value: properties[key]
-            }));
+        // // 解析时间序列数据，适配 ensemble 结构
+        // const timeSeriesData = Object.keys(properties)
 
-        setTimeSeries(timeSeriesData);
+        //     .filter((key) => /^y\d+_\d+$/.test(key)) // 只匹配 "y202502_1" 这样的 key
+        //     .map((key) => {
+        //         const match = key.match(/^y(\d+)_(\d+)$/); // 提取 year 和 ensemble member
+        //         return match
+        //             ? {
+        //                   year: parseInt(match[1], 10),
+        //                   ensemble: parseInt(match[2], 10),
+        //                   value: properties[key]
+        //               }
+        //             : null;
+        //     })
+        //     .filter((item) => item !== null); // 过滤掉 null 值
+
+        // setTimeSeries(timeSeriesData);
     };
-
-    // START : new test of click effect
-    const [selectedFeature, setSelectedFeature] = useState(null); // 记录选中的地块
 
     // START: 颜色映射函数，将值映射到颜色范围
     const getColor = (value) => {
@@ -447,26 +508,6 @@ export default function Home() {
             handleFeatureClick(feature, layer); // 高亮当前选中地块
             handleProvClickToGenerateTimeSeries(feature);
         });
-
-        // 点击高亮效果
-        // layer.on("click", () => {
-        //     // 重置之前选中地块的样式
-        //     if (selectedLayer) {
-        //         selectedLayer.setStyle(styleGeoJSON(selectedLayer.feature));
-        //     }
-
-        //     // 设置当前地块为选中状态
-        //     setSelectedLayer(layer);
-        //     layer.setStyle({
-        //         weight: 5,
-        //         color: "#ff0000",
-        //         fillOpacity: 0.9
-        //     });
-
-        //     // 将选中地块提升到最上层
-        //     layer.bringToFront();
-        //     handleProvClickToGenerateTimeSeries(feature);
-        // });
     };
 
     useEffect(() => {
