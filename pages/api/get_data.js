@@ -333,10 +333,14 @@ export default function handler(req, res) {
     } else if (
         varType.startsWith("SPI") &&
         overview === "hist" &&
-        dateType === "monthly"
+        dateType === "Monthly"
     ) {
         directory = "SPI_json_hist"; //SPI prov forecast has its own directory
-    } else if (varType === "Yield" && overview === "forecast") {
+    } else if (
+        varType === "Yield" &&
+        overview === "forecast" &&
+        adminLevel !== "Grid"
+    ) {
         directory = "yield_forecast"; //yield prov/country forecast has its own directory
     } else if (overview === "forecast" && varType === "Prcp") {
         directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
