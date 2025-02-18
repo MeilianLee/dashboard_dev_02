@@ -403,12 +403,12 @@ export default function handler(req, res) {
                 Temp: `${region}_country_Temperature_monthly.geojson`
             },
             forecast_Prov_Yearly: {
-                Yield: `${region}_prov_${selectedDate}.geojson`,
+                Yield: `no_data.geojson`,
                 Prcp: `${region}_Precipitation_annual.geojson`,
                 Temp: `${region}_Temperature_annual.geojson`
             },
             forecast_Prov_Monthly: {
-                Yield: `${region}_country_2025_monthly.geojson`,
+                Yield: `no_data.geojson`,
                 Prcp: `${region}_Precipitation_monthly.geojson`,
                 Temp: `${region}_Temperature_monthly.geojson`
             },
