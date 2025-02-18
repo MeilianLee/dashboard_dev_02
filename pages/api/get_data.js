@@ -107,6 +107,12 @@ export default function handler(req, res) {
                                 case "Yield":
                                     fileName = `SEA_rice_yield.tif`;
                                     break;
+                                case "Prcp":
+                                    fileName = `${region}_precipitation_${selectedDate}.tif`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_temperature_${selectedDate}.tif`;
+                                    break;
                                 default:
                                     fileName = `no_data.json`;
                             }
