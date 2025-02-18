@@ -719,6 +719,12 @@ function LegendControl({ data }) {
 
             const { title, grades, colors, labels } = config;
 
+            // 清除现有的 legend，防止切换 varType 时残留
+            const existingLegend = document.querySelector(".legend-container");
+            if (existingLegend) {
+                existingLegend.remove();
+            }
+
             // Add the legend title (this is used for general categories but not for SPI)
             div.innerHTML = `
       <div style="text-align: center; font-size: 1.3rem; font-weight: bold; margin-bottom: 2px;">
@@ -808,22 +814,7 @@ function LegendControl({ data }) {
                                   ${labels}
                                 </div>`;
             } else if (vartype === "SPI") {
-                //     // Discrete color boxes for SPI
-                //     for (let i = 0; i < grades.length; i++) {
-                //         div.innerHTML += `
-                // <div class="flex flex-col items-center" style="margin-bottom: 4px;">
-                // <div class="flex flex-col items-center mb-4">
-                //   <div style="
-                //     width: 6vw;
-                //     height: 20px;
-                //     background-color: ${colors[i]};
-                //     border: 2px solid #000;
-                //     margin-bottom: 8px;">
-                //   </div>
-
-                //   <span class="text-sm">${labels[i]} (${grades[i]})</span>
-
-                // </div>`;
+                div.innerHTML = ``; // for this part no preset div.innerHTML is used
 
                 const tooltipTexts = {
                     D3: "Extreme Drought Major crop losses, widespread water shortages.",
@@ -844,44 +835,44 @@ function LegendControl({ data }) {
                     W2: "Severly Wet",
                     W3: "Extremely Wet"
                 };
+                // Vertical SPI Legend Color Bar with Tooltips
+                const legendContainer = document.createElement("div");
+                legendContainer.className = "legend-container";
 
-                // Discrete color boxes for SPI
                 for (let i = 0; i < grades.length; i++) {
-                    // extract coresponding detail information
                     const tooltipText =
                         tooltipTexts[labels[i]] || "No information available";
 
-                    div.innerHTML += `
-                    <div class="legend-item">
-                        <!-- 问号图标 -->
- 
-                        <div class="legend-top">
-                            <div class="info-icon" data-info="Detailed info for ${
-                                labels[i]
-                            } (${grades[i]})">
-                                ?
-                                <div class="tooltip">${tooltipText}</div>
-                            </div>
-                            
-                            <!-- 颜色块 -->
-                            <div class="color-box" style="background-color: ${
-                                colors[i]
-                            };"></div>
-                        </div>
+                    const legendItem = document.createElement("div");
+                    legendItem.className = "legend-item";
 
-                        <!-- 标签文本 -->
-                        <!-- <span class="text-sm">${
-                            legendTexts[labels[i]]
-                        }</span> -->
-                        
-                        <span class="legend-text">${
-                            legendTexts[labels[i]]
-                        }</span>
+                    // 问号图标
+                    const infoIcon = document.createElement("div");
+                    infoIcon.className = "info-icon";
+                    infoIcon.innerHTML = `?`;
 
-                        
+                    const tooltip = document.createElement("div");
+                    tooltip.className = "tooltip";
+                    tooltip.textContent = tooltipText;
+                    infoIcon.appendChild(tooltip);
 
-                    </div>`;
+                    // 颜色块
+                    const colorBox = document.createElement("div");
+                    colorBox.className = "color-box";
+                    colorBox.style.backgroundColor = colors[i];
+
+                    // 标签文本
+                    const legendText = document.createElement("span");
+                    legendText.className = "legend-text";
+                    legendText.textContent = legendTexts[labels[i]];
+
+                    legendItem.appendChild(infoIcon);
+                    legendItem.appendChild(colorBox);
+                    legendItem.appendChild(legendText);
+
+                    legendContainer.appendChild(legendItem);
                 }
+                div.appendChild(legendContainer);
             } else if (vartype === "Yield" && adminLevel === "Country") {
                 const gradientBar = `
                 <div style="
