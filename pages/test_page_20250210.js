@@ -205,11 +205,7 @@ export default function Home() {
 
     // check if geojsonData or geoRasterData are null, if so, give error message box
     useEffect(() => {
-        if (options.dateType === "Monthly" && options.varType === "Yield") {
-            setErrorMessage(
-                "No matched data for the options, please check and select again"
-            );
-        } else if (options.dateType === "Daily") {
+        if (options.dateType === "Daily") {
             setErrorMessage(
                 "Daily data is under development, please check and select again"
             );
@@ -226,14 +222,6 @@ export default function Home() {
         ) {
             setErrorMessage(
                 "Note that only 'Monthly' and 'Grid' SPI forecast data is available currently"
-            );
-        } else if (
-            options.overview === "forecast" &&
-            (options.varType === "Prcp") | (options.varType === "Temp") &&
-            options.adminLevel === "Grid"
-        ) {
-            setErrorMessage(
-                "Note that only 'Country' and 'Prov' are available for Precipitation and Temperature currently"
             );
         } else if (
             options.adminLevel === "Grid" &&

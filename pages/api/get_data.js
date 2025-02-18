@@ -74,6 +74,9 @@ export default function handler(req, res) {
                                 case "SPI12":
                                     fileName = `currently_no_data.json`;
                                     break;
+                                case "Yield":
+                                    fileName = `${region}_${selectedDate}.geojson`;
+                                    break;
                                 case "Prcp":
                                     fileName = `${region}_country_Precipitation_annual.geojson`;
                                     break;
@@ -91,6 +94,9 @@ export default function handler(req, res) {
                                 case "SPI6":
                                 case "SPI12":
                                     fileName = `currently_no_data.json`;
+                                    break;
+                                case "Yield":
+                                    fileName = `${region}_country_2025_monthly.geojson`;
                                     break;
                                 case "Prcp":
                                     fileName = `${region}_country_Precipitation_monthly.geojson`;
@@ -324,6 +330,8 @@ export default function handler(req, res) {
         overview === "forecast"
     ) {
         directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
+    } else if (varType === "Yield" && overview === "forecast") {
+        directory = "yield_forecast"; //yield prov/country forecast has its own directory
     } else if (overview === "forecast" && varType === "Prcp") {
         directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
     } else if (overview === "forecast" && varType === "Temp") {
