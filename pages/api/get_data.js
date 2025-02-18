@@ -332,7 +332,7 @@ export default function handler(req, res) {
                         return `no_data.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `no_data.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
