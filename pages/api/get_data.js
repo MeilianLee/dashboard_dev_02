@@ -96,6 +96,27 @@ export default function handler(req, res) {
             switch (adminLevel) {
                 case "Grid":
                     switch (dateType) {
+                        case "Yearly":
+                            switch (varType) {
+                                case "SPI1":
+                                case "SPI3":
+                                case "SPI6":
+                                case "SPI12":
+                                    fileName = `${region}_${varType}_${selectedDate}.tif`;
+                                    break;
+                                case "Yield":
+                                    fileName = `SEA_rice_yield.tif`;
+                                    break;
+                                case "Prcp":
+                                    fileName = `${region}_precipitation_${selectedDate}.tif`;
+                                    break;
+                                case "Temp":
+                                    fileName = `${region}_temperature_${selectedDate}.tif`;
+                                    break;
+                                default:
+                                    fileName = `no_data.json`;
+                            }
+                            break;
                         case "Monthly":
                             switch (varType) {
                                 case "SPI1":
