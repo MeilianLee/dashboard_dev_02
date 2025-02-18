@@ -340,15 +340,15 @@ export default function handler(req, res) {
                         return `no_data.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `no_data.json`;
+                        return `${region}_prov_${varType}_${dateType}_${adminLevel}.geojson`;
                     }
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${dateType}_${adminLevel}.json`;
+                        return `no_data.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${dateType}_${adminLevel}.json`;
+                        return `${region}_${varType}_${dateType}_${adminLevel}.geojson`;
                     }
                 }
             }
