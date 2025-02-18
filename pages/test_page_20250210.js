@@ -70,6 +70,13 @@ export default function Home() {
     const [selectedMonthEnd, setSelectedMonthEnd] = useState("01");
     const [selectedDayEnd, setSelectedDayEnd] = useState("01"); // 默认日
 
+    // 存储国家边界数据
+    const [countryBoundaries, setCountryBoundaries] = useState({
+        india: null,
+        myanmar: null,
+        thailand: null
+    });
+
     // 当切换成forecast 模式时，自动设置日期数据
     useEffect(() => {
         if (options.overview === "forecast") {
@@ -86,6 +93,28 @@ export default function Home() {
         }
     }, [options.overview]);
 
+    // 加载国家边界GeoJSON数据
+    useEffect(() => {
+        const fetchBoundary = async (country, file) => {
+            const response = await fetch(`/data/${file}`);
+            const data = await response.json();
+            setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
+        };
+
+        fetchBoundary("Cambodia", "Cambodia_boundary.geojson");
+        // fetchBoundary("myanmar", "myanmar_boundary.geojson");
+        // fetchBoundary("thailand", "thailand_boundary.geojson");
+    }, []);
+
+    // 国家边界样式
+    const countryStyle = (color) => ({
+        color: color,
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0
+    });
+
+    // 根据选择的年月日，拼接selectedDate，用于传递日期选择信息
     useEffect(() => {
         let formattedDate = selectedYear; // 默认 Yearly 模式
         if (options.dateType === "Monthly") {
@@ -111,51 +140,6 @@ export default function Home() {
             const response = await fetch(
                 `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`
             );
-
-            // if (varType.startsWith("SPI") && adminLevel !== "Grid") {
-            //     const data = await response.json();
-            //     console.log("fetched geoJSON data:", data);
-            //     setGeojsonData(data);
-            //     // mapData is passed to DashMapTif
-            //     setMapData({
-            //         data: data,
-            //         url: response.url,
-            //         datatype: "geojson",
-            //         data_vartype: varType
-            //     });
-            //     setSelectedProvince(null); // 清空选中状态
-            //     setTimeSeries([]); // 清空时间序列数据
-            // } else if (varType === "Yield") {
-            //     const data = await response.json();
-            //     console.log("fetched geoJSON data:", data);
-            //     setGeojsonData(data);
-            //     // mapData is passed to DashMapTif
-            //     setMapData({
-            //         data: data,
-            //         url: response.url,
-            //         datatype: "geojson",
-            //         data_vartype: varType
-            //     });
-            //     setSelectedProvince(null); // 清空选中状态
-            //     setTimeSeries([]); // 清空时间序列数据
-            // } else if (adminLevel === "Grid") {
-            //     console.log("Response URL:", response); // Log the URL for debugging
-            //     // const data = await response.json();
-            //     // console.log("fetched geoRaster data:", data);
-            //     setGeoRasterData({
-            //         data: await response.arrayBuffer(),
-            //         url: response.url, // Storing the URL here for later use
-            //         datatype: "geotiff"
-            //     });
-            //     setMapData({
-            //         url: response.url,
-            //         datatype: "geotiff",
-            //         data_vartype: varType
-            //     });
-            //     // setGeoRasterData(dummyRaster);
-            //     setSelectedProvince(null); // 清空选中状态
-            //     setTimeSeries([]); // 清空时间序列数据
-            // }
 
             if (adminLevel === "Grid") {
                 console.log("Response URL:", response); // Log the URL for debugging
@@ -197,45 +181,6 @@ export default function Home() {
             const response = await fetch(
                 `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`
             );
-
-            // // // OLD logic
-            // if (varType.startsWith("SPI") && adminLevel !== "Grid") {
-            //     const data = await response.json();
-            //     console.log("fetched geoJSON data:", data);
-            //     setGeojsonData(data);
-            //     // mapData is passed to DashMapTif
-            //     setMapData({
-            //         data: data,
-            //         url: response.url,
-            //         datatype: "geojson",
-            //         data_adminLevel: adminLevel,
-            //         data_dateType: dateType
-            //     });
-            //     setSelectedProvince(null); // 清空选中状态
-            //     setTimeSeries([]); // 清空时间序列数据
-            // } else {
-            //     console.log("Response URL:", response); // Log the URL for debugging
-            //     // const data = await response.json();
-            //     // console.log("fetched geoRaster data:", data);
-            //     setGeoRasterData({
-            //         data: await response.arrayBuffer(),
-            //         url: response.url, // Storing the URL here for later use
-            //         datatype: "geotiff",
-            //         data_adminLevel: adminLevel,
-            //         data_dateType: dateType
-            //     });
-            //
-            //     setMapData({
-            //         url: response.url,
-            //         datatype: "geotiff",
-            //         data_vartype: varType,
-            //         data_adminLevel: adminLevel,
-            //         data_dateType: dateType
-            //     });
-            //     setSelectedProvince(null); // 清空选中状态
-            //     setTimeSeries([]); // 清空时间序列数据
-            // }
-            // // // OLD LOGIC
 
             if (adminLevel === "Grid") {
                 console.log("Response URL:", response); // Log the URL for debugging
@@ -926,6 +871,13 @@ export default function Home() {
                         setSelectedProvince={setSelectedProvince}
                         setTimeSeries={setTimeSeries}
                     />
+                    {/* 渲染国家边界 */}
+                    {countryBoundaries.Cambodia && (
+                        <GeoJSON
+                            data={countryBoundaries.Cambodia}
+                            style={countryStyle("#FF5733")}
+                        />
+                    )}
                     <button
                         className="scroll-to-details-btn"
                         onClick={() =>

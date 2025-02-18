@@ -72,6 +72,34 @@ export default function DashMapTif({
         };
     };
 
+    // 存储国家边界数据
+    const [countryBoundaries, setCountryBoundaries] = useState({
+        india: null,
+        myanmar: null,
+        thailand: null,
+        cambodia: null
+    });
+    // 加载国家边界GeoJSON数据
+    useEffect(() => {
+        const fetchBoundary = async (country, file) => {
+            const response = await fetch(`data/${file}`);
+            const data = await response.json();
+            setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
+        };
+        fetchBoundary("india", "Cambodia_boundary.geojson");
+        // fetchBoundary("myanmar", "myanmar_boundary.geojson");
+        // fetchBoundary("thailand", "thailand_boundary.geojson");
+
+        console.log("CountryBoundaries: ", { countryBoundaries });
+    }, []);
+    // 国家边界样式
+    const countryStyle = (color) => ({
+        color: color,
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0
+    });
+
     return (
         <MapContainer
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
@@ -92,6 +120,13 @@ export default function DashMapTif({
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>;'
             />
+            {/* 渲染国家边界 */}
+            {countryBoundaries.Cambodia && (
+                <GeoJSON
+                    data={countryBoundaries.Cambodia}
+                    style={countryStyle("#FF5733")}
+                />
+            )}
             {data.datatype === "geojson" && (
                 <GeoJSONLayer
                     data_url={data}
