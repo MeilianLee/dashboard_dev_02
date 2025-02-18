@@ -228,6 +228,7 @@ export default function handler(req, res) {
                                 case "SPI6":
                                 case "SPI12":
                                     fileName = `${region}_prov_${varType}_hist_monthly.geojson`;
+                                    break;
 
                                 case "Yield":
                                     fileName = `${region}_monthly_yield_country.geojson`;
@@ -284,6 +285,7 @@ export default function handler(req, res) {
                                 case "SPI6":
                                 case "SPI12":
                                     fileName = `${region}_${varType}_hist_monthly.geojson`;
+                                    break;
                                 case "Yield":
                                     switch (region) {
                                         default:
