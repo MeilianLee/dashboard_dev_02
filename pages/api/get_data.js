@@ -466,7 +466,7 @@ export default function handler(req, res) {
     } else if (varType === "Temp" && adminLevel === "Grid") {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
-        directory = "SPI_grid_forecast"; //SPI raster forecast has its own directory
+        directory = "SPI_grid"; //SPI raster data has its own directory
     } else if (
         varType.startsWith("SPI") &&
         adminLevel === "Prov" &&
