@@ -223,6 +223,12 @@ export default function handler(req, res) {
                             break;
                         case "Monthly":
                             switch (varType) {
+                                case "Yield":
+                                    switch (region) {
+                                        default:
+                                            fileName = `${region}_monthly_yield_country.geojson`;
+                                    }
+                                    break;
                                 case "Prcp":
                                     switch (region) {
                                         case "SEA":
@@ -274,6 +280,12 @@ export default function handler(req, res) {
 
                         case "Monthly":
                             switch (varType) {
+                                case "Yield":
+                                    switch (region) {
+                                        default:
+                                            fileName = `${region}_monthly_yield_province.geojson`;
+                                    }
+                                    break;
                                 case "Prcp":
                                     fileName = `${region}_Precipitation_monthly.geojson`;
                                     break;
