@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import georaster from "georaster";
@@ -7,6 +7,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 export default function DashMapTif({
     data,
+    options,
     selectedDate,
     selectedFeature,
     setSelectedProvince,
@@ -22,6 +23,18 @@ export default function DashMapTif({
             data_adminLevel: "Country"
         }; // Set default URL if data is null
     }
+
+    // // Check if options is null, if so, set the default options
+    // if (options === null) {
+    //     options = {
+    //         varType: "Yield", // Var Type
+    //         region: "SEA", // Region
+    //         overview: "forecast", // Overview
+    //         adminLevel: "Grid", // Administrative Level
+    //         dateType: "Monthly", // Date
+    //         date: "202502" // Date Picker Value
+    //     };
+    // }
 
     useEffect(() => {
         console.log("Received data in DashMapTif:", data);
@@ -73,30 +86,84 @@ export default function DashMapTif({
     };
 
     // 存储国家边界数据
-    const [countryBoundaries, setCountryBoundaries] = useState({
-        india: null,
-        myanmar: null,
-        thailand: null,
-        cambodia: null
-    });
-    // 加载国家边界GeoJSON数据
-    useEffect(() => {
-        const fetchBoundary = async (country, file) => {
-            const response = await fetch(`data/${file}`);
-            const data = await response.json();
-            setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
-        };
-        fetchBoundary("india", "Cambodia_boundary.geojson");
-        // fetchBoundary("myanmar", "myanmar_boundary.geojson");
-        // fetchBoundary("thailand", "thailand_boundary.geojson");
+    // const [countryBoundaries, setCountryBoundaries] = useState({
+    //     cambodia: null,
+    //     laos: null,
+    //     thailand: null,
+    //     india: null,
+    //     myanmar: null,
+    //     thailand: null,
+    //     vietnam: null,
+    //     SEA: null
+    // });
 
-        console.log("CountryBoundaries: ", { countryBoundaries });
-    }, []);
+    // // 仅当 adminLevel === "Grid" 时加载国家边界数据
+    // useEffect(() => {
+    //     if (options.adminLevel !== "Grid") return;
+
+    //     const fetchBoundary = async (country, file) => {
+    //         const response = await fetch(`data/${file}`);
+    //         const data = await response.json();
+    //         console.log("fetched boundary data: ", { data });
+    //         setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
+    //     };
+    //     fetchBoundary("cambodia", "cambodia_boundary.geojson");
+    //     fetchBoundary("laos", "laos_boundary.geojson");
+    //     fetchBoundary("thailand", "thailand_boundary.geojson");
+    //     fetchBoundary("india", "india_boundary.geojson");
+    //     fetchBoundary("myanmar", "myanmar_boundary.geojson");
+    //     fetchBoundary("vietnam", "vietnam_boundary.geojson");
+    //     fetchBoundary("SEA", "SEA_boundary.geojson");
+
+    //     console.log("CountryBoundaries: ", { countryBoundaries });
+    // }, [options.adminLevel]);
+
+    // // 只绘制当前 `region` 选择的国家边界
+    // const getSelectedBoundaries = () => {
+    //     if (options.region === "India") return [countryBoundaries.india];
+    //     if (options.region === "Myanmar") return [countryBoundaries.myanmar];
+    //     if (options.region === "Thailand") return [countryBoundaries.thailand];
+    //     if (options.region === "Cambodia") return [countryBoundaries.cambodia];
+    //     if (options.region === "Laos") return [countryBoundaries.laos];
+    //     if (options.region === "Vietnam") return [countryBoundaries.vietnam];
+    //     if (options.region === "SEA") return [countryBoundaries.SEA];
+
+    //     return [];
+    // };
+
+    const [countryBoundaries, setCountryBoundaries] = useState(null); // 存储国家边界数据
+
+    // 仅当 adminLevel === "Grid" 时加载国家边界
+    useEffect(() => {
+        if (options.adminLevel !== "Grid") return;
+
+        fetch("/data/SEA_boundary.geojson")
+            .then((res) => res.json())
+            .then((data) => setCountryBoundaries(data))
+            .catch((error) =>
+                console.error("Error loading country boundaries:", error)
+            );
+
+        console.log("fetched country boundaries:", { countryBoundaries });
+    }, [options.adminLevel]);
+
+    // 根据 region 过滤国家边界
+    const filteredBoundaries = countryBoundaries
+        ? {
+              ...countryBoundaries,
+              features: countryBoundaries.features.filter(
+                  (feature) =>
+                      options.region === "SEA" ||
+                      feature.properties.name === options.region
+              )
+          }
+        : null;
+
     // 国家边界样式
-    const countryStyle = (color) => ({
+    const countryBoundaryStyle = (color) => ({
         color: color,
-        weight: 2,
-        opacity: 1,
+        weight: 3,
+        opacity: 0.7,
         fillOpacity: 0
     });
 
@@ -121,10 +188,18 @@ export default function DashMapTif({
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>;'
             />
             {/* 渲染国家边界 */}
-            {countryBoundaries.Cambodia && (
+            {/* {countryBoundaries.myanmar && (
                 <GeoJSON
-                    data={countryBoundaries.Cambodia}
-                    style={countryStyle("#FF5733")}
+                    data={countryBoundaries.myanmar}
+                    style={countryBoundaryStyle("#333")}
+                />
+            )} */}
+            {/* 仅当 adminLevel === "Grid" 时绘制国家边界 */}
+            {/* 仅当 adminLevel === "Grid" 且数据存在时绘制国家边界 */}
+            {options.adminLevel === "Grid" && filteredBoundaries && (
+                <GeoJSON
+                    data={filteredBoundaries}
+                    style={{ color: "black", weight: 2, fillOpacity: 0 }}
                 />
             )}
             {data.datatype === "geojson" && (

@@ -70,13 +70,6 @@ export default function Home() {
     const [selectedMonthEnd, setSelectedMonthEnd] = useState("01");
     const [selectedDayEnd, setSelectedDayEnd] = useState("01"); // 默认日
 
-    // 存储国家边界数据
-    const [countryBoundaries, setCountryBoundaries] = useState({
-        india: null,
-        myanmar: null,
-        thailand: null
-    });
-
     // 当切换成forecast 模式时，自动设置日期数据
     useEffect(() => {
         if (options.overview === "forecast") {
@@ -92,27 +85,6 @@ export default function Home() {
             setSelectedMonthEnd("01");
         }
     }, [options.overview]);
-
-    // 加载国家边界GeoJSON数据
-    useEffect(() => {
-        const fetchBoundary = async (country, file) => {
-            const response = await fetch(`/data/${file}`);
-            const data = await response.json();
-            setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
-        };
-
-        fetchBoundary("Cambodia", "Cambodia_boundary.geojson");
-        // fetchBoundary("myanmar", "myanmar_boundary.geojson");
-        // fetchBoundary("thailand", "thailand_boundary.geojson");
-    }, []);
-
-    // 国家边界样式
-    const countryStyle = (color) => ({
-        color: color,
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0
-    });
 
     // 根据选择的年月日，拼接selectedDate，用于传递日期选择信息
     useEffect(() => {
@@ -865,19 +837,13 @@ export default function Home() {
 
                     <DashMapTif
                         data={mapData}
+                        options={options}
                         selectedDate={selectedDate}
                         selectedFeature={selectedFeature}
                         setSelectedFeature={setSelectedFeature}
                         setSelectedProvince={setSelectedProvince}
                         setTimeSeries={setTimeSeries}
                     />
-                    {/* 渲染国家边界 */}
-                    {countryBoundaries.Cambodia && (
-                        <GeoJSON
-                            data={countryBoundaries.Cambodia}
-                            style={countryStyle("#FF5733")}
-                        />
-                    )}
                     <button
                         className="scroll-to-details-btn"
                         onClick={() =>
