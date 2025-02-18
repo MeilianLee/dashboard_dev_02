@@ -345,7 +345,7 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `no_data.json`;
+                        return `${region}_${varType}_${dateType}_${adminLevel}.json`;
                     }
                     if (dateType === "Monthly") {
                         return `${region}_${varType}_${overview}_monthly.geojson`;
