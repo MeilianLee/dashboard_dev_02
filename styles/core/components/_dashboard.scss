@@ -3,8 +3,8 @@
         display: flex;
         // height: 100vh; // 使地图和侧边栏共同占据整个屏幕高度
         display: flex;
-        margin-top: 50px;
-        height: calc(100vh - 50px);
+        margin-top: 70px;
+        height: calc(100vh - 70px);
     }
 
     .sidebar {
@@ -70,7 +70,7 @@
 
     .map-container {
         flex-grow: 1;
-        height: calc(100vh - 50px);
+        height: calc(100vh - 70px);
         position: relative;
 
         .scroll-to-details-btn {
@@ -112,7 +112,7 @@
 
     .error-popup {
         position: fixed;
-        top: 20px;
+        top: 90px;
         left: 50%;
         transform: translateX(-50%);
         background-color: rgba(255, 0, 0, 0.8);

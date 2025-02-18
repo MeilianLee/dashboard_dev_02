@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { Header } from "@components/Header";
+import { Footer } from "@components/Footer";
 
 // import "leaflet/dist/leaflet.css";
 
@@ -520,7 +521,7 @@ export default function Home() {
 
     return (
         <>
-            {/* <Header /> */}
+            <Header />
             <Head>
                 <meta
                     name="viewport"
@@ -954,6 +955,7 @@ export default function Home() {
                     )}
                 </div>
             </div>
+            {/* <Footer /> */}
 
             {/* 错误信息弹窗 */}
             {errorMessage && <div className="error-popup">{errorMessage}</div>}
