@@ -480,7 +480,7 @@ export default function handler(req, res) {
         overview === "hist" &&
         dateType === "Monthly"
     ) {
-        directory = "SPI_json_hist"; //SPI prov forecast has its own directory
+        directory = "SPI_json"; //SPI json has its own directory
     } else if (
         varType === "Yield" &&
         overview === "forecast" &&
