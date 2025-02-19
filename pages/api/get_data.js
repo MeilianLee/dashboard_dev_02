@@ -340,7 +340,7 @@ export default function handler(req, res) {
                         return `no_data.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_prov_${varType}_${overview}_monthly.geojson`; // data is named wrongly, country_monthly and prov_monthly are inversed!
+                        return `${region}_country_${varType}_hist_monthly.geojson`;
                     }
                 }
                 if (adminLevel === "Prov") {
@@ -363,7 +363,7 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Country") {
                     if (dateType === "Yearly") {
-                        return `${region}_country_${varType}_forecast_yearly.geojson`;
+                        return `${region}_country_${varType}_forecast_yearly.geojson`; // data is named wrongly, country_monthly and prov_monthly are inversed!
                     }
                     if (dateType === "Monthly") {
                         return `${region}_country_${varType}_forecast_monthly.geojson`;
