@@ -340,7 +340,7 @@ export default function handler(req, res) {
                         return `no_data.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_prov_${varType}_${overview}_monthly.geojson`;
+                        return `${region}_prov_${varType}_${overview}_monthly.geojson`; // data is named wrongly, country_monthly and prov_monthly are inversed!
                     }
                 }
                 if (adminLevel === "Prov") {
@@ -475,11 +475,7 @@ export default function handler(req, res) {
         overview === "forecast"
     ) {
         directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
-    } else if (
-        varType.startsWith("SPI") &&
-        overview === "hist" &&
-        dateType === "Monthly"
-    ) {
+    } else if (varType.startsWith("SPI") && adminLevel !== "Grid") {
         directory = "SPI_json"; //SPI json has its own directory
     } else if (
         varType === "Yield" &&
