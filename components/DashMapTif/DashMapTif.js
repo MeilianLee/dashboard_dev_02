@@ -43,7 +43,13 @@ export default function DashMapTif({
 
     //根据地块value值来动态设置fill color
     const styleGeoJSON = (feature) => {
-        const value = feature.properties[`y${selectedDate}`] ?? 0; // 获取选中日期的值
+        // const value = feature.properties[`y${selectedDate}`] ?? 0; // 获取选中日期的值
+
+        const baseKey = `y${selectedDate}`;
+        const value =
+            feature.properties[`${baseKey}_0`] ??
+            feature.properties[baseKey] ??
+            0; // 先尝试 ensemble 0 的值，再尝试无 ensemble 的值
 
         // 根据 options.varType 选择颜色函数
         const colorFunction = data_url.data_vartype.startsWith("SPI")
