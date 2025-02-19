@@ -329,7 +329,7 @@ export default function handler(req, res) {
             if (overview === "hist") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `no_data.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
                         return `${region}_${varType}_${selectedDate}.tif`;
