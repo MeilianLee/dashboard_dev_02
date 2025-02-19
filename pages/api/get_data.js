@@ -383,17 +383,17 @@ export default function handler(req, res) {
         // map list from varType to fileName
         const fileMappings = {
             forecast_Grid_Yearly: {
-                Yield: `SEA_rice_yield.tif`,
+                Yield: `${region}_yield_yearly_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             forecast_Grid_Monthly: {
-                Yield: `SEA_rice_yield.tif`,
+                Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             forecast_Country_Yearly: {
-                Yield: `${region}_${selectedDate}.geojson`,
+                Yield: `${region}_country_2025.geojson`,
                 Prcp: `${region}_country_Precipitation_annual.geojson`,
                 Temp: `${region}_country_Temperature_annual.geojson`
             },
@@ -403,22 +403,22 @@ export default function handler(req, res) {
                 Temp: `${region}_country_Temperature_monthly.geojson`
             },
             forecast_Prov_Yearly: {
-                Yield: `no_data.geojson`,
+                Yield: `${region}_prov_2025.geojson`,
                 Prcp: `${region}_Precipitation_annual.geojson`,
                 Temp: `${region}_Temperature_annual.geojson`
             },
             forecast_Prov_Monthly: {
-                Yield: `no_data.geojson`,
+                Yield: `${region}_prov_2025_monthly.geojson`,
                 Prcp: `${region}_Precipitation_monthly.geojson`,
                 Temp: `${region}_Temperature_monthly.geojson`
             },
             hist_Grid_Yearly: {
-                Yield: `currently_no_data_for_hist_Grid_Yearly.json`,
+                Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
-                Yield: `currently_no_data_for_hist_Grid_Monthly.json`,
+                Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
@@ -465,6 +465,8 @@ export default function handler(req, res) {
         directory = "weatherGrid"; //Prcp raster forecast has its own directory
     } else if (varType === "Temp" && adminLevel === "Grid") {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
+    } else if (varType === "Yield" && adminLevel === "Grid") {
+        directory = "yield_grid"; //Yield raster forecast has its own directory
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
         directory = "SPI_grid"; //SPI raster data has its own directory
     } else if (
