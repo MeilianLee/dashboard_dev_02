@@ -561,6 +561,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                         if (
                             pixelValue === 0 ||
                             pixelValue === -99999 ||
+                            pixelValue === 62297.156 ||
                             isNaN(pixelValue)
                         ) {
                             return null;
