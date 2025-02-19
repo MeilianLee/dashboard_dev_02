@@ -51,6 +51,8 @@ export default function DashMapTif({
             feature.properties[baseKey] ??
             0; // 先尝试 ensemble 0 的值，再尝试无 ensemble 的值
 
+        console.log("feature value:", { value });
+
         // 根据 options.varType 选择颜色函数
         const colorFunction = data_url.data_vartype.startsWith("SPI")
             ? getColor
@@ -308,7 +310,11 @@ function GeoJSONLayer({
         };
 
         const styleGeoJSON = (feature) => {
-            const value = feature.properties[`y${selectedDate}`] ?? 0; // 获取选中日期的值
+            const baseKey = `y${selectedDate}`;
+            const value =
+                feature.properties[`${baseKey}_0`] ??
+                feature.properties[baseKey] ??
+                0; // 先尝试 ensemble 0 的值，再尝试无 ensemble 的值
 
             // 根据 options.varType 选择颜色函数
             const colorFunction = data_url.data_vartype.startsWith("SPI")
@@ -385,7 +391,9 @@ function GeoJSONLayer({
                     onEachFeature: function (feature, layer) {
                         // 获取当前地块的值和名称
                         const value =
-                            feature.properties[`y${selectedDate}`] ?? 0;
+                            feature.properties[`y${selectedDate}_0`] ??
+                            feature.properties[`y${selectedDate}`] ??
+                            0;
                         const name = feature.properties.name;
 
                         // 根据 options.varType 选择颜色函数
@@ -1274,54 +1282,3 @@ function interpolateColor(color1, color2, factor) {
 
     return `rgb(${r}, ${g}, ${b})`;
 }
-
-// const MapComponent = ({ map, geojsonData, geoRasterData }) => {
-//     const getColor = (pixelValue) => {
-//         // Define your color scale function here
-//         if (pixelValue > 50) return "red";
-//         if (pixelValue > 30) return "orange";
-//         if (pixelValue > 10) return "yellow";
-//         return "green";
-//     };
-
-//     useEffect(() => {
-//         if (map && geoRasterData) {
-//             parseGeoraster(geoRasterData).then((georaster) => {
-//                 const layer = new GeoRasterLayer({
-//                     georaster,
-//                     opacity: 0.7,
-//                     pixelValuesToColorFn: (values) => {
-//                         const pixelValue = values[0];
-//                         if (pixelValue === 0 || isNaN(pixelValue)) {
-//                             return null;
-//                         }
-//                         return getColor(pixelValue);
-//                     },
-//                     resolution: 64,
-//                 });
-
-//                 layer.addTo(map);
-//                 map.fitBounds(layer.getBounds());
-//             });
-//         }
-//     }, [map, geoRasterData]);
-
-//     return (
-//         <>
-//             {/* Base Tile Layer */}
-//             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-
-//             {/* Conditional Rendering of GeoJSON or GeoTIFF */}
-//             {geojsonData && !geoRasterData && (
-//                 <GeoJSON
-//                     key={`geojson-${Date.now()}`}
-//                     data={geojsonData}
-//                     style={styleGeoJSON} // Define your styleGeoJSON function
-//                     onEachFeature={handleEachFeature} // Define your handleEachFeature function
-//                 />
-//             )}
-//         </>
-//     );
-// };
-
-// export default dynamic(() => Promise.resolve(MapComponent), { ssr: false });
