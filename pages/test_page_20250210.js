@@ -859,10 +859,9 @@ export default function Home() {
 
                 {/* 地图容器 */}
                 <div className="map-container">
+                    {/* date title */}
                     <div className="date-mainshow-container">
-                        <p>
-                            {selectedYear}/{selectedMonth}
-                        </p>
+                        <p>{formatDateDisplay(selectedDate)}</p>
                     </div>
 
                     <DashMapTif
@@ -950,6 +949,40 @@ export default function Home() {
         </>
     );
 }
+
+const formatDateDisplay = (selectedDate) => {
+    if (!selectedDate) return "Unknown Date";
+
+    const year = selectedDate.slice(0, 4);
+    const month = selectedDate.length >= 6 ? selectedDate.slice(4, 6) : null;
+    const day = selectedDate.length === 8 ? selectedDate.slice(6, 8) : null;
+
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ];
+    const monthFormatted = month ? monthNames[parseInt(month, 10) - 1] : "";
+
+    if (selectedDate.length === 4) {
+        return `${year}`;
+    } else if (selectedDate.length === 6) {
+        return `${monthFormatted}, ${year}`;
+    } else if (selectedDate.length === 8) {
+        return `${monthFormatted} ${parseInt(day, 10)}, ${year}`;
+    }
+
+    return "Invalid Date";
+};
 
 // sample data for forecast time seried plot: forecast data should look like this! Historical data
 // and forecast data and selected current data should all be contained inside.
