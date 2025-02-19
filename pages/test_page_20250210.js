@@ -45,8 +45,8 @@ export default function Home() {
         region: "SEA", // Region
         overview: "forecast", // Overview
         adminLevel: "Grid", // Administrative Level
-        dateType: "Monthly", // Date
-        date: "202502" // Date Picker Value
+        dateType: "Yearly", // Date
+        date: "2025" // Date Picker Value
     });
 
     const geoJsonLayerRef = useRef(null); // 引用 GeoJSON 图层

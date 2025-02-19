@@ -413,7 +413,7 @@ export default function handler(req, res) {
                 Temp: `${region}_Temperature_monthly.geojson`
             },
             hist_Grid_Yearly: {
-                Yield: `${region}_yield_monthly_${selectedDate}.tif`,
+                Yield: `${region}_yield_yearly_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
