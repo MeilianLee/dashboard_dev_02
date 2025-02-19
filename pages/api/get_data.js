@@ -363,10 +363,10 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Country") {
                     if (dateType === "Yearly") {
-                        return `no_data.geojson`;
+                        return `${region}_country_${varType}_forecast_yearly.geojson`;
                     }
                     if (dateType === "Monthly") {
-                        return `no_data.geojson`;
+                        return `${region}_country_${varType}_forecast_monthly.geojson`;
                     }
                 }
                 if (adminLevel === "Prov") {
