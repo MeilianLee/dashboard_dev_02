@@ -1,0 +1,54 @@
+@layer components {
+    .variable-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        // padding: 6px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        width: 100%;
+
+        .variable-section {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #ffffff;
+            padding: 10px;
+
+            .section-title {
+                font-size: 1rem;
+                font-weight: bold;
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                color: #333;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .variable-list {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .variable-item {
+                    background: #fff;
+                    border: none;
+                    padding: 8px 6px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-align: left;
+                    font-size: 1rem;
+                    transition: background 0.2s ease-in-out;
+
+                    &:hover {
+                        background: #edf2f7;
+                    }
+
+                    &.selected {
+                        background: #2b6cb0;
+                        color: #fff;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

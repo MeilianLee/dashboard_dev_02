@@ -181,14 +181,14 @@ export default function DashMapTif({
             key={`map-${data.url}`}
             center={[20, 93]}
             zoom={5}
-            minZoom={4} // 设置最小缩放
-            maxZoom={11} // 设置最大缩放
+            minZoom={5} // 设置最小缩放
+            maxZoom={10} // 设置最大缩放
             maxBounds={[
                 [-10, 20],
                 [40, 150]
             ]} // 设置拖拽边界（南西和东北角的坐标）
+            scrollWheelZoom={false}
             // style={{ height: "500px", width: "100%" }}
-            // id="map_container"
             className="map-container"
         >
             <TileLayer
@@ -680,6 +680,17 @@ function LegendControl({ data }) {
         },
         YieldProv: {
             title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
+            colors: [
+                "#00f", // Blue for 1°C (cool)
+                "#0099ff", // Light blue for 5°C
+                "#ffff00", // Yellow for 10°C
+                "#ffcc00", // Orange for 20°C
+                "#ff3300" // Red for 30°C (hot)],
+            ]
+        },
+        Prod: {
+            title: "Production (ton)",
             grades: [1, 3, 5, 7],
             colors: [
                 "#00f", // Blue for 1°C (cool)
