@@ -10,7 +10,9 @@
     .sidebar {
         width: max(300px, 18vw);
         background-color: #f8f9fa;
-        // overflow: hidden;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+
         transition: width 0.3s ease;
         overflow-y: auto;
 
@@ -33,6 +35,7 @@
         &.collapsed {
             width: 50px;
             overflow: hidden;
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
         }
 
         h2 {

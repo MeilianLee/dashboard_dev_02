@@ -7,6 +7,7 @@ import { Footer } from "@components/Footer";
 import { VariableSelector } from "@components/VariableSelector";
 import { DateSelector } from "@components/DateSelector";
 import { TimeIntervalSelector } from "@components/TimeIntervalSelector";
+import { DashTop } from "@components/DashTop";
 
 // import "leaflet/dist/leaflet.css";
 
@@ -419,7 +420,8 @@ export default function Home() {
 
     return (
         <>
-            <Header />
+            {/* <Header /> */}
+            <DashTop options={options} updateOption={updateOption} />
             <Head>
                 <meta
                     name="viewport"
@@ -496,7 +498,7 @@ export default function Home() {
                             </select>
                         </label>
 
-                        <label className="flex flex-col text-sm font-medium text-gray-700">
+                        {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Data Type:</span>
                             <select
                                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -508,7 +510,7 @@ export default function Home() {
                                 <option value="hist">Historical</option>
                                 <option value="forecast">Forecast</option>
                             </select>
-                        </label>
+                        </label> */}
 
                         <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Administrative Level:</span>
