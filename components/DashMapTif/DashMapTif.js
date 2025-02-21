@@ -1059,7 +1059,7 @@ function getColor(d) {
         ? "#d2691e" // Deep Orange - Severely Dry
         : d >= -10
         ? "#b22222" // Red - Extremely Dry
-        : "333"; // no data
+        : "#eee"; // no data
 }
 
 // OLD getColor() function

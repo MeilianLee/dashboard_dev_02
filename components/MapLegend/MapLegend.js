@@ -149,7 +149,7 @@ export const MapLegend = ({ data }) => {
                 };
 
                 const legendTexts = {
-                    D3: "Severly Dry",
+                    D3: "Extremely Dry",
                     D2: "Severely Dry",
                     D1: "Moderately Dry",
                     D0: "Near Normal",
