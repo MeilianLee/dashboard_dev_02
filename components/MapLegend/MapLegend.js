@@ -31,6 +31,7 @@ export const MapLegend = ({ data }) => {
                 "hsl(0, 100%, 50%)"
             ]
         },
+
         SPI: {
             title: "Drought Index",
             grades: [2, 1.5, 1, 0, -1, -1.5, -2],
@@ -39,7 +40,7 @@ export const MapLegend = ({ data }) => {
                 "#14713d",
                 "#3cb371",
                 "#98fb98",
-                "#FFF",
+                "#eee",
                 "#f5deb3",
                 "#d2691e",
                 "#b22222"

@@ -1094,12 +1094,14 @@ function getColor(d) {
         : d > 1
         ? "#98fb98" // Green - Moderately Wet
         : d >= -0.99
-        ? "#FFF" // Yellow - Near Normal
+        ? "#EEE" // Yellow - Near Normal
         : d >= -1.49
         ? "#f5deb3" // Orange - Moderately Dry
         : d >= -1.99
         ? "#d2691e" // Deep Orange - Severely Dry
-        : "#b22222"; // Red - Extremely Dry
+        : d >= -10
+        ? "#b22222" // Red - Extremely Dry
+        : "333"; // no data
 }
 
 // OLD getColor() function
