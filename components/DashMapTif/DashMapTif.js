@@ -51,7 +51,7 @@ export default function DashMapTif({
         const value =
             feature.properties[`${baseKey}_0`] ??
             feature.properties[baseKey] ??
-            0; // 先尝试 ensemble 0 的值，再尝试无 ensemble 的值
+            -99999; // 先尝试 ensemble 0 的值，再尝试无 ensemble 的值
 
         console.log("feature value:", { value });
 

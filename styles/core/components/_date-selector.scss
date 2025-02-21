@@ -1,4 +1,27 @@
 @layer components {
+    .dateType-selector-button {
+        width: 33%;
+        background: #fff;
+        border: 2px solid #eee;
+        border-radius: 6px;
+        padding: 8px 6px;
+        margin-bottom: 4px;
+        cursor: pointer;
+        text-align: center;
+        font-size: $base-size;
+        transition: background 0.2s ease-in-out;
+
+        &:hover {
+            background: #edf2f7;
+        }
+    }
+
+    .dateType-selector-button.active {
+        background: #2b6cb0;
+        color: #fff;
+        font-weight: bold;
+    }
+
     .date-mainshow-container {
         position: absolute;
         font-size: $h2-size;

@@ -10,11 +10,29 @@
     .sidebar {
         width: max(300px, 18vw);
         background-color: #f8f9fa;
-        overflow: hidden;
+        // overflow: hidden;
         transition: width 0.3s ease;
+        overflow-y: auto;
+
+        scrollbar-width: thin;
+        scrollbar-color: #555 #fff;
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2d336b;
+            border-radius: 2px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #fff;
+        }
 
         &.collapsed {
             width: 50px;
+            overflow: hidden;
         }
 
         h2 {

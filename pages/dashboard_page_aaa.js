@@ -444,13 +444,22 @@ export default function Home() {
                         }`}
                     >
                         {/* 起始日期选择 */}
-                        <DateSelector
+                        {/* <DateSelector
                             label="Date:"
                             selectedYear={selectedYear}
                             setSelectedYear={setSelectedYear}
                             selectedMonth={selectedMonth}
                             setSelectedMonth={setSelectedMonth}
                             options={options}
+                        /> */}
+                        <TimeIntervalSelector
+                            label="Date:"
+                            selectedYear={selectedYear}
+                            setSelectedYear={setSelectedYear}
+                            selectedMonth={selectedMonth}
+                            setSelectedMonth={setSelectedMonth}
+                            options={options}
+                            updateOption={updateOption}
                         />
 
                         {/* 结束日期选择 */}
@@ -516,7 +525,7 @@ export default function Home() {
                             </select>
                         </label>
 
-                        <label className="flex flex-col text-sm font-medium text-gray-700">
+                        {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Time Interval:</span>
                             <select
                                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -527,32 +536,11 @@ export default function Home() {
                             >
                                 <option value="Yearly">Yearly</option>
                                 <option value="Monthly">Monthly</option>
-                                {/* <option value="Daily">Daily</option> */}
                             </select>
-                        </label>
+                        </label> */}
 
                         {/* 年份选择 */}
                         {/* <label className="flex flex-col text-sm font-medium text-gray-700">
-                            <span>Select Year:</span>
-                            <select
-                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={selectedYear}
-                                onChange={(e) =>
-                                    setSelectedYear(e.target.value)
-                                }
-                            >
-                                {Array.from(
-                                    { length: 67 },
-                                    (_, i) => 1950 + i
-                                ).map((year) => (
-                                    <option key={year} value={year}>
-                                        {year}
-                                    </option>
-                                ))}
-                            </select>
-                        </label> */}
-                        {/* 年份选择 */}
-                        <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Select Year:</span>
                             <select
                                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -574,9 +562,9 @@ export default function Home() {
                                     ))
                                 )}{" "}
                             </select>
-                        </label>
+                        </label> */}
                         {/* 月份选择（仅当 Monthly 或 Daily 可见） */}
-                        {options.dateType !== "Yearly" && (
+                        {/* {options.dateType !== "Yearly" && (
                             <label className="flex flex-col text-sm font-medium text-gray-700">
                                 <span>Select Month:</span>
                                 <select
@@ -612,7 +600,7 @@ export default function Home() {
                                           ))}
                                 </select>
                             </label>
-                        )}
+                        )} */}
                     </div>
                 </div>
 
