@@ -686,9 +686,6 @@ export default function Home() {
                 </div>
             </div>
             {/* <Footer /> */}
-
-            {/* 错误信息弹窗 */}
-            {errorMessage && <div className="error-popup">{errorMessage}</div>}
         </>
     );
 }
