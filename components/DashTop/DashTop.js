@@ -19,7 +19,7 @@ export const DashTop = ({ options, updateOption }) => {
                         <Image
                             src="/rice_logo.png"
                             alt="logo"
-                            className="h-15 w-auto"
+                            className="h-14 w-auto"
                             height="60"
                             width="300"
                             priority

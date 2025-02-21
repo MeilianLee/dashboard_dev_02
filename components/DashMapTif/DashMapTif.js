@@ -45,8 +45,6 @@ export default function DashMapTif({
 
     //根据地块value值来动态设置fill color
     const styleGeoJSON = (feature) => {
-        // const value = feature.properties[`y${selectedDate}`] ?? 0; // 获取选中日期的值
-
         const baseKey = `y${selectedDate}`;
         const value =
             feature.properties[`${baseKey}_0`] ??
@@ -94,52 +92,6 @@ export default function DashMapTif({
             fillOpacity: 0.7 // 填充透明度
         };
     };
-
-    // 存储国家边界数据
-    // const [countryBoundaries, setCountryBoundaries] = useState({
-    //     cambodia: null,
-    //     laos: null,
-    //     thailand: null,
-    //     india: null,
-    //     myanmar: null,
-    //     thailand: null,
-    //     vietnam: null,
-    //     SEA: null
-    // });
-
-    // // 仅当 adminLevel === "Grid" 时加载国家边界数据
-    // useEffect(() => {
-    //     if (options.adminLevel !== "Grid") return;
-
-    //     const fetchBoundary = async (country, file) => {
-    //         const response = await fetch(`data/${file}`);
-    //         const data = await response.json();
-    //         console.log("fetched boundary data: ", { data });
-    //         setCountryBoundaries((prev) => ({ ...prev, [country]: data }));
-    //     };
-    //     fetchBoundary("cambodia", "cambodia_boundary.geojson");
-    //     fetchBoundary("laos", "laos_boundary.geojson");
-    //     fetchBoundary("thailand", "thailand_boundary.geojson");
-    //     fetchBoundary("india", "india_boundary.geojson");
-    //     fetchBoundary("myanmar", "myanmar_boundary.geojson");
-    //     fetchBoundary("vietnam", "vietnam_boundary.geojson");
-    //     fetchBoundary("SEA", "SEA_boundary.geojson");
-
-    //     console.log("CountryBoundaries: ", { countryBoundaries });
-    // }, [options.adminLevel]);
-
-    // // 只绘制当前 `region` 选择的国家边界
-    // const getSelectedBoundaries = () => {
-    //     if (options.region === "India") return [countryBoundaries.india];
-    //     if (options.region === "Myanmar") return [countryBoundaries.myanmar];
-    //     if (options.region === "Thailand") return [countryBoundaries.thailand];
-    //     if (options.region === "Cambodia") return [countryBoundaries.cambodia];
-    //     if (options.region === "Laos") return [countryBoundaries.laos];
-    //     if (options.region === "Vietnam") return [countryBoundaries.vietnam];
-    //     if (options.region === "SEA") return [countryBoundaries.SEA];
-
-    //     return [];
-    // };
 
     const [countryBoundaries, setCountryBoundaries] = useState(null); // 存储国家边界数据
 
@@ -243,6 +195,15 @@ function GeoJSONLayer({
     const highlightRef = useRef(null); // Create a ref to store the highlighted layer
     const geoJsonLayerRef = useRef(null); // Create a ref to store the GeoJSON layer
 
+    // 去除矩形框的尝试
+    const removeBoundingBox = () => {
+        map.eachLayer((layer) => {
+            if (layer instanceof L.Rectangle) {
+                map.removeLayer(layer);
+            }
+        });
+    };
+
     // Update GeoJSON data when selectedDate changes
     // useEffect(() => {
     //   if (data_url && selectedDate) {
@@ -262,18 +223,19 @@ function GeoJSONLayer({
 
     // START: 地块样式设置
     const handleFeatureClick = (feature, layer) => {
-        setSelectedFeature(feature); // 更新选中的地块
-        // Apply styling to highlight the feature
+        removeBoundingBox(); // **先移除所有 bounding box**
+        setSelectedFeature(feature);
+
         layer.setStyle({
-            color: "#EB5A3C", // Red border color
-            weight: 4, // Thicker border
-            opacity: 1 // Ensure visibility
+            color: "#EB5A3C", // 红色边框
+            weight: 4,
+            opacity: 1
         });
 
         // Ensure the layer is brought to the front
-        if (layer.bringToFront) {
-            layer.bringToFront();
-        }
+        // if (layer.bringToFront) {
+        //     layer.bringToFront();
+        // }
     };
     // 点击省份时处理时间序列数据
     const handleProvClickToGenerateTimeSeries = (feature) => {
@@ -310,7 +272,7 @@ function GeoJSONLayer({
         const highlightStyle = {
             weight: 3,
             color: "#ff0000",
-            dashArray: "",
+            dashArray: "-",
             fillOpacity: 0.7
         };
 
@@ -459,11 +421,6 @@ function GeoJSONLayer({
                             });
                         });
 
-                        // // 鼠标移出时恢复样式
-                        // layer.on("mouseout", () => {
-                        //     layer.setStyle(styleGeoJSON(feature));
-                        // });
-
                         // 移出取消
                         layer.on("mouseout", () => {
                             if (selectedFeature !== feature) {
@@ -474,6 +431,7 @@ function GeoJSONLayer({
 
                         // 点击选中
                         layer.on("click", () => {
+                            removeBoundingBox();
                             // 如果有其他选中的地块，先重置其样式
                             if (
                                 selectedFeature &&
