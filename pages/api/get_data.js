@@ -337,7 +337,7 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Country") {
                     if (dateType === "Yearly") {
-                        return `no_data.json`;
+                        return `${region}_country_${varType}_hist_yearly.geojson`;
                     }
                     if (dateType === "Monthly") {
                         return `${region}_country_${varType}_hist_monthly.geojson`;
@@ -371,10 +371,10 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_yearly.geojson`;
+                        return `${region}_${varType}_yearly.geojson`; // OK
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}.geojson`;
+                        return `${region}_${varType}.geojson`; //no data after Feb, strange
                     }
                 }
             }

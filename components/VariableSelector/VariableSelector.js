@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const VariableSelector = ({ selectedVar, updateOption }) => {
+    const [isProductionOpen, setProductionOpen] = useState(true);
+    const [isMeteorologyOpen, setMeteorologyOpen] = useState(true);
+
     const productionOptions = [
         { value: "Yield", label: "Rice Yield" },
         { value: "Prod", label: "Rice Production" }
@@ -18,40 +21,110 @@ export const VariableSelector = ({ selectedVar, updateOption }) => {
         <div className="variable-selector">
             {/* Production Section */}
             <div className="variable-section">
-                <h3 className="section-title">Production</h3>
-                <div className="variable-list">
-                    {productionOptions.map((opt) => (
-                        <button
-                            key={opt.value}
-                            className={`variable-item ${
-                                selectedVar === opt.value ? "selected" : ""
-                            }`}
-                            onClick={() => updateOption("varType", opt.value)}
-                        >
-                            {opt.label}
-                        </button>
-                    ))}
-                </div>
+                <button
+                    className="section-title"
+                    onClick={() => setProductionOpen(!isProductionOpen)}
+                >
+                    Production
+                    <span
+                        className={`toggle-icon ${
+                            isProductionOpen ? "open" : "closed"
+                        }`}
+                    >
+                        ▼
+                    </span>
+                </button>
+                {isProductionOpen && (
+                    <div className="variable-list">
+                        {productionOptions.map((opt) => (
+                            <button
+                                key={opt.value}
+                                className={`variable-item ${
+                                    selectedVar === opt.value ? "selected" : ""
+                                }`}
+                                onClick={() =>
+                                    updateOption("varType", opt.value)
+                                }
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Meteorology Section */}
             <div className="variable-section">
-                <h3 className="section-title">Meteorology</h3>
-                <div className="variable-list">
-                    {meteorologyOptions.map((opt) => (
-                        <button
-                            key={opt.value}
-                            className={`variable-item ${
-                                selectedVar === opt.value ? "selected" : ""
-                            }`}
-                            onClick={() => updateOption("varType", opt.value)}
-                        >
-                            {opt.label}
-                        </button>
-                    ))}
-                </div>
+                <button
+                    className="section-title"
+                    onClick={() => setMeteorologyOpen(!isMeteorologyOpen)}
+                >
+                    Meteorology
+                    <span
+                        className={`toggle-icon ${
+                            isMeteorologyOpen ? "open" : "closed"
+                        }`}
+                    >
+                        ▼
+                    </span>
+                </button>
+                {isMeteorologyOpen && (
+                    <div className="variable-list">
+                        {meteorologyOptions.map((opt) => (
+                            <button
+                                key={opt.value}
+                                className={`variable-item ${
+                                    selectedVar === opt.value ? "selected" : ""
+                                }`}
+                                onClick={() =>
+                                    updateOption("varType", opt.value)
+                                }
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
+
+        // <div className="variable-selector">
+        //     {/* Production Section */}
+        //     <div className="variable-section">
+        //         <h3 className="section-title">Production</h3>
+        //         <div className="variable-list">
+        //             {productionOptions.map((opt) => (
+        //                 <button
+        //                     key={opt.value}
+        //                     className={`variable-item ${
+        //                         selectedVar === opt.value ? "selected" : ""
+        //                     }`}
+        //                     onClick={() => updateOption("varType", opt.value)}
+        //                 >
+        //                     {opt.label}
+        //                 </button>
+        //             ))}
+        //         </div>
+        //     </div>
+
+        //     {/* Meteorology Section */}
+        //     <div className="variable-section">
+        //         <h3 className="section-title">Meteorology</h3>
+        //         <div className="variable-list">
+        //             {meteorologyOptions.map((opt) => (
+        //                 <button
+        //                     key={opt.value}
+        //                     className={`variable-item ${
+        //                         selectedVar === opt.value ? "selected" : ""
+        //                     }`}
+        //                     onClick={() => updateOption("varType", opt.value)}
+        //                 >
+        //                     {opt.label}
+        //                 </button>
+        //             ))}
+        //         </div>
+        //     </div>
+        // </div>
     );
 };
 

@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css";
 import georaster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
+import { MapLegend } from "@components/MapLegend";
+
 export default function DashMapTif({
     data,
     options,
@@ -179,13 +181,13 @@ export default function DashMapTif({
         <MapContainer
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
             key={`map-${data.url}`}
-            center={[20, 93]}
+            center={[18, 93]}
             zoom={5}
             minZoom={5} // 设置最小缩放
             maxZoom={10} // 设置最大缩放
             maxBounds={[
-                [-10, 20],
-                [40, 150]
+                [-5, 55],
+                [35, 125]
             ]} // 设置拖拽边界（南西和东北角的坐标）
             scrollWheelZoom={false}
             // style={{ height: "500px", width: "100%" }}
@@ -205,6 +207,7 @@ export default function DashMapTif({
             {data.datatype === "geojson" && (
                 <GeoJSONLayer
                     data_url={data}
+                    options={options}
                     selectedDate={selectedDate}
                     selectedFeature={selectedFeature}
                     setSelectedProvince={setSelectedProvince}
@@ -217,8 +220,9 @@ export default function DashMapTif({
                 <GeoTIFFLayer data_url={data} selectedDate={selectedDate} />
             )}
             <InfoControl />
-            <LegendControl data={data} />
+            {/* <LegendControl data={data} /> */}
             <ZoomControl /> {/* Add custom zoom control */}
+            <MapLegend data={data} />
         </MapContainer>
     );
 }
@@ -226,6 +230,7 @@ export default function DashMapTif({
 // GeoJSON Layer Component
 function GeoJSONLayer({
     data_url,
+    options,
     selectedDate,
     selectedFeature,
     setSelectedProvince,
@@ -431,7 +436,7 @@ function GeoJSONLayer({
 
                         // 绑定 Tooltip，显示地块名称和值
                         layer.bindTooltip(
-                            `<b>${name}</b><br>Value: ${
+                            `<b>${name}</b><br>${options.varType}: ${
                                 value !== undefined ? value.toFixed(2) : "N/A"
                             }`,
                             { direction: "top", sticky: true }
@@ -444,9 +449,6 @@ function GeoJSONLayer({
                             weight: 2, // 边框宽度
                             fillOpacity: 0.7, // 填充透明度
                             dashArray: "3"
-                            // color: "#666",
-                            // weight: 2,
-                            //
                         });
 
                         // Hover 高亮

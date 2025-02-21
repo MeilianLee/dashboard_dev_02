@@ -5,6 +5,7 @@ import { Header } from "@components/Header";
 import { Footer } from "@components/Footer";
 
 import { VariableSelector } from "@components/VariableSelector";
+import { DateSelector } from "@components/DateSelector";
 
 // import "leaflet/dist/leaflet.css";
 
@@ -371,135 +372,41 @@ export default function Home() {
         // setTimeSeries(timeSeriesData);
     };
 
-    // START: 颜色映射函数，将值映射到颜色范围
-    const getColor = (value) => {
-        const min = -2; // 假设值的最小值
-        const max = 2; // 假设值的最大值
-
-        if (value === undefined || isNaN(value)) return "#ccc"; // 缺失数据用灰色
-
-        // 归一化数值到 [0, 1]
-        const ratio = (value - min) / (max - min);
-        const clampedRatio = Math.max(0, Math.min(1, ratio)); // 确保在 [0, 1] 范围内
-
-        // 生成颜色 (从蓝色到红色的渐变)
-        // const r = Math.floor(255 * (1 - clampedRatio));
-        // const g = 180;
-        // const b = Math.floor(255 * clampedRatio);
-        // return `rgb(${r}, ${g}, ${b})`;
-        // Ensure value is within the defined range
-        if (value < min) value = min;
-        if (value > max) value = max;
-
-        // Assign colors based on value ranges
-        if (value > -0.5) return "#fff"; // Greater than -0.5
-        if ((value > -0.8) & (value <= -0.5)) return "#FFFF00"; // Greater than -0.8
-        if ((value > -1.3) & (value <= -0.8)) return "#FCD37F"; // Greater than -1.3
-        if ((value > -1.6) & (value <= -1.3)) return "#FFAA00"; // Greater than -1.6
-        if ((value > -2) & (value <= -1.6)) return "#E60000"; // Greater than -2
-        if (value <= -2) return "#730000"; // Less than or equal to -2
-
-        return "#fff"; // Default color (should not reach here)
-    };
-    // END: 颜色映射函数，将值映射到颜色范围
-
     // START: 地块样式设置
-    const handleFeatureClick = (feature, layer) => {
-        setSelectedFeature(feature); // 更新选中的地块
-        layer.setStyle({
-            color: "#EB5A3C", // 选中后的边框颜色
-            weight: 4
-        });
+    // const handleFeatureClick = (feature, layer) => {
+    //     setSelectedFeature(feature); // 更新选中的地块
+    //     layer.setStyle({
+    //         color: "#EB5A3C", // 选中后的边框颜色
+    //         weight: 4
+    //     });
 
-        // layer.bringToFront();
-    };
+    //     // layer.bringToFront();
+    // };
 
-    const resetFeatureStyle = (layer, feature) => {
-        // 恢复默认样式
-        layer.setStyle({
-            color: "#666",
-            weight: 2,
-            dashArray: "3"
-        });
-    };
+    // const resetFeatureStyle = (layer, feature) => {
+    //     // 恢复默认样式
+    //     layer.setStyle({
+    //         color: "#666",
+    //         weight: 2,
+    //         dashArray: "3"
+    //     });
+    // };
 
-    //根据地块value值来动态设置fill color
-    const styleGeoJSON = (feature) => {
-        const value = feature.properties[`y${selectedDate}`]; // 获取选中日期的值
-        return {
-            fillColor: getColor(value), // 动态设置填充颜色
-            color: "#666", // 边框颜色
-            weight: 2, // 边框宽度
-            dashArray: "3",
-            fillOpacity: 0.7 // 填充透明度
-        };
-    };
-    // console.log("georaster data:", geoRasterData.georaster.values);
-    // const validValues = flattenedValues.filter(value => value !== -999000000);
+    // //根据地块value值来动态设置fill color
+    // const styleGeoJSON = (feature) => {
+    //     const value = feature.properties[`y${selectedDate}`]; // 获取选中日期的值
+    //     return {
+    //         fillColor: getColor(value), // 动态设置填充颜色
+    //         color: "#666", // 边框颜色
+    //         weight: 2, // 边框宽度
+    //         dashArray: "3",
+    //         fillOpacity: 0.7 // 填充透明度
+    //     };
+    // };
 
     // END: 地块样式设置
 
     // START: mouse in, mouse out, click effects
-    // 处理所有鼠标移入，移出，点击地块的效果
-
-    // note on 2025-02-10: handleEachFeature() is repleced by the GeoJSONLayer() in /component/DashMapTif/DashMapTif.js
-    // so it is currently not needed here, but it is still considered to remain it, tempororally
-    const handleEachFeature = (feature, layer) => {
-        // 获取当前地块的值和名称
-        const value = feature.properties[`y${selectedDate}`];
-        const name = feature.properties.name;
-
-        // 绑定 Tooltip，显示地块名称和值
-        layer.bindTooltip(
-            `<b>${name}</b><br>Value: ${
-                value !== undefined ? value.toFixed(2) : "N/A"
-            }`,
-            { direction: "top", sticky: true }
-        );
-
-        // 默认样式
-        layer.setStyle({
-            fillColor: getColor(value), // 动态设置填充颜色
-            color: "#666", // 边框颜色
-            weight: 2, // 边框宽度
-            fillOpacity: 0.7, // 填充透明度
-            dashArray: "3"
-            // color: "#666",
-            // weight: 2,
-            //
-        });
-
-        // Hover 高亮
-        layer.on("mouseover", () => {
-            layer.setStyle({
-                color: "#EB5A3C", // Hover 时边框颜色
-                weight: 4
-            });
-        });
-
-        // // 鼠标移出时恢复样式
-        // layer.on("mouseout", () => {
-        //     layer.setStyle(styleGeoJSON(feature));
-        // });
-
-        // 移出取消
-        layer.on("mouseout", () => {
-            if (selectedFeature !== feature) {
-                layer.setStyle(styleGeoJSON(feature));
-                // resetFeatureStyle(layer, feature);
-            }
-        });
-
-        // 点击选中
-        layer.on("click", () => {
-            // 如果有其他选中的地块，先重置其样式
-            if (selectedFeature && selectedFeature !== feature) {
-                resetFeatureStyle(layer, selectedFeature); // 重置上一个选中地块的样式
-            }
-            handleFeatureClick(feature, layer); // 高亮当前选中地块
-            handleProvClickToGenerateTimeSeries(feature);
-        });
-    };
 
     useEffect(() => {
         // Update card info based on currData
@@ -535,6 +442,25 @@ export default function Home() {
                             sidebarTextVisible ? "visible" : "hidden"
                         }`}
                     >
+                        {/* 起始日期选择 */}
+                        <DateSelector
+                            label="Start Date:"
+                            selectedYear={selectedYear}
+                            setSelectedYear={setSelectedYear}
+                            selectedMonth={selectedMonth}
+                            setSelectedMonth={setSelectedMonth}
+                            options={options}
+                        />
+
+                        {/* 结束日期选择 */}
+                        <DateSelector
+                            label="End Date:"
+                            selectedYear={selectedYearEnd}
+                            setSelectedYear={setSelectedYearEnd}
+                            selectedMonth={selectedMonthEnd}
+                            setSelectedMonth={setSelectedMonthEnd}
+                            options={options}
+                        />
                         {/* 起始日期选择 */}
                         {/* <div className="date-picker">
                             <label className="text-sm font-medium text-gray-700 date-selector-text-box">
