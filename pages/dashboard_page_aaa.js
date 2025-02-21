@@ -6,6 +6,7 @@ import { Footer } from "@components/Footer";
 
 import { VariableSelector } from "@components/VariableSelector";
 import { DateSelector } from "@components/DateSelector";
+import { TimeIntervalSelector } from "@components/TimeIntervalSelector";
 
 // import "leaflet/dist/leaflet.css";
 
@@ -444,7 +445,7 @@ export default function Home() {
                     >
                         {/* 起始日期选择 */}
                         <DateSelector
-                            label="Start Date:"
+                            label="Date:"
                             selectedYear={selectedYear}
                             setSelectedYear={setSelectedYear}
                             selectedMonth={selectedMonth}
@@ -453,134 +454,15 @@ export default function Home() {
                         />
 
                         {/* 结束日期选择 */}
-                        <DateSelector
+                        {/* <DateSelector
                             label="End Date:"
                             selectedYear={selectedYearEnd}
                             setSelectedYear={setSelectedYearEnd}
                             selectedMonth={selectedMonthEnd}
                             setSelectedMonth={setSelectedMonthEnd}
                             options={options}
-                        />
-                        {/* 起始日期选择 */}
-                        {/* <div className="date-picker">
-                            <label className="text-sm font-medium text-gray-700 date-selector-text-box">
-                                Start Date:
-                            </label>
-                            <select
-                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={selectedYear}
-                                onChange={(e) =>
-                                    setSelectedYear(e.target.value)
-                                }
-                            >
-                                {options.overview === "forecast" ? (
-                                    <option value="2025">2025</option>
-                                ) : (
-                                    Array.from(
-                                        { length: 67 },
-                                        (_, i) => 1950 + i
-                                    ).map((year) => (
-                                        <option key={year} value={year}>
-                                            {year}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                            {options.dateType !== "Yearly" && (
-                                <select
-                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={selectedMonth}
-                                    onChange={(e) =>
-                                        setSelectedMonth(
-                                            e.target.value.padStart(2, "0")
-                                        )
-                                    }
-                                >
-                                    {options.overview === "forecast"
-                                        ? [
-                                              "02",
-                                              "03",
-                                              "04",
-                                              "05",
-                                              "06",
-                                              "07"
-                                          ].map((month) => (
-                                              <option key={month} value={month}>
-                                                  {month}
-                                              </option>
-                                          ))
-                                        : Array.from({ length: 12 }, (_, i) =>
-                                              (i + 1)
-                                                  .toString()
-                                                  .padStart(2, "0")
-                                          ).map((month) => (
-                                              <option key={month} value={month}>
-                                                  {month}
-                                              </option>
-                                          ))}
-                                </select>
-                            )}
-                        </div> */}
-                        {/* 结束日期选择 */}
-                        {/* <div className="date-picker">
-                            <label className="text-sm font-medium text-gray-700 date-selector-text-box">
-                                End Date:
-                            </label>
-                            <select
-                                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={selectedYearEnd}
-                                onChange={(e) =>
-                                    setSelectedYearEnd(e.target.value)
-                                }
-                            >
-                                {options.overview === "forecast" ? (
-                                    <option value="2025">2025</option>
-                                ) : (
-                                    Array.from(
-                                        { length: 67 },
-                                        (_, i) => 1950 + i
-                                    ).map((year) => (
-                                        <option key={year} value={year}>
-                                            {year}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                            {options.dateType !== "Yearly" && (
-                                <select
-                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={selectedMonthEnd}
-                                    onChange={(e) =>
-                                        setSelectedMonthEnd(
-                                            e.target.value.padStart(2, "0")
-                                        )
-                                    }
-                                >
-                                    {options.overview === "forecast"
-                                        ? [
-                                              "02",
-                                              "03",
-                                              "04",
-                                              "05",
-                                              "06",
-                                              "07"
-                                          ].map((month) => (
-                                              <option key={month} value={month}>
-                                                  {month}
-                                              </option>
-                                          ))
-                                        : Array.from({ length: 12 }, (_, i) =>
-                                              (i + 1)
-                                                  .toString()
-                                                  .padStart(2, "0")
-                                          ).map((month) => (
-                                              <option key={month} value={month}>
-                                                  {month}
-                                              </option>
-                                          ))}
-                                </select>
-                            )}
-                        </div> */}
+                        /> */}
+
                         <VariableSelector
                             selectedVar={options.varType}
                             updateOption={updateOption}
@@ -786,38 +668,31 @@ export default function Home() {
                     )}
                 </div>
                 <div className="chart-panel">
-                    {selectedProvince && options.adminLevel ? (
+                    <>
+                        <h2>
+                            Selected {options.adminLevel}: {selectedProvince}
+                        </h2>
+                        {/* <ChartComponent
+                                data={sampleData}
+                                options={options}
+                            /> */}
+                        <ChartComponent data={timeSeries} options={options} />
+                    </>
+
+                    {/* selectedProvince && options.adminLevel ? (
                         <>
                             <h2>
                                 Selected {options.adminLevel}:{" "}
                                 {selectedProvince}
                             </h2>
-                            <h5>
-                                More details showing and plots are under
-                                development
-                            </h5>
-                            <p>
-                                Please click "Update Chart" after you switch
-                                some options
-                            </p>
-                            {/* <ChartComponent data={timeSeries} /> */}
-                            {/* this is for sample plot, replace the data and options with your real data
-                            and options when they are prepared */}
-                            {/* <ChartComponent
-                                data={sampleData}
-                                options={options}
-                            /> */}
                             <ChartComponent
                                 data={timeSeries}
                                 options={options}
                             />
                         </>
                     ) : (
-                        <p>
-                            Select a province on the map to see time series
-                            data.
-                        </p>
-                    )}
+                        <p></p>
+                    ) */}
                 </div>
             </div>
             {/* <Footer /> */}

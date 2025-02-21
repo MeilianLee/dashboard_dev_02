@@ -221,7 +221,7 @@ export default function DashMapTif({
             )}
             <InfoControl />
             {/* <LegendControl data={data} /> */}
-            <ZoomControl /> {/* Add custom zoom control */}
+            {/* <ZoomControl /> Add custom zoom control */}
             <MapLegend data={data} />
         </MapContainer>
     );
@@ -562,8 +562,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                                 : values[bandIndex];
                         if (
                             pixelValue === 0 ||
-                            pixelValue === -99999 ||
-                            pixelValue === 62297.156 ||
+                            pixelValue < -9999 ||
                             isNaN(pixelValue)
                         ) {
                             return null;
@@ -641,7 +640,13 @@ function LegendControl({ data }) {
         PrcpProvMonthly: {
             title: "Precipitation (mm)",
             grades: [0, 100, 200, 300, 400, 500],
-            colors: ["hsl(200, 100%, 50%)", "hsl(0, 100%, 50%)"]
+            colors: [
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
+            ]
         },
         SPI: {
             title: "SPI",

@@ -5,8 +5,8 @@ export const VariableSelector = ({ selectedVar, updateOption }) => {
     const [isMeteorologyOpen, setMeteorologyOpen] = useState(true);
 
     const productionOptions = [
-        { value: "Yield", label: "Rice Yield" },
-        { value: "Prod", label: "Rice Production" }
+        { value: "Yield", label: "Rice Yield" }
+        // { value: "Prod", label: "Rice Production" }
     ];
     const meteorologyOptions = [
         { value: "SPI1", label: "Drought Index (1 month)" },

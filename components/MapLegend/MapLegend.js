@@ -9,8 +9,30 @@ export const MapLegend = ({ data }) => {
             grades: [0, 200, 400, 600, 800, 1000],
             colors: ["#0033FF", "#0099FF", "#00FF99", "#FFFF00", "#FF3300"]
         },
+        PrcpProv: {
+            title: "Precipitation (mm)",
+            grades: [0, 600, 1200, 1800, 2400, 3000],
+            colors: [
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
+            ]
+        },
+        PrcpProvMonthly: {
+            title: "Precipitation (mm)",
+            grades: [0, 100, 200, 300, 400, 500],
+            colors: [
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
+            ]
+        },
         SPI: {
-            title: "SPI",
+            title: "Drought Index",
             grades: [2, 1.5, 1, 0, -1, -1.5, -2],
             labels: ["W3", "W2", "W1", "D0", "D1", "D2", "D3"],
             colors: [
@@ -35,6 +57,43 @@ export const MapLegend = ({ data }) => {
                 "#E67E22",
                 "#C0392B"
             ]
+        },
+        Yield: {
+            title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
+            colors: [
+                "#00f", // Blue for 1°C (cool)
+                "#0099ff", // Light blue for 5°C
+                "#ffff00", // Yellow for 10°C
+                "#ffcc00", // Orange for 20°C
+                "#ff3300" // Red for 30°C (hot)],
+            ]
+        },
+        YieldProv: {
+            title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
+            colors: [
+                "#00f", // Blue for 1°C (cool)
+                "#0099ff", // Light blue for 5°C
+                "#ffff00", // Yellow for 10°C
+                "#ffcc00", // Orange for 20°C
+                "#ff3300" // Red for 30°C (hot)],
+            ]
+        },
+        Prod: {
+            title: "Production (ton)",
+            grades: [1, 3, 5, 7],
+            colors: [
+                "#00f", // Blue for 1°C (cool)
+                "#0099ff", // Light blue for 5°C
+                "#ffff00", // Yellow for 10°C
+                "#ffcc00", // Orange for 20°C
+                "#ff3300" // Red for 30°C (hot)],
+            ]
+        },
+        SMPct: {
+            title: "SMPct",
+            grades: [20, 40, 60, 80]
         }
     };
 
