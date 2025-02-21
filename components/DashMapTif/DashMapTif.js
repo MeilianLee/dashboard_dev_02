@@ -531,7 +531,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                 });
 
                 layer.addTo(map);
-                map.fitBounds(layer.getBounds());
+                // map.fitBounds(layer.getBounds());
             } catch (error) {
                 console.error("Error loading GeoTIFF data:", error);
             }
