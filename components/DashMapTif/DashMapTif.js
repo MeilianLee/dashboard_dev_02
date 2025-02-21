@@ -135,7 +135,7 @@ export default function DashMapTif({
             key={`map-${data.url}`}
             center={[18, 93]}
             zoom={5}
-            minZoom={5} // 设置最小缩放
+            minZoom={4} // 设置最小缩放
             maxZoom={10} // 设置最大缩放
             maxBounds={[
                 [-5, 55],
