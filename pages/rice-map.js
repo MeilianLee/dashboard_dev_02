@@ -50,8 +50,8 @@ export default function Home() {
         region: "SEA", // Region
         overview: "forecast", // Overview
         adminLevel: "Grid", // Administrative Level
-        dateType: "Yearly", // Date
-        date: "2025" // Date Picker Value
+        dateType: "Monthly", // Date
+        date: "202504" // Date Picker Value
     });
 
     const geoJsonLayerRef = useRef(null); // 引用 GeoJSON 图层
@@ -82,7 +82,7 @@ export default function Home() {
             setSelectedYear("2025");
             setSelectedMonth("02");
             setSelectedYearEnd("2025");
-            setSelectedMonthEnd("02");
+            setSelectedMonthEnd("04");
         }
         if (options.overview === "hist") {
             setSelectedYear("2000");
