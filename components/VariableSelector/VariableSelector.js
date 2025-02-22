@@ -25,7 +25,7 @@ export const VariableSelector = ({ selectedVar, updateOption }) => {
                     className="section-title"
                     onClick={() => setProductionOpen(!isProductionOpen)}
                 >
-                    Production
+                    Rice
                     <span
                         className={`toggle-icon ${
                             isProductionOpen ? "open" : "closed"
