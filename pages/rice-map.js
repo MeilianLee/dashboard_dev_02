@@ -80,14 +80,14 @@ export default function Home() {
     useEffect(() => {
         if (options.overview === "forecast") {
             setSelectedYear("2025");
-            setSelectedMonth("02");
+            setSelectedMonth("04");
             setSelectedYearEnd("2025");
             setSelectedMonthEnd("04");
         }
         if (options.overview === "hist") {
             setSelectedYear("2000");
             setSelectedMonth("01");
-            setSelectedYearEnd("200");
+            setSelectedYearEnd("2000");
             setSelectedMonthEnd("01");
         }
     }, [options.overview]);
