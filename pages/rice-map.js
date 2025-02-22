@@ -7,6 +7,7 @@ import { Footer } from "@components/Footer";
 import { VariableSelector } from "@components/VariableSelector";
 import { DateSelector } from "@components/DateSelector";
 import { TimeIntervalSelector } from "@components/TimeIntervalSelector";
+import { AdminLevelSelector } from "@components/AdminLevelSelector";
 import { DashTop } from "@components/DashTop";
 
 // import "leaflet/dist/leaflet.css";
@@ -75,22 +76,6 @@ export default function Home() {
     const [selectedYearEnd, setSelectedYearEnd] = useState("2000");
     const [selectedMonthEnd, setSelectedMonthEnd] = useState("01");
     const [selectedDayEnd, setSelectedDayEnd] = useState("01"); // 默认日
-
-    // 当切换成forecast 模式时，自动设置日期数据
-    useEffect(() => {
-        if (options.overview === "forecast") {
-            setSelectedYear("2025");
-            setSelectedMonth("04");
-            setSelectedYearEnd("2025");
-            setSelectedMonthEnd("04");
-        }
-        if (options.overview === "hist") {
-            setSelectedYear("2000");
-            setSelectedMonth("01");
-            setSelectedYearEnd("2000");
-            setSelectedMonthEnd("01");
-        }
-    }, [options.overview]);
 
     // 根据选择的年月日，拼接selectedDate，用于传递日期选择信息
     useEffect(() => {
@@ -421,7 +406,12 @@ export default function Home() {
     return (
         <>
             {/* <Header /> */}
-            <DashTop options={options} updateOption={updateOption} />
+            <DashTop
+                options={options}
+                updateOption={updateOption}
+                setSelectedYear={setSelectedYear}
+                setSelectedMonth={setSelectedMonth}
+            />
             <Head>
                 <meta
                     name="viewport"
@@ -464,6 +454,16 @@ export default function Home() {
                             updateOption={updateOption}
                         />
 
+                        <AdminLevelSelector
+                            label="Date:"
+                            selectedYear={selectedYear}
+                            setSelectedYear={setSelectedYear}
+                            selectedMonth={selectedMonth}
+                            setSelectedMonth={setSelectedMonth}
+                            options={options}
+                            updateOption={updateOption}
+                        />
+
                         {/* 结束日期选择 */}
                         {/* <DateSelector
                             label="End Date:"
@@ -479,7 +479,7 @@ export default function Home() {
                             updateOption={updateOption}
                         />
 
-                        <label className="flex flex-col text-sm font-medium text-gray-700">
+                        {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Region:</span>
                             <select
                                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -490,13 +490,12 @@ export default function Home() {
                             >
                                 <option value="Thailand">Thailand</option>
                                 <option value="Cambodia">Cambodia</option>
-                                {/*<option value="India">India</option> */}
                                 <option value="Laos">Laos</option>
                                 <option value="Myanmar">Myanmar</option>
                                 <option value="Vietnam">Vietnam</option>
                                 <option value="SEA">Southeast Asia</option>
                             </select>
-                        </label>
+                        </label> */}
 
                         {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Data Type:</span>
@@ -512,7 +511,7 @@ export default function Home() {
                             </select>
                         </label> */}
 
-                        <label className="flex flex-col text-sm font-medium text-gray-700">
+                        {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Administrative Level:</span>
                             <select
                                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -525,7 +524,7 @@ export default function Home() {
                                 <option value="Prov">Province</option>
                                 <option value="Grid">Grid</option>
                             </select>
-                        </label>
+                        </label> */}
 
                         {/* <label className="flex flex-col text-sm font-medium text-gray-700">
                             <span>Time Interval:</span>
@@ -659,13 +658,6 @@ export default function Home() {
                 </div>
                 <div className="chart-panel">
                     <>
-                        <h2>
-                            Selected {options.adminLevel}: {selectedProvince}
-                        </h2>
-                        {/* <ChartComponent
-                                data={sampleData}
-                                options={options}
-                            /> */}
                         <ChartComponent data={timeSeries} options={options} />
                     </>
 
