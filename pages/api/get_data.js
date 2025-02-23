@@ -348,7 +348,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${dateType}_${adminLevel}.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${overview}_monthly.geojson`;
+                        return `${region}_prov_${varType}_${overview}_monthly.geojson`;
                     }
                 }
             }

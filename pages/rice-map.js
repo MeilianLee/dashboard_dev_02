@@ -69,8 +69,8 @@ export default function Home() {
 
     // 动态改变日期
     const [selectedDate, setSelectedDate] = useState("20100101"); // 默认年
-    const [selectedYear, setSelectedYear] = useState("2010"); // 默认年
-    const [selectedMonth, setSelectedMonth] = useState("01"); // 默认月
+    const [selectedYear, setSelectedYear] = useState("2025"); // 默认年
+    const [selectedMonth, setSelectedMonth] = useState("04"); // 默认月
     const [selectedDay, setSelectedDay] = useState("01"); // 默认日
 
     const [selectedYearEnd, setSelectedYearEnd] = useState("2000");
