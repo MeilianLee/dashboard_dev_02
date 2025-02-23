@@ -63,22 +63,20 @@ export const MapLegend = ({ data }) => {
             title: "Yield (ton/ha)",
             grades: [1, 3, 5, 7],
             colors: [
-                "#00f", // Blue for 1°C (cool)
-                "#0099ff", // Light blue for 5°C
-                "#ffff00", // Yellow for 10°C
-                "#ffcc00", // Orange for 20°C
-                "#ff3300" // Red for 30°C (hot)],
+                "hsl(30, 100%, 40%)",
+                "hsl(60, 100%, 40%)",
+                "hsl(90, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
             ]
         },
         YieldProv: {
             title: "Yield (ton/ha)",
             grades: [1, 3, 5, 7],
             colors: [
-                "#00f", // Blue for 1°C (cool)
-                "#0099ff", // Light blue for 5°C
-                "#ffff00", // Yellow for 10°C
-                "#ffcc00", // Orange for 20°C
-                "#ff3300" // Red for 30°C (hot)],
+                "hsl(30, 100%, 40%)",
+                "hsl(60, 100%, 40%)",
+                "hsl(90, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
             ]
         },
         Prod: {
