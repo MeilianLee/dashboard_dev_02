@@ -358,7 +358,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.tif`;
+                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}_${date}_.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -472,6 +472,13 @@ export default function handler(req, res) {
         adminLevel === "Grid" &&
         dateType === "Monthly"
     ) {
+    } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
+        directory = "SPI_grid"; //SPI raster data has its own directory
+    } else if (
+        varType.startsWith("SPI") &&
+        adminLevel === "Grid" &&
+        dateType === "Monthly"
+    ) {
         directory = path.join(
             basePath,
             varType,
@@ -479,8 +486,6 @@ export default function handler(req, res) {
             adminLevel,
             dateType
         );
-    } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
-        directory = "SPI_grid"; //SPI raster data has its own directory
     } else if (
         varType.startsWith("SPI") &&
         adminLevel === "Prov" &&
@@ -507,13 +512,14 @@ export default function handler(req, res) {
 
     // determine final data file path
     const basePath = path.join(process.cwd(), "data");
+
+    // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
+    // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
+
     const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
     const filePath = directory
         ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
         : path.join(basePath, safeFileName); // `/data/data.json`
-
-    // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
-    // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
 
     // // 拼接完整路径
     // const dirPath = path.join(
