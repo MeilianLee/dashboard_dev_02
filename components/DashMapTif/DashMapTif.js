@@ -133,8 +133,8 @@ export default function DashMapTif({
         <MapContainer
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
             key={`map-${data.url}`}
-            center={[18, 93]}
-            zoom={5}
+            center={[18, 85]}
+            zoom={4}
             minZoom={4} // 设置最小缩放
             maxZoom={10} // 设置最大缩放
             maxBounds={[
@@ -145,6 +145,7 @@ export default function DashMapTif({
             // style={{ height: "500px", width: "100%" }}
             className="map-container"
         >
+            <MapLegend data={data} selectedDate={selectedDate} />
             <TileLayer
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>;'
@@ -174,7 +175,6 @@ export default function DashMapTif({
             <InfoControl />
             {/* <LegendControl data={data} /> */}
             {/* <ZoomControl /> Add custom zoom control */}
-            <MapLegend data={data} />
         </MapContainer>
     );
 }

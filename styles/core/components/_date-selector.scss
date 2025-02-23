@@ -23,15 +23,15 @@
     }
 
     .date-mainshow-container {
-        position: absolute;
-        font-size: $h2-size;
-        font-weight: 600;
+        position: relative;
+        font-size: $base-size;
+        font-weight: 700;
         color: #333;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
+        justify-content: center;
+
+        // transform: translateX(-50%);
         // background: rgba(255, 255, 255, 0.9);
-        padding: 20px 20px;
+        padding: 0 4px;
         border-radius: 8px;
         // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         display: flex;

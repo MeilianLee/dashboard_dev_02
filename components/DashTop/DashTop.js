@@ -21,30 +21,37 @@ export const DashTop = ({
     const [selectedRegion, setSelectedRegion] = useState(options.region);
     const [isRegionOpen, setIsRegionOpen] = useState(false);
 
+    // 当点击current时触发
     const handleCurrentClick = () => {
         if (options.overview === "forecast") {
+            updateOption("varType", "SPI1"); // if select current, show SPI1 forecast
+            updateOption("dateType", "Monthly"); // make sure dateType is correct before set date
             setSelectedYear("2025");
             setSelectedMonth("02");
             setSelectedCurrent(true);
         }
         if (options.overview === "hist") {
-            updateOption("overview", "forecast");
+            updateOption("overview", "forecast"); // if hist when selecting current, change to forecast
+            updateOption("varType", "SPI1"); // if select current, show SPI1 forecast
+            updateOption("dateType", "Monthly"); // make sure dateType is correct before set date
             setSelectedYear("2025");
             setSelectedMonth("02");
             setSelectedCurrent(true);
         }
     };
 
+    // 当点击hist或forecast触发
     const handleOverviewClick = (type) => {
         setSelectedCurrent(false);
         updateOption("overview", type);
-        if (options.overview === "forecast") {
+        if (type === "forecast") {
+            updateOption("dateType", "Monthly");
             setSelectedYear("2025");
             setSelectedMonth("04");
         }
-        if (options.overview === "hist") {
+        if (type === "hist") {
             setSelectedYear("2000");
-            setSelectedMonth("01");
+            setSelectedMonth("04");
         }
     };
 
@@ -60,7 +67,7 @@ export const DashTop = ({
         // }
         if (options.overview === "hist") {
             setSelectedYear("2000");
-            setSelectedMonth("01");
+            setSelectedMonth("04");
         }
     }, [options.overview]);
 
