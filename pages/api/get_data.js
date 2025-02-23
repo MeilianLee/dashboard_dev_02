@@ -489,15 +489,31 @@ export default function handler(req, res) {
         directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
     }
 
-    // **security check**：防止路径遍历攻击
-    const safeFileName = path.basename(fileName); // 仅保留文件名
-    const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
+    // // **security check**：防止路径遍历攻击
+    // const safeFileName = path.basename(fileName); // 仅保留文件名
+    // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
-    // determine final data file path
+    // // determine final data file path
+    // const basePath = path.join(process.cwd(), "data");
+    // const filePath = directory
+    //     ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
+    //     : path.join(basePath, safeFileName); // `/data/data.json`
+
+    // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
+    // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
+    const safeFileName = path.basename(fileName); // 安全取文件名
+    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
     const basePath = path.join(process.cwd(), "data");
-    const filePath = directory
-        ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
-        : path.join(basePath, safeFileName); // `/data/data.json`
+
+    // 拼接完整路径
+    const dirPath = path.join(
+        basePath,
+        varType,
+        overviewDir,
+        adminLevel,
+        dateType
+    );
+    const filePath = path.join(dirPath, safeFileName);
 
     // **security check**：ensure safe directory access
     if (!filePath.startsWith(basePath)) {

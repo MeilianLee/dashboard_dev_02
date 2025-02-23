@@ -75,7 +75,7 @@ export const DashTop = ({
         <div className="dash-top-container bg-white backdrop-filter backdrop-blur-md bg-opacity-50">
             <div className="dash-top-left">
                 <div className="header-logo--container">
-                    <Link href="/dashboard_page">
+                    <Link href="/rice-map">
                         <Image
                             src="/rice_logo.png"
                             alt="logo"
