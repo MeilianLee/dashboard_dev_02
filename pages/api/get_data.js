@@ -503,18 +503,17 @@ export default function handler(req, res) {
 
     // **security check**：防止路径遍历攻击
     const safeFileName = path.basename(fileName); // 仅保留文件名
-    const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
+    // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
     // determine final data file path
     const basePath = path.join(process.cwd(), "data");
-
-    // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
-    // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
-
     const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
     const filePath = directory
         ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
         : path.join(basePath, safeFileName); // `/data/data.json`
+
+    // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
+    // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
 
     // // 拼接完整路径
     // const dirPath = path.join(
