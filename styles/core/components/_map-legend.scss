@@ -1,9 +1,9 @@
 @layer components {
     .legend-container {
         position: absolute;
-        left: 50%;
+        left: 2%;
         bottom: 2%;
-        transform: translateX(-50%);
+        // transform: translateX(-50%);
 
         background: rgba(255, 255, 255, 0.8);
         padding: 10px;

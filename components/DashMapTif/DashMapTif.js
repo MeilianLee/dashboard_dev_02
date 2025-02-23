@@ -139,7 +139,7 @@ export default function DashMapTif({
             maxZoom={10} // 设置最大缩放
             maxBounds={[
                 [-5, 55],
-                [35, 125]
+                [40, 125]
             ]} // 设置拖拽边界（南西和东北角的坐标）
             scrollWheelZoom={false}
             // style={{ height: "500px", width: "100%" }}

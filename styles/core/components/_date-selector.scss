@@ -23,17 +23,20 @@
     }
 
     .date-mainshow-container {
-        position: relative;
-        font-size: $base-size;
-        font-weight: 700;
+        position: absolute;
+        font-size: $h4-size;
+        font-weight: 600;
         color: #333;
         justify-content: center;
 
-        // transform: translateX(-50%);
-        // background: rgba(255, 255, 255, 0.9);
-        padding: 0 4px;
+        right: 50%;
+        bottom: 4%;
+        transform: translateX(50%);
+
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 10px;
         border-radius: 8px;
-        // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         display: flex;
         gap: 20px;
         z-index: 1000;

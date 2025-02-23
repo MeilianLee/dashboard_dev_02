@@ -395,9 +395,6 @@ export const MapLegend = ({ data, selectedDate }) => {
                 config.className || "legend-default"
             }`}
         >
-            <div className="date-mainshow-container">
-                <p>Date: {formatDateDisplay(selectedDate)}</p>
-            </div>
             <div className="legend-title">{config.title}</div>
             {vartype === "SPI" ? (
                 <div className="legend-items">

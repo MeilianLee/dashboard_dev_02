@@ -608,9 +608,9 @@ export default function Home() {
                 {/* 地图容器 */}
                 <div className="map-container">
                     {/* date title */}
-                    {/* <div className="date-mainshow-container">
-                        <p>Date: {formatDateDisplay(selectedDate)}</p>
-                    </div> */}
+                    <div className="date-mainshow-container">
+                        <p>{formatDateDisplay(selectedDate)}</p>
+                    </div>
 
                     <DashMapTif
                         data={mapData}
