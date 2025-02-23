@@ -134,7 +134,9 @@ export default function DashMapTif({
             // key={`map-${selectedDate}-${data.datatype}`} // Use a unique key based on the data URL
             key={`map-${data.url}`}
             center={[18, 85]}
-            zoom={4}
+            zoom={4.5}
+            zoomSnap={0.25}
+            zoomDelta={0.25}
             minZoom={4} // 设置最小缩放
             maxZoom={10} // 设置最大缩放
             maxBounds={[
