@@ -358,7 +358,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -371,10 +371,10 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_yearly.geojson`; // OK
+                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; // OK
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}.geojson`; //no data after Feb, strange
+                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; //no data after Feb, strange
                     }
                 }
             }
@@ -467,6 +467,18 @@ export default function handler(req, res) {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
     } else if (varType === "Yield" && adminLevel === "Grid") {
         directory = "yield_grid"; //Yield raster forecast has its own directory
+    } else if (
+        varType.startsWith("SPI") &&
+        adminLevel === "Grid" &&
+        dateType === "Monthly"
+    ) {
+        directory = path.join(
+            basePath,
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
         directory = "SPI_grid"; //SPI raster data has its own directory
     } else if (
@@ -489,31 +501,30 @@ export default function handler(req, res) {
         directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
     }
 
-    // // **security check**：防止路径遍历攻击
-    // const safeFileName = path.basename(fileName); // 仅保留文件名
-    // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
+    // **security check**：防止路径遍历攻击
+    const safeFileName = path.basename(fileName); // 仅保留文件名
+    const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
-    // // determine final data file path
-    // const basePath = path.join(process.cwd(), "data");
-    // const filePath = directory
-    //     ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
-    //     : path.join(basePath, safeFileName); // `/data/data.json`
+    // determine final data file path
+    const basePath = path.join(process.cwd(), "data");
 
     // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
     // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
-    const safeFileName = path.basename(fileName); // 安全取文件名
-    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
-    const basePath = path.join(process.cwd(), "data");
 
-    // 拼接完整路径
-    const dirPath = path.join(
-        basePath,
-        varType,
-        overviewDir,
-        adminLevel,
-        dateType
-    );
-    const filePath = path.join(dirPath, safeFileName);
+    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
+    const filePath = directory
+        ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
+        : path.join(basePath, safeFileName); // `/data/data.json`
+
+    // // 拼接完整路径
+    // const dirPath = path.join(
+    //     basePath,
+    //     varType,
+    //     overviewDir,
+    //     adminLevel,
+    //     dateType
+    // );
+    // const filePath = path.join(dirPath, safeFileName);
 
     // **security check**：ensure safe directory access
     if (!filePath.startsWith(basePath)) {
