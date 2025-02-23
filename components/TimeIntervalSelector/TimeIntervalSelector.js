@@ -91,8 +91,8 @@ export const TimeIntervalSelector = ({
                                     <option value="2025">2025</option>
                                 ) : (
                                     Array.from(
-                                        { length: 67 },
-                                        (_, i) => 1950 + i
+                                        { length: 21 },
+                                        (_, i) => 1990 + i
                                     ).map((year) => (
                                         <option key={year} value={year}>
                                             {year}

@@ -113,38 +113,24 @@ export const DashTop = ({
             </div>
             <div className="dash-top-left">
                 <div className="dash-top-language">
-                    <button
-                        className="language-button"
-                        onClick={() => setIsRegionOpen(!isRegionOpen)}
-                    >
-                        {selectedRegion} ▼
-                    </button>
-                    <div
-                        className={`language-dropdown ${
-                            isRegionOpen ? "open" : ""
-                        }`}
-                    >
+                    <div className="dash-top-buttons">
                         {[
+                            "SEA",
                             "Thailand",
                             "Cambodia",
                             "Laos",
                             "Myanmar",
-                            "Vietnam",
-                            "SEA"
+                            "Vietnam"
                         ].map((region) => (
-                            <div
+                            <button
                                 key={region}
-                                className={`language-option ${
-                                    selectedRegion === region ? "selected" : ""
+                                className={`dash-top-button-red ${
+                                    options.region === region ? "active" : ""
                                 }`}
-                                onClick={() => {
-                                    setSelectedRegion(region);
-                                    updateOption("region", region);
-                                    setIsRegionOpen(false);
-                                }}
+                                onClick={() => updateOption("region", region)}
                             >
                                 {region}
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </div>
