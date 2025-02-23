@@ -501,11 +501,11 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
     }
 
     useEffect(() => {
-        const loadGeoTIFFData = async () => {
+        const loadGeoTIFFData = () => {
             try {
-                const response = await fetch(data_url.url);
-                const arrayBuffer = await response.arrayBuffer();
-                const parsedRaster = await georaster(arrayBuffer);
+                const response = fetch(data_url.url);
+                const arrayBuffer = response.arrayBuffer();
+                const parsedRaster = georaster(arrayBuffer);
                 const bandIndex = Number(selectedDate - 1950);
                 const layer = new GeoRasterLayer({
                     georaster: parsedRaster,
