@@ -503,7 +503,7 @@ export default function handler(req, res) {
 
     // **security check**：防止路径遍历攻击
     const safeFileName = path.basename(fileName); // 仅保留文件名
-    // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
+    const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
     // determine final data file path
     const basePath = path.join(process.cwd(), "data");
