@@ -533,7 +533,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                             data_url.data_vartype === "Temp" ||
                             data_url.data_vartype.startsWith("SPI")
                                 ? values[0]
-                                : values[bandIndex];
+                                : values[0];
                         if (
                             pixelValue === 0 ||
                             pixelValue < -9999 ||
