@@ -504,8 +504,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
         Prcp: getColorPrcp,
         Temp: getColorTemp,
         SPI: getColor,
-        Yield: getColorYield,
         SMPct: getColorSMPct,
+        Yield: getColorYield,
         Production: getColorProduction,
         Area: getColorArea
     };
@@ -529,6 +529,7 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                     pixelValuesToColorFn: (values) => {
                         const pixelValue =
                             data_url.data_vartype === "Yield" ||
+                            data_url.data_vartype === "Area" ||
                             data_url.data_vartype === "Production" ||
                             data_url.data_vartype === "Prcp" ||
                             data_url.data_vartype === "Temp" ||
