@@ -527,9 +527,10 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                     opacity: 0.7,
                     pixelValuesToColorFn: (values) => {
                         const pixelValue =
+                            data_url.data_vartype === "Yield" ||
+                            data_url.data_vartype === "Production" ||
                             data_url.data_vartype === "Prcp" ||
                             data_url.data_vartype === "Temp" ||
-                            data_url.data_vartype === "Yield" ||
                             data_url.data_vartype.startsWith("SPI")
                                 ? values[0]
                                 : values[bandIndex];
