@@ -505,7 +505,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
         Temp: getColorTemp,
         SPI: getColor,
         Yield: getColorYield,
-        SMPct: getColorSMPct
+        SMPct: getColorSMPct,
+        Production: getColorProduction
     };
     // Function to get color based on vartype and pixel value
     function getColorByVartype(data_url, pixelValue) {
@@ -668,7 +669,7 @@ function LegendControl({ data }) {
                 "#ff3300" // Red for 30°C (hot)],
             ]
         },
-        Prod: {
+        Production: {
             title: "Production (ton)",
             grades: [1, 3, 5, 7],
             colors: [
@@ -1223,6 +1224,22 @@ function getColorYieldProv(d) {
 
     const minHue = 30;
     const maxHue = 100;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 40%)`;
+}
+
+function getColorProduction(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    const minVal = 1;
+    const maxVal = 7;
+
+    const minHue = 30;
+    const maxHue = 120;
 
     // 归一化 d 值到 [0, 1]，并计算插值色相
     let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
