@@ -1240,7 +1240,7 @@ function getColorProduction(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     const minVal = 0;
-    const maxVal = 3000;
+    const maxVal = 10000;
 
     const minHue = 30;
     const maxHue = 120;
@@ -1256,7 +1256,7 @@ function getColorArea(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     const minVal = 0;
-    const maxVal = 100;
+    const maxVal = 10000;
 
     const minHue = 30;
     const maxHue = 120;
