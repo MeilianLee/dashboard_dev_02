@@ -341,7 +341,7 @@ export default function handler(req, res) {
                         return `${region}_country_${varType}_hist_yearly.geojson`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_country_${varType}_hist_monthly.geojson`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                 }
                 if (adminLevel === "Prov") {
@@ -349,7 +349,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${dateType}_${adminLevel}.json`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_prov_${varType}_${overview}_monthly.geojson`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                 }
             }
@@ -480,6 +480,13 @@ export default function handler(req, res) {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
     } else if (varType === "Yield" && adminLevel === "Grid") {
         directory = "yield_grid"; //Yield raster forecast has its own directory
+    } else if (
+        varType.startsWith("SPI") &&
+        overview === "hist" &&
+        (adminLevel === "Prov") | (adminLevel === "Country") &&
+        dateType === "Monthly"
+    ) {
+        directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (
         varType.startsWith("SPI") &&
         adminLevel === "Grid" &&
