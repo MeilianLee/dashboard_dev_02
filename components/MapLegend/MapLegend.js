@@ -349,7 +349,7 @@ export const MapLegend = ({ data, selectedDate }) => {
         },
         Production: {
             title: "Production (ton)",
-            grades: [1, 3, 5, 7],
+            grades: [0, 5, 10, 15],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(60, 100%, 40%)",
