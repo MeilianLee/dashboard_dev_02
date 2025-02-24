@@ -1238,7 +1238,7 @@ function getColorProduction(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     const minVal = 0;
-    const maxVal = 15;
+    const maxVal = 45;
 
     const minHue = 30;
     const maxHue = 120;
