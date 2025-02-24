@@ -541,8 +541,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
                         ) {
                             return null;
                         }
-                        return null;
-                        // return getColorByVartype(data_url, pixelValue);
+                        // return null;
+                        return getColorByVartype(data_url, pixelValue);
                     },
                     resolution: 64
                 });
