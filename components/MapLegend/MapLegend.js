@@ -337,26 +337,24 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "hsl(120, 100%, 40%)"
             ]
         },
-        RiceMap: {
-            title: "Map",
-            grades: [1, 3, 5, 7],
+        Area: {
+            title: "Rice Area",
+            grades: [0, 0.33, 0.67, 1],
             colors: [
-                "#00f", // Blue for 1°C (cool)
-                "#0099ff", // Light blue for 5°C
-                "#ffff00", // Yellow for 10°C
-                "#ffcc00", // Orange for 20°C
-                "#ff3300" // Red for 30°C (hot)],
+                "hsl(30, 100%, 40%)",
+                "hsl(60, 100%, 40%)",
+                "hsl(90, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
             ]
         },
-        Prod: {
+        Production: {
             title: "Production (ton)",
             grades: [1, 3, 5, 7],
             colors: [
-                "#00f", // Blue for 1°C (cool)
-                "#0099ff", // Light blue for 5°C
-                "#ffff00", // Yellow for 10°C
-                "#ffcc00", // Orange for 20°C
-                "#ff3300" // Red for 30°C (hot)],
+                "hsl(30, 100%, 40%)",
+                "hsl(60, 100%, 40%)",
+                "hsl(90, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
             ]
         },
         SMPct: {
@@ -369,6 +367,10 @@ export const MapLegend = ({ data, selectedDate }) => {
         ? "SPI"
         : data.data_vartype === "Yield"
         ? "YieldProv"
+        : data.data_vartype === "Area"
+        ? "Area"
+        : data.data_vartype === "Production"
+        ? "Production"
         : data.data_vartype === "Prcp" &&
           data.data_adminLevel === "Prov" &&
           data.data_dateType === "Yearly"
