@@ -245,6 +245,7 @@ function GeoJSONLayer({
                 layer === map._layers[Object.keys(map._layers).pop()];
             if (isAtFront) {
                 layer.bringToBack(); // 如果在最前，则移到底层
+                layer.bringToFront();
             } else {
                 layer.bringToFront(); // 如果不在最前，则移到首层
             }
