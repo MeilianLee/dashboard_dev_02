@@ -421,13 +421,13 @@ export default function handler(req, res) {
             },
             hist_Grid_Yearly: {
                 Yield: `${region}_yield_yearly_${selectedDate}.tif`,
-                Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
-                Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
