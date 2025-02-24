@@ -506,7 +506,8 @@ function GeoTIFFLayer({ data_url, selectedDate }) {
         SPI: getColor,
         Yield: getColorYield,
         SMPct: getColorSMPct,
-        Production: getColorProduction
+        Production: getColorProduction,
+        Area: getColorArea
     };
     // Function to get color based on vartype and pixel value
     function getColorByVartype(data_url, pixelValue) {
@@ -1239,6 +1240,22 @@ function getColorProduction(d) {
 
     const minVal = 0;
     const maxVal = 3000;
+
+    const minHue = 30;
+    const maxHue = 120;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 40%)`;
+}
+
+function getColorArea(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    const minVal = 0;
+    const maxVal = 100;
 
     const minHue = 30;
     const maxHue = 120;
