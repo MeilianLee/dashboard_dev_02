@@ -359,7 +359,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
