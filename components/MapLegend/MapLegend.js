@@ -338,22 +338,24 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         Area: {
-            title: "Rice Area",
-            grades: [0, 0.33, 0.67, 1],
+            title: "Rice Area (ha)",
+            grades: [0, 2500, 5000, 7500, 10000],
             colors: [
                 "hsl(30, 100%, 40%)",
-                "hsl(60, 100%, 40%)",
-                "hsl(90, 100%, 40%)",
+                "hsl(48, 100%, 40%)",
+                "hsl(66, 100%, 40%)",
+                "hsl(84, 100%, 40%)",
                 "hsl(120, 100%, 40%)"
             ]
         },
         Production: {
             title: "Production (ton)",
-            grades: [0, 5, 10, 15],
+            grades: [0, 2500, 5000, 7500, 10000],
             colors: [
                 "hsl(30, 100%, 40%)",
-                "hsl(60, 100%, 40%)",
-                "hsl(90, 100%, 40%)",
+                "hsl(48, 100%, 40%)",
+                "hsl(66, 100%, 40%)",
+                "hsl(84, 100%, 40%)",
                 "hsl(120, 100%, 40%)"
             ]
         },
