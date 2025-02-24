@@ -385,72 +385,84 @@ export default function handler(req, res) {
         const fileMappings = {
             forecast_Grid_Yearly: {
                 Yield: `${region}_yield_yearly_${selectedDate}.tif`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             forecast_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             forecast_Country_Yearly: {
                 Yield: `${region}_country_2025.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_country_Precipitation_annual.geojson`,
                 Temp: `${region}_country_Temperature_annual.geojson`
             },
             forecast_Country_Monthly: {
                 Yield: `${region}_country_2025_monthly.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_country_Precipitation_monthly.geojson`,
                 Temp: `${region}_country_Temperature_monthly.geojson`
             },
             forecast_Prov_Yearly: {
                 Yield: `${region}_prov_2025.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_Precipitation_annual.geojson`,
                 Temp: `${region}_Temperature_annual.geojson`
             },
             forecast_Prov_Monthly: {
                 Yield: `${region}_prov_2025_monthly.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_Precipitation_monthly.geojson`,
                 Temp: `${region}_Temperature_monthly.geojson`
             },
             hist_Grid_Yearly: {
                 Yield: `${region}_yield_yearly_${selectedDate}.tif`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`
             },
             hist_Country_Yearly: {
                 Yield: `${region}_yield_country.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_country_Precipitation_annual.geojson`,
                 Temp: `${region}_country_Temperature_annual.geojson`
             },
             hist_Country_Monthly: {
                 Yield: `${region}_monthly_yield_country.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_country_Precipitation_monthly.geojson`,
                 Temp: `${region}_country_Temperature_monthly.geojson`
             },
             hist_Prov_Yearly: {
                 Yield: `${region}_yield_prov.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_Precipitation_annual.geojson`,
                 Temp: `${region}_Temperature_annual.geojson`
             },
             hist_Prov_Monthly: {
                 Yield: `${region}_monthly_yield_province.geojson`,
+                Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${region}_Precipitation_monthly.geojson`,
                 Temp: `${region}_Temperature_monthly.geojson`
@@ -523,6 +535,8 @@ export default function handler(req, res) {
     } else if (overview === "forecast" && varType === "Temp") {
         directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
     } else if (varType === "Production") {
+        directory = path.join(varType, overviewDir, adminLevel, dateType);
+    } else if (varType === "Area") {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     }
 
