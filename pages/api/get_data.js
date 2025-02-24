@@ -358,7 +358,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}_${date}_.tif`;
+                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -460,6 +460,7 @@ export default function handler(req, res) {
     );
 
     let directory;
+    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
 
     if (varType === "Prcp" && adminLevel === "Grid") {
         directory = "weatherGrid"; //Prcp raster forecast has its own directory
@@ -472,20 +473,9 @@ export default function handler(req, res) {
         adminLevel === "Grid" &&
         dateType === "Monthly"
     ) {
+        directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
         directory = "SPI_grid"; //SPI raster data has its own directory
-    } else if (
-        varType.startsWith("SPI") &&
-        adminLevel === "Grid" &&
-        dateType === "Monthly"
-    ) {
-        directory = path.join(
-            basePath,
-            varType,
-            overviewDir,
-            adminLevel,
-            dateType
-        );
     } else if (
         varType.startsWith("SPI") &&
         adminLevel === "Prov" &&
@@ -508,7 +498,7 @@ export default function handler(req, res) {
 
     // **security check**：防止路径遍历攻击
     const safeFileName = path.basename(fileName); // 仅保留文件名
-    const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
+    // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
     // determine final data file path
     const basePath = path.join(process.cwd(), "data");
@@ -516,9 +506,8 @@ export default function handler(req, res) {
     // 组合路径：/data/{varType}/{overviewDir}/{adminLevel}/{dateType}/{fileName}
     // 当overview=“hist”时，对应目录名“Hist”；当overview=“forecast”时，对应目录名“Forecast”
 
-    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
     const filePath = directory
-        ? path.join(basePath, safeDirectory, safeFileName) // `/data/dir1/data.json`
+        ? path.join(basePath, directory, safeFileName) // `/data/dir1/data.json`
         : path.join(basePath, safeFileName); // `/data/data.json`
 
     // // 拼接完整路径
