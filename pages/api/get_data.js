@@ -330,7 +330,7 @@ export default function handler(req, res) {
             if (overview === "hist") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
                         return `${region}_${varType}_${selectedDate}.tif`;
@@ -492,6 +492,13 @@ export default function handler(req, res) {
         overview === "forecast" &&
         adminLevel === "Grid" &&
         dateType === "Monthly"
+    ) {
+        directory = path.join(varType, overviewDir, adminLevel, dateType);
+    } else if (
+        varType.startsWith("SPI") &&
+        overview === "hist" &&
+        adminLevel === "Grid" &&
+        dateType === "Yearly"
     ) {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
