@@ -12,6 +12,7 @@ export default function handler(req, res) {
     } = req.query;
 
     let fileName;
+    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
 
     // switch (overview) {
     //     case "forecast":
@@ -358,7 +359,7 @@ export default function handler(req, res) {
                         return `${region}_${varType}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -371,10 +372,10 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; // OK
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; // OK
                     }
                     if (dateType === "Monthly") {
-                        return `${overview}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; //no data after Feb, strange
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; //no data after Feb, strange
                     }
                 }
             }
@@ -460,7 +461,6 @@ export default function handler(req, res) {
     );
 
     let directory;
-    const overviewDir = overview === "hist" ? "Hist" : "Forecast"; // 映射小写 -> 首字母大写
 
     if (varType === "Prcp" && adminLevel === "Grid") {
         directory = "weatherGrid"; //Prcp raster forecast has its own directory
@@ -481,7 +481,8 @@ export default function handler(req, res) {
         adminLevel === "Prov" &&
         overview === "forecast"
     ) {
-        directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
+        directory = path.join(varType, overviewDir, adminLevel, dateType); //SPI prov forecast has its own directory
+        // directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
     } else if (varType.startsWith("SPI") && adminLevel !== "Grid") {
         directory = "SPI_json"; //SPI json has its own directory
     } else if (
