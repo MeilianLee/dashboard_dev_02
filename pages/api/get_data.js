@@ -489,6 +489,7 @@ export default function handler(req, res) {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (
         varType.startsWith("SPI") &&
+        overview === "forecast" &&
         adminLevel === "Grid" &&
         dateType === "Monthly"
     ) {

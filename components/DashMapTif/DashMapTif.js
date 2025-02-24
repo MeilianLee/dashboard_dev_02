@@ -238,6 +238,17 @@ function GeoJSONLayer({
         // if (layer.bringToFront) {
         //     layer.bringToFront();
         // }
+        // 检查当前图层是否在最前面
+        if (layer.bringToFront && layer.bringToBack) {
+            const isAtFront =
+                map.hasLayer(layer) &&
+                layer === map._layers[Object.keys(map._layers).pop()];
+            if (isAtFront) {
+                layer.bringToBack(); // 如果在最前，则移到底层
+            } else {
+                layer.bringToFront(); // 如果不在最前，则移到首层
+            }
+        }
     };
     // 点击省份时处理时间序列数据
     const handleProvClickToGenerateTimeSeries = (feature) => {
