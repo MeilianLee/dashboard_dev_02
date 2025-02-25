@@ -74,7 +74,21 @@ export const DashTop = ({
     return (
         <div className="dash-top-container bg-white backdrop-filter backdrop-blur-md bg-opacity-50">
             <div className="dash-top-left">
-                <div className="header-logo--container">
+                <div
+                    className="header-logo--container"
+                    onClick={() => window.location.reload()}
+                    style={{ cursor: "pointer" }}
+                >
+                    <Image
+                        src="/rice_logo.png"
+                        alt="logo"
+                        className="h-14 w-auto"
+                        height="60"
+                        width="300"
+                        priority
+                    />
+                </div>
+                {/* <div className="header-logo--container">
                     <Link href="/rice-map">
                         <Image
                             src="/rice_logo.png"
@@ -85,7 +99,7 @@ export const DashTop = ({
                             priority
                         />
                     </Link>
-                </div>
+                </div> */}
                 {/* <div className="dash-top-logo">LOGO</div> */}
                 <div className="dash-top-buttons">
                     <button
