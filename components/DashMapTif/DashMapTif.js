@@ -62,6 +62,8 @@ export default function DashMapTif({
             : data_url.data_vartype === "Yield" &&
               data_url.data_adminLevel === "Prov"
             ? getColorYieldProv
+            : data_url.data_vartype === "Production"
+            ? getColorProduction
             : data_url.data_vartype === "Prcp" &&
               data_url.data_adminLevel === "Prov" &&
               data_url.data_dateType === "Yearly"
@@ -306,6 +308,8 @@ function GeoJSONLayer({
                 : data_url.data_vartype === "Yield" &&
                   data_url.data_adminLevel === "Prov"
                 ? getColorYieldProv
+                : data_url.data_vartype === "Production"
+                ? getColorProduction
                 : data_url.data_vartype === "Prcp" &&
                   data_url.data_adminLevel === "Prov" &&
                   data_url.data_dateType === "Yearly"
@@ -388,6 +392,8 @@ function GeoJSONLayer({
                             : data_url.data_vartype === "Yield" &&
                               data_url.data_adminLevel === "Prov"
                             ? getColorYieldProv
+                            : data_url.data_vartype === "Production"
+                            ? getColorProduction
                             : data_url.data_vartype === "Prcp" &&
                               data_url.data_adminLevel === "Prov" &&
                               data_url.data_dateType === "Yearly"
@@ -1240,7 +1246,7 @@ function getColorProduction(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     const minVal = 0;
-    const maxVal = 100000000;
+    const maxVal = 10000;
 
     const minHue = 30;
     const maxHue = 120;
