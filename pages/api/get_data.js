@@ -500,19 +500,22 @@ export default function handler(req, res) {
         dateType === "Monthly"
     ) {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
-    } else if (
-        varType.startsWith("SPI") &&
-        adminLevel === "Grid" &&
-        dateType === "Monthly"
-    ) {
-        directory = path.join(varType, overviewDir, adminLevel, dateType);
-    } else if (
-        varType.startsWith("SPI") &&
-        adminLevel === "Grid" &&
-        dateType === "Yearly"
-    ) {
-        directory = path.join(varType, overviewDir, adminLevel, dateType);
-    } else if (varType.startsWith("SPI") && adminLevel === "Grid") {
+    }
+
+    // else if (
+    //     varType.startsWith("SPI") &&
+    //     adminLevel === "Grid" &&
+    //     dateType === "Monthly"
+    // ) {
+    //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // } else if (
+    //     varType.startsWith("SPI") &&
+    //     adminLevel === "Grid" &&
+    //     dateType === "Yearly"
+    // ) {
+    //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // }
+    else if (varType.startsWith("SPI") && adminLevel === "Grid") {
         directory = "SPI_grid"; //SPI raster data has its own directory
     } else if (
         varType.startsWith("SPI") &&
