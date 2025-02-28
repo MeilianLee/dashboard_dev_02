@@ -1296,7 +1296,7 @@ function getColorProductionCountry(d) {
     if (d <= 0) return "#FFFFFF"; // No precipitation
 
     const minVal = 0;
-    const maxVal = 3000000;
+    const maxVal = 10000000;
 
     const minHue = 30;
     const maxHue = 120;

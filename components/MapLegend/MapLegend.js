@@ -383,7 +383,7 @@ export const MapLegend = ({ data, selectedDate }) => {
         },
         ProductionCountry: {
             title: "Production (ton)",
-            grades: [0, 750000, 1500000, 2250000, 3000000],
+            grades: [0, 2500000, 5000000, 7500000, 100000000],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",
