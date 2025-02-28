@@ -348,9 +348,20 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "hsl(120, 100%, 40%)"
             ]
         },
-        AreaCountry: {
+        AreaProv: {
             title: "Rice Area (ha)",
             grades: [0, 125000, 250000, 375000, 500000],
+            colors: [
+                "hsl(30, 100%, 40%)",
+                "hsl(48, 100%, 40%)",
+                "hsl(66, 100%, 40%)",
+                "hsl(84, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
+            ]
+        },
+        AreaCountry: {
+            title: "Rice Area (ha)",
+            grades: [0, "2.5m", "5m", "7.5m", "10m"],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",

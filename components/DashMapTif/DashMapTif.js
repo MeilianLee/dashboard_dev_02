@@ -68,7 +68,11 @@ export default function DashMapTif({
             : data_url.data_vartype === "Production" &&
               data_url.data_adminLevel === "Country"
             ? getColorProductionCountry
-            : data_url.data_vartype === "Area"
+            : data_url.data_vartype === "Area" &&
+              data_url.data_adminLevel === "Prov"
+            ? getColorAreaProv
+            : data_url.data_vartype === "Area" &&
+              data_url.data_adminLevel === "Country"
             ? getColorAreaCountry
             : data_url.data_vartype === "Prcp" &&
               data_url.data_adminLevel === "Prov" &&
@@ -320,7 +324,11 @@ function GeoJSONLayer({
                 : data_url.data_vartype === "Production" &&
                   data_url.data_adminLevel === "Country"
                 ? getColorProductionCountry
-                : data_url.data_vartype === "Area"
+                : data_url.data_vartype === "Area" &&
+                  data_url.data_adminLevel === "Prov"
+                ? getColorAreaProv
+                : data_url.data_vartype === "Area" &&
+                  data_url.data_adminLevel === "Country"
                 ? getColorAreaCountry
                 : data_url.data_vartype === "Prcp" &&
                   data_url.data_adminLevel === "Prov" &&
@@ -410,7 +418,11 @@ function GeoJSONLayer({
                             : data_url.data_vartype === "Production" &&
                               data_url.data_adminLevel === "Country"
                             ? getColorProductionCountry
-                            : data_url.data_vartype === "Area"
+                            : data_url.data_vartype === "Area" &&
+                              data_url.data_adminLevel === "Prov"
+                            ? getColorAreaProv
+                            : data_url.data_vartype === "Area" &&
+                              data_url.data_adminLevel === "Country"
                             ? getColorAreaCountry
                             : data_url.data_vartype === "Prcp" &&
                               data_url.data_adminLevel === "Prov" &&
@@ -1324,11 +1336,27 @@ function getColorArea(d) {
     return `hsl(${hue}, 100%, 40%)`;
 }
 
-function getColorAreaCountry(d) {
+function getColorAreaProv(d) {
     if (d <= 0) return "#FFFFFF";
 
     const minVal = 0;
     const maxVal = 500000;
+
+    const minHue = 30;
+    const maxHue = 120;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 40%)`;
+}
+
+function getColorAreaCountry(d) {
+    if (d <= 0) return "#FFFFFF";
+
+    const minVal = 0;
+    const maxVal = 10000000;
 
     const minHue = 30;
     const maxHue = 120;
