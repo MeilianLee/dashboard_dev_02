@@ -330,10 +330,12 @@ export default function handler(req, res) {
             if (overview === "hist") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
+                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
+                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -356,11 +358,12 @@ export default function handler(req, res) {
             if (overview === "forecast") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        // return `${region}_${varType}_${selectedDate}.tif`;
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
+                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
+                        return `${region}_${varType}_${selectedDate}.tif`;
+                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
