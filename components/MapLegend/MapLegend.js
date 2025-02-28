@@ -359,6 +359,28 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "hsl(120, 100%, 40%)"
             ]
         },
+        ProductionProv: {
+            title: "Production (ton)",
+            grades: [0, 500000, 1000000, 1500000, 2000000],
+            colors: [
+                "hsl(30, 100%, 40%)",
+                "hsl(48, 100%, 40%)",
+                "hsl(66, 100%, 40%)",
+                "hsl(84, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
+            ]
+        },
+        ProductionCountry: {
+            title: "Production (ton)",
+            grades: [0, 750000, 1500000, 2250000, 3000000],
+            colors: [
+                "hsl(30, 100%, 40%)",
+                "hsl(48, 100%, 40%)",
+                "hsl(66, 100%, 40%)",
+                "hsl(84, 100%, 40%)",
+                "hsl(120, 100%, 40%)"
+            ]
+        },
         SMPct: {
             title: "SMPct",
             grades: [20, 40, 60, 80]
@@ -371,8 +393,13 @@ export const MapLegend = ({ data, selectedDate }) => {
         ? "YieldProv"
         : data.data_vartype === "Area"
         ? "Area"
-        : data.data_vartype === "Production"
+        : data.data_vartype === "Production" && data.data_adminLevel === "Grid"
         ? "Production"
+        : data.data_vartype === "Production" && data.data_adminLevel === "Prov"
+        ? "ProductionProv"
+        : data.data_vartype === "Production" &&
+          data.data_adminLevel === "Country"
+        ? "ProductionCountry"
         : data.data_vartype === "Prcp" &&
           data.data_adminLevel === "Prov" &&
           data.data_dateType === "Yearly"
