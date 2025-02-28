@@ -320,6 +320,8 @@ function GeoJSONLayer({
                 : data_url.data_vartype === "Production" &&
                   data_url.data_adminLevel === "Country"
                 ? getColorProductionCountry
+                : data_url.data_vartype === "Area"
+                ? getColorAreaCountry
                 : data_url.data_vartype === "Prcp" &&
                   data_url.data_adminLevel === "Prov" &&
                   data_url.data_dateType === "Yearly"
@@ -408,6 +410,8 @@ function GeoJSONLayer({
                             : data_url.data_vartype === "Production" &&
                               data_url.data_adminLevel === "Country"
                             ? getColorProductionCountry
+                            : data_url.data_vartype === "Area"
+                            ? getColorAreaCountry
                             : data_url.data_vartype === "Prcp" &&
                               data_url.data_adminLevel === "Prov" &&
                               data_url.data_dateType === "Yearly"
