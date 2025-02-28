@@ -1328,7 +1328,7 @@ function getColorAreaCountry(d) {
     if (d <= 0) return "#FFFFFF";
 
     const minVal = 0;
-    const maxVal = 3000000;
+    const maxVal = 500000;
 
     const minHue = 30;
     const maxHue = 120;
