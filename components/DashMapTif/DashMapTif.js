@@ -62,8 +62,12 @@ export default function DashMapTif({
             : data_url.data_vartype === "Yield" &&
               data_url.data_adminLevel === "Prov"
             ? getColorYieldProv
-            : data_url.data_vartype === "Production"
-            ? getColorProduction
+            : data_url.data_vartype === "Production" &&
+              data_url.data_adminLevel === "Prov"
+            ? getColorProductionProv
+            : data_url.data_vartype === "Production" &&
+              data_url.data_adminLevel === "Country"
+            ? getColorProductionCountry
             : data_url.data_vartype === "Prcp" &&
               data_url.data_adminLevel === "Prov" &&
               data_url.data_dateType === "Yearly"
@@ -308,8 +312,12 @@ function GeoJSONLayer({
                 : data_url.data_vartype === "Yield" &&
                   data_url.data_adminLevel === "Prov"
                 ? getColorYieldProv
-                : data_url.data_vartype === "Production"
-                ? getColorProduction
+                : data_url.data_vartype === "Production" &&
+                  data_url.data_adminLevel === "Prov"
+                ? getColorProductionProv
+                : data_url.data_vartype === "Production" &&
+                  data_url.data_adminLevel === "Country"
+                ? getColorProductionCountry
                 : data_url.data_vartype === "Prcp" &&
                   data_url.data_adminLevel === "Prov" &&
                   data_url.data_dateType === "Yearly"
@@ -392,8 +400,12 @@ function GeoJSONLayer({
                             : data_url.data_vartype === "Yield" &&
                               data_url.data_adminLevel === "Prov"
                             ? getColorYieldProv
-                            : data_url.data_vartype === "Production"
-                            ? getColorProduction
+                            : data_url.data_vartype === "Production" &&
+                              data_url.data_adminLevel === "Prov"
+                            ? getColorProductionProv
+                            : data_url.data_vartype === "Production" &&
+                              data_url.data_adminLevel === "Country"
+                            ? getColorProductionCountry
                             : data_url.data_vartype === "Prcp" &&
                               data_url.data_adminLevel === "Prov" &&
                               data_url.data_dateType === "Yearly"
@@ -1247,6 +1259,38 @@ function getColorProduction(d) {
 
     const minVal = 0;
     const maxVal = 10000;
+
+    const minHue = 30;
+    const maxHue = 120;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 40%)`;
+}
+
+function getColorProductionProv(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    const minVal = 0;
+    const maxVal = 2000000;
+
+    const minHue = 30;
+    const maxHue = 120;
+
+    // 归一化 d 值到 [0, 1]，并计算插值色相
+    let ratio = Math.min(1, (d - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 40%)`;
+}
+
+function getColorProductionCountry(d) {
+    if (d <= 0) return "#FFFFFF"; // No precipitation
+
+    const minVal = 0;
+    const maxVal = 3000000;
 
     const minHue = 30;
     const maxHue = 120;
