@@ -358,11 +358,11 @@ export default function handler(req, res) {
             if (overview === "forecast") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${region}_${varType}_${selectedDate}_1.tif`;
                         // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${region}_${varType}_${selectedDate}_1.tif`;
                         // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                 }
