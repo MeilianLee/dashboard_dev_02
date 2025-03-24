@@ -353,11 +353,11 @@ export function getThresholds(options) {
   // SPI variables (drought indices)
   if (varType?.startsWith("SPI")) {
       return {
-          high: 1.5,
-          low: -1.5,
+          high: 2,
+          low: -2,
           unit: "",
-          highMessage: "Extremely wet conditions may lead to flooding and waterlogging",
-          lowMessage: "Severe drought conditions may affect crop growth"
+          highMessage: "Extremely wet conditions",
+          lowMessage: "Severe drought conditions"
       };
   }
   
@@ -365,16 +365,16 @@ export function getThresholds(options) {
   if (varType === "Prcp") {
       if (dateType === "Monthly") {
           return {
-              high: 300,
-              low: 50,
+              high: 500,
+              low: -5,
               unit: "mm",
-              highMessage: "Extremely high precipitation may cause flooding",
-              lowMessage: "Low precipitation may lead to water stress"
+              highMessage: "High precipitation",
+              lowMessage: "Low precipitation"
           };
       } else {
           return {
-              high: 2000,
-              low: 800,
+              high: 3000,
+              low: 200,
               unit: "mm",
               highMessage: "Annual precipitation above normal range",
               lowMessage: "Annual precipitation below normal range"
@@ -386,10 +386,10 @@ export function getThresholds(options) {
   if (varType === "Temp") {
       return {
           high: 30,
-          low: 15,
+          low: 10,
           unit: "°C",
-          highMessage: "High temperature may cause heat stress to crops",
-          lowMessage: "Low temperature may affect growth rate"
+          highMessage: "High temperature",
+          lowMessage: "Low temperature"
       };
   }
   
@@ -397,16 +397,16 @@ export function getThresholds(options) {
   if (varType === "Yield") {
       if (adminLevel === "Country") {
           return {
-              high: 6,
-              low: 2,
+              high: 50,
+              low: -1,
               unit: "ton/ha",
               highMessage: "Yield significantly above average",
               lowMessage: "Yield significantly below average"
           };
       } else {
           return {
-              high: 5,
-              low: 2,
+              high: 50,
+              low: -1,
               unit: "ton/ha",
               highMessage: "Regional yield above average",
               lowMessage: "Regional yield below average"
@@ -414,63 +414,63 @@ export function getThresholds(options) {
       }
   }
   
-  // Production thresholds
-  if (varType === "Production") {
-      if (adminLevel === "Country") {
-          return {
-              high: 8000000,
-              low: 2000000,
-              unit: "ton",
-              highMessage: "Production significantly above average",
-              lowMessage: "Production significantly below average"
-          };
-      } else if (adminLevel === "Prov") {
-          return {
-              high: 1500000,
-              low: 300000,
-              unit: "ton",
-              highMessage: "Provincial production above average",
-              lowMessage: "Provincial production below average"
-          };
-      } else {
-          return {
-              high: 8000,
-              low: 1000,
-              unit: "ton",
-              highMessage: "Local production above average",
-              lowMessage: "Local production below average"
-          };
-      }
-  }
+//   // Production thresholds
+//   if (varType === "Production") {
+//       if (adminLevel === "Country") {
+//           return {
+//               high: 8000000,
+//               low: 2000000,
+//               unit: "ton",
+//               highMessage: "Production significantly above average",
+//               lowMessage: "Production significantly below average"
+//           };
+//       } else if (adminLevel === "Prov") {
+//           return {
+//               high: 1500000,
+//               low: 300000,
+//               unit: "ton",
+//               highMessage: "Provincial production above average",
+//               lowMessage: "Provincial production below average"
+//           };
+//       } else {
+//           return {
+//               high: 8000,
+//               low: 1000,
+//               unit: "ton",
+//               highMessage: "Local production above average",
+//               lowMessage: "Local production below average"
+//           };
+//       }
+//   }
   
-  // Area thresholds
-  if (varType === "Area") {
-      if (adminLevel === "Country") {
-          return {
-              high: 7500000,
-              low: 2500000,
-              unit: "ha",
-              highMessage: "Rice area larger than typical",
-              lowMessage: "Rice area smaller than typical"
-          };
-      } else if (adminLevel === "Prov") {
-          return {
-              high: 400000,
-              low: 100000,
-              unit: "ha",
-              highMessage: "Provincial rice area larger than typical",
-              lowMessage: "Provincial rice area smaller than typical"
-          };
-      } else {
-          return {
-              high: 7500,
-              low: 2500,
-              unit: "ha",
-              highMessage: "Local rice area larger than typical",
-              lowMessage: "Local rice area smaller than typical"
-          };
-      }
-  }
+//   // Area thresholds
+//   if (varType === "Area") {
+//       if (adminLevel === "Country") {
+//           return {
+//               high: 7500000,
+//               low: 2500000,
+//               unit: "ha",
+//               highMessage: "Rice area larger than typical",
+//               lowMessage: "Rice area smaller than typical"
+//           };
+//       } else if (adminLevel === "Prov") {
+//           return {
+//               high: 400000,
+//               low: 100000,
+//               unit: "ha",
+//               highMessage: "Provincial rice area larger than typical",
+//               lowMessage: "Provincial rice area smaller than typical"
+//           };
+//       } else {
+//           return {
+//               high: 7500,
+//               low: 2500,
+//               unit: "ha",
+//               highMessage: "Local rice area larger than typical",
+//               lowMessage: "Local rice area smaller than typical"
+//           };
+//       }
+//   }
   
   // Soil moisture thresholds
   if (varType === "SMPct") {
@@ -478,8 +478,8 @@ export function getThresholds(options) {
           high: 75,
           low: 25,
           unit: "%",
-          highMessage: "Soil moisture above normal range",
-          lowMessage: "Soil moisture below normal range"
+          highMessage: "High soil moisture",
+          lowMessage: "Low soil moisture"
       };
   }
   
