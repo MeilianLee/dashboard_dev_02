@@ -104,7 +104,7 @@ export default function Home() {
 
         try {
             // Generate request URL
-            const url = `/api/get_data_era5?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`;
+            const url = `/api/get_data_era5Hist?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`;
 
             // Set map loading state
             setMapLoading(true);
