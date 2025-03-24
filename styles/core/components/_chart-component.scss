@@ -151,7 +151,7 @@
     font-size: 0.95rem;
 }
 
-.legend-item {
+.chart-legend-item {
     display: inline-block;
     width: 25px;
     height: 3px;
@@ -159,22 +159,22 @@
     vertical-align: middle;
 }
 
-.legend-item.mean {
+.chart-legend-item.mean {
     background-color: rgba(75, 192, 192, 1);
     height: 3px;
 }
 
-.legend-item.max {
+.chart-legend-item.max {
     background-color: rgba(255, 99, 132, 1);
     height: 2px;
 }
 
-.legend-item.min {
+.chart-legend-item.min {
     background-color: rgba(54, 162, 235, 1);
     height: 2px;
 }
 
-.legend-item.ensemble {
+.chart-legend-item.ensemble {
     background-color: rgba(200, 200, 200, 0.8);
     height: 1px;
 }
@@ -184,6 +184,40 @@
     color: #666;
     font-style: italic;
     margin-top: 0.5rem;
+}
+
+/* Loading indicator */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4caf50;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive adjustments */
