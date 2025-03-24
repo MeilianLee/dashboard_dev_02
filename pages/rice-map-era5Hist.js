@@ -429,11 +429,11 @@ export default function Home() {
                     </div>
 
                     {/* Error message */}
-                    {errorMessage && (
+                    {/* {errorMessage && (
                         <div className="error-message">
                             <p>{errorMessage}</p>
                         </div>
-                    )}
+                    )} */}
 
                     {/* Map loading overlay */}
                     {mapLoading && <MapLoadingOverlay />}
