@@ -448,29 +448,29 @@ export default function handler(req, res) {
                 Yield: `${region}_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_annual.geojson`,
-                Temp: `${region}_country_Temperature_annual.geojson`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Country_Monthly: {
                 Yield: `${region}_monthly_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_monthly.geojson`,
-                Temp: `${region}_country_Temperature_monthly.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Yearly: {
                 Yield: `${region}_yield_prov.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_Precipitation_annual.geojson`,
-                Temp: `${region}_Temperature_annual.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Monthly: {
                 Yield: `${region}_monthly_yield_province.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_precipitation_monthly.geojson`,
-                Temp: `${region}_Temperature_monthly.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             }
             // -------------------- ERA5 BASED HIST DATA API -------------------- //
 
