@@ -739,117 +739,119 @@ export const ChartComponent = ({ data, options }) => {
     useEffect(() => {
         if (!data || data.length === 0) return;
 
-        console.log("Processing chart data:", data);
-
         // Process data for chart
         processData(data);
+
+        // After processing, set year range based on available data
+        setTimeout(() => {
+            const years = getYearOptions();
+            if (!startYear && years.length > 0) setStartYear(years[0]);
+            if (!endYear && years.length > 0)
+                setEndYear(years[years.length - 1]);
+        }, 0);
     }, [data]);
 
-    // Initialize year range when filtered data is ready
+    // Filter data when range changes
     useEffect(() => {
-        if (!filteredData || filteredData.length === 0) return;
+        if (!data || data.length === 0 || !startYear || !endYear) return;
 
-        console.log("Setting year range from filtered data:", filteredData);
-
-        // Get years from filtered data
-        const years = getYearOptions();
-
-        // Set year range if not already set
-        if ((!startYear || !endYear) && years.length > 0) {
-            setStartYear(years[0]);
-            setEndYear(years[years.length - 1]);
+        // Only apply the filter if we've already processed the data
+        if (dataReady) {
+            handleYearRangeChange();
         }
-
-        setDataReady(true);
-    }, [filteredData]);
+    }, [data, startYear, endYear]);
 
     // Process data to prepare for visualization
     const processData = (rawData) => {
-        if (!rawData || !rawData.length === 0) return;
+        if (!rawData || rawData.length === 0) return;
 
-        // If the data is already in a standard format with year and value properties
-        if (
-            rawData[0] &&
-            rawData[0].hasOwnProperty("year") &&
-            rawData[0].hasOwnProperty("value")
-        ) {
-            setFilteredData([...rawData]);
+        // Determine if this is historical data (with properties like y1990, y2000) or forecast data with ensembles
+        const isHistoricalFormat = detectHistoricalFormat(rawData);
+
+        if (isHistoricalFormat) {
+            processHistoricalData(rawData);
+        } else if (rawData.some((d) => d.hasOwnProperty("ensemble"))) {
+            processEnsembleData(rawData);
+        } else {
+            setFilteredData(rawData);
+            setDataReady(true);
+        }
+    };
+
+    // Detect if data is in historical format (with year keys like y1990)
+    const detectHistoricalFormat = (rawData) => {
+        if (!rawData || rawData.length === 0 || !rawData[0].properties)
+            return false;
+
+        // Check if any properties start with 'y' followed by digits (like y1990)
+        const yearKeys = Object.keys(rawData[0].properties).filter((key) =>
+            /^y\d+$/.test(key)
+        );
+        return yearKeys.length > 0;
+    };
+
+    // Process historical data with year keys
+    const processHistoricalData = (rawData) => {
+        if (!rawData || rawData.length === 0 || !rawData[0].properties) {
+            setFilteredData([]);
             setDataReady(true);
             return;
         }
 
-        // If there's a selectedFeature object with properties
-        if (rawData[0] && rawData[0].properties) {
-            const timeSeriesData = extractTimeSeriesFromFeature(rawData[0]);
-            setFilteredData(timeSeriesData);
-            setDataReady(true);
-            return;
-        }
+        const timeSeriesData = [];
+        const properties = rawData[0].properties;
 
-        // Fallback
-        setFilteredData([]);
+        // Extract data from properties with pattern y1990, y2000, etc.
+        Object.keys(properties).forEach((key) => {
+            if (/^y\d+$/.test(key)) {
+                // Handle both yearly and monthly formats
+                const yearKey = key.substring(1);
+                let year, month;
+
+                if (yearKey.length === 4) {
+                    // Format: y1990 (yearly)
+                    year = parseInt(yearKey, 10);
+                    month = 1; // Default to January for yearly data
+                } else if (yearKey.length === 6) {
+                    // Format: y199001 (monthly)
+                    year = parseInt(yearKey.substring(0, 4), 10);
+                    month = parseInt(yearKey.substring(4, 6), 10);
+                } else {
+                    // Unknown format, skip
+                    return;
+                }
+
+                const value = properties[key];
+
+                if (
+                    !isNaN(year) &&
+                    !isNaN(month) &&
+                    value !== null &&
+                    value !== undefined
+                ) {
+                    timeSeriesData.push({
+                        year: year,
+                        month: month,
+                        formattedDate: new Date(year, month - 1, 1), // JavaScript months are 0-based
+                        value: value
+                    });
+                }
+            }
+        });
+
+        // Sort by date
+        timeSeriesData.sort((a, b) => a.formattedDate - b.formattedDate);
+
+        setFilteredData(timeSeriesData);
         setDataReady(true);
     };
 
-    // Extract time series data from feature properties
-    const extractTimeSeriesFromFeature = (feature) => {
-        if (!feature || !feature.properties) {
-            console.warn("Invalid feature or missing properties");
-            return [];
-        }
-
-        const { properties } = feature;
-        let timeSeriesData = [];
-
-        // First check if this is an ensemble format (y202502_1)
-        const ensembleKeys = Object.keys(properties).filter((key) =>
-            /^y\d+_\d+$/.test(key)
-        );
-
-        if (ensembleKeys.length > 0) {
-            console.log("Processing as ensemble forecast data");
-            // Process as ensemble data
-            ensembleKeys.forEach((key) => {
-                const match = key.match(/^y(\d+)_(\d+)$/);
-                if (match) {
-                    timeSeriesData.push({
-                        year: parseInt(match[1], 10),
-                        ensemble: parseInt(match[2], 10),
-                        value: properties[key]
-                    });
-                }
-            });
-        } else {
-            // Then check for historical year pattern (y1990)
-            const yearKeys = Object.keys(properties).filter((key) =>
-                /^y\d+$/.test(key)
-            );
-
-            if (yearKeys.length > 0) {
-                console.log("Processing as historical data");
-                yearKeys.forEach((key) => {
-                    const year = parseInt(key.substring(1), 10);
-                    const value = properties[key];
-
-                    if (!isNaN(year) && value !== null && value !== undefined) {
-                        timeSeriesData.push({
-                            year: year,
-                            value: value
-                        });
-                    }
-                });
-            } else {
-                console.warn(
-                    "No recognizable time series format found in feature properties"
-                );
-            }
-        }
-
-        // Sort by year
-        timeSeriesData.sort((a, b) => a.year - b.year);
-        console.log("Extracted time series data:", timeSeriesData);
-
-        return timeSeriesData;
+    // Special processing for ensemble forecast data
+    const processEnsembleData = (rawData) => {
+        // No additional processing needed at this level
+        // We will handle the ensemble visualization in the chart creation
+        setFilteredData(rawData);
+        setDataReady(true);
     };
 
     // Update chart when filtered data changes
@@ -1054,7 +1056,73 @@ export const ChartComponent = ({ data, options }) => {
     };
 
     // Create chart options based on chart type
-    const createChartOptions = (isEnsemble = false) => {
+    const createChartOptions = (isEnsemble = false, dataPoints = []) => {
+        // Determine whether we're working with time series or just years
+        const hasTimeData =
+            dataPoints.length > 0 && dataPoints[0] instanceof Date;
+
+        // Set appropriate time scale options based on data type
+        const xAxisOptions = hasTimeData
+            ? {
+                  type: "time",
+                  time: {
+                      unit: determineTimeUnit(dataPoints),
+                      displayFormats: {
+                          day: "MMM d, yyyy",
+                          month: "MMM yyyy",
+                          quarter: "MMM yyyy",
+                          year: "yyyy"
+                      },
+                      tooltipFormat: "MMM d, yyyy"
+                  },
+                  title: {
+                      display: true,
+                      text: "Date",
+                      font: {
+                          size: 16,
+                          weight: "bold"
+                      },
+                      padding: {
+                          top: 10
+                      }
+                  },
+                  ticks: {
+                      font: {
+                          size: 14
+                      },
+                      major: {
+                          enabled: true,
+                          fontStyle: "bold"
+                      },
+                      source: "data" // Use the actual data points to determine ticks
+                  }
+              }
+            : {
+                  type: "linear",
+                  title: {
+                      display: true,
+                      text: "Year",
+                      font: {
+                          size: 16,
+                          weight: "bold"
+                      },
+                      padding: {
+                          top: 10
+                      }
+                  },
+                  ticks: {
+                      font: {
+                          size: 14
+                      },
+                      callback: function (value) {
+                          // Ensure ticks are whole years
+                          if (Number.isInteger(value)) {
+                              return value;
+                          }
+                      }
+                  }
+              };
+
         return {
             responsive: true,
             maintainAspectRatio: false,
@@ -1091,6 +1159,14 @@ export const ChartComponent = ({ data, options }) => {
                 tooltip: {
                     callbacks: {
                         title: (tooltipItems) => {
+                            const date = tooltipItems[0].parsed.x;
+                            if (date instanceof Date) {
+                                return date.toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric"
+                                });
+                            }
                             return `Year: ${tooltipItems[0].parsed.x}`;
                         },
                         label: (tooltipItem) => {
@@ -1113,31 +1189,7 @@ export const ChartComponent = ({ data, options }) => {
                 intersect: false
             },
             scales: {
-                x: {
-                    type: "linear",
-                    title: {
-                        display: true,
-                        text: "Year",
-                        font: {
-                            size: 16,
-                            weight: "bold"
-                        },
-                        padding: {
-                            top: 10
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 14
-                        },
-                        callback: function (value) {
-                            // Ensure ticks are whole years
-                            if (Number.isInteger(value)) {
-                                return value;
-                            }
-                        }
-                    }
-                },
+                x: xAxisOptions,
                 y: {
                     title: {
                         display: true,
@@ -1158,6 +1210,44 @@ export const ChartComponent = ({ data, options }) => {
                 }
             }
         };
+    };
+
+    // Determine the appropriate time unit based on the data points
+    const determineTimeUnit = (dataPoints) => {
+        if (!dataPoints || dataPoints.length < 2) return "month";
+
+        // Check if we have both month and year
+        const allSameYear = dataPoints.every(
+            (d) => d.getFullYear() === dataPoints[0].getFullYear()
+        );
+        const allSameMonth = dataPoints.every(
+            (d) => d.getMonth() === dataPoints[0].getMonth()
+        );
+
+        if (allSameYear && allSameMonth) {
+            return "day";
+        } else if (allSameYear) {
+            return "month";
+        } else {
+            // Calculate total time span
+            const firstDate = new Date(
+                Math.min(...dataPoints.map((d) => d.getTime()))
+            );
+            const lastDate = new Date(
+                Math.max(...dataPoints.map((d) => d.getTime()))
+            );
+            const monthsDiff =
+                (lastDate.getFullYear() - firstDate.getFullYear()) * 12 +
+                (lastDate.getMonth() - firstDate.getMonth());
+
+            if (monthsDiff > 48) {
+                return "year";
+            } else if (monthsDiff > 12) {
+                return "quarter";
+            } else {
+                return "month";
+            }
+        }
     };
 
     // Get appropriate chart title based on options
@@ -1241,12 +1331,71 @@ export const ChartComponent = ({ data, options }) => {
     const handleYearRangeChange = () => {
         if (!startYear || !endYear) return;
 
-        // Filter the data based on the year range
-        const newFilteredData = filteredData.filter((item) => {
-            return item.year >= startYear && item.year <= endYear;
-        });
+        // Check if we're dealing with historical data format
+        if (data[0] && data[0].properties) {
+            const timeSeriesData = [];
+            const properties = data[0].properties;
 
-        setFilteredData(newFilteredData);
+            // Filter year keys based on selected range
+            Object.keys(properties).forEach((key) => {
+                if (/^y\d+$/.test(key)) {
+                    // Parse year and month from key
+                    const yearKey = key.substring(1);
+                    let year, month;
+
+                    if (yearKey.length === 4) {
+                        // Format: y1990 (yearly)
+                        year = parseInt(yearKey, 10);
+                        month = 1; // Default to January for yearly data
+                    } else if (yearKey.length === 6) {
+                        // Format: y199001 (monthly)
+                        year = parseInt(yearKey.substring(0, 4), 10);
+                        month = parseInt(yearKey.substring(4, 6), 10);
+                    } else {
+                        return; // Skip invalid formats
+                    }
+
+                    // Check if the year is within the selected range
+                    if (year >= startYear && year <= endYear) {
+                        const value = properties[key];
+
+                        if (
+                            !isNaN(year) &&
+                            !isNaN(month) &&
+                            value !== null &&
+                            value !== undefined
+                        ) {
+                            timeSeriesData.push({
+                                year: year,
+                                month: month,
+                                formattedDate: new Date(year, month - 1, 1),
+                                value:
+                                    typeof value === "number"
+                                        ? value
+                                        : parseFloat(value)
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Sort by date
+            timeSeriesData.sort((a, b) => a.formattedDate - b.formattedDate);
+            setFilteredData(timeSeriesData);
+        } else {
+            // Standard data format or ensemble data
+            const newFilteredData = data.filter((item) => {
+                // For data with formattedDate
+                if (item.formattedDate) {
+                    const year = item.formattedDate.getFullYear();
+                    return year >= startYear && year <= endYear;
+                }
+                // For data with just year field
+                return item.year >= startYear && item.year <= endYear;
+            });
+
+            setFilteredData(newFilteredData);
+        }
     };
 
     // Export chart data as CSV
@@ -1366,13 +1515,41 @@ export const ChartComponent = ({ data, options }) => {
 
     // Generate years array for select options
     const getYearOptions = () => {
-        if (!filteredData || filteredData.length === 0) return [];
+        if (!data || data.length === 0) return [];
 
-        // Get years from filtered data
-        const years = [...new Set(filteredData.map((d) => d.year))].sort(
+        // If we're dealing with raw data that has properties (historical data)
+        if (data[0] && data[0].properties) {
+            const yearKeys = Object.keys(data[0].properties)
+                .filter((key) => /^y\d+$/.test(key))
+                .map((key) => {
+                    const yearKey = key.substring(1);
+                    if (yearKey.length === 4) {
+                        return parseInt(yearKey, 10);
+                    } else if (yearKey.length === 6) {
+                        return parseInt(yearKey.substring(0, 4), 10);
+                    }
+                    return null;
+                })
+                .filter((year) => year !== null)
+                .sort((a, b) => a - b);
+
+            return [...new Set(yearKeys)]; // Remove duplicates
+        }
+
+        // For regular data with year field
+        if (filteredData.length > 0 && filteredData[0].formattedDate) {
+            // For data with formatted dates, extract unique years
+            return [
+                ...new Set(
+                    filteredData.map((d) => d.formattedDate.getFullYear())
+                )
+            ].sort((a, b) => a - b);
+        }
+
+        // Standard data format with explicit year field
+        return [...new Set(filteredData.map((d) => d.year))].sort(
             (a, b) => a - b
         );
-        return years;
     };
 
     return (
