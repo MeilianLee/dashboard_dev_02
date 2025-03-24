@@ -45,7 +45,6 @@
 //     const [initialLoading, setInitialLoading] = useState(true);
 //     const [loadingMessage, setLoadingMessage] = useState("Loading application...");
 
-
 //     // just some fake data to test
 //     const [spi, setSpi] = useState("0");
 //     const [lastUpdated, setLastUpdated] = useState("15/07/2024");
@@ -418,9 +417,9 @@
 //         <>
 //             {/* Initial application loading */}
 //             {initialLoading && (
-//                 <LoadingSpinner 
-//                     isLoading={true} 
-//                     message="Initializing Rice Map Application..." 
+//                 <LoadingSpinner
+//                     isLoading={true}
+//                     message="Initializing Rice Map Application..."
 //                     size="large"
 //                 />
 //             )}
@@ -765,9 +764,6 @@
 //     { year: 2016, value: 30, lower_bound: 22, upper_bound: 34 }
 // ];
 
-
-
-
 // This shows the key changes to rice-map.js to implement loading states
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
@@ -782,7 +778,11 @@ import { TimeIntervalSelector } from "@components/TimeIntervalSelector";
 import { AdminLevelSelector } from "@components/AdminLevelSelector";
 import { DashTop } from "@components/DashTop";
 // Import the loading components
-import { LoadingSpinner, MapLoadingOverlay, DataLoadingIndicator } from "@components/LoadingSpinner";
+import {
+    LoadingSpinner,
+    MapLoadingOverlay,
+    DataLoadingIndicator
+} from "@components/LoadingSpinner";
 
 const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -811,12 +811,14 @@ export default function Home() {
     const [mapLoading, setMapLoading] = useState(true);
     const [dataLoading, setDataLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
-    const [loadingMessage, setLoadingMessage] = useState("Loading application...");
-    
+    const [loadingMessage, setLoadingMessage] = useState(
+        "Loading application..."
+    );
+
     // Existing state variables
     const [spi, setSpi] = useState("0");
     const [lastUpdated, setLastUpdated] = useState("15/07/2024");
-    const [currData, setCurrData] = useState([]); 
+    const [currData, setCurrData] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [sidebarTextVisible, setSidebarTextVisible] = useState(true);
 
@@ -826,7 +828,7 @@ export default function Home() {
     const [options, setOptions] = useState({
         varType: "Yield",
         region: "SEA",
-        overview: "forecast", 
+        overview: "forecast",
         adminLevel: "Grid",
         dateType: "Monthly",
         date: "202504"
@@ -855,7 +857,7 @@ export default function Home() {
         const timer = setTimeout(() => {
             setInitialLoading(false);
         }, 1500);
-        
+
         return () => clearTimeout(timer);
     }, []);
 
@@ -863,22 +865,24 @@ export default function Home() {
     const fetchData = useCallback(async () => {
         const { varType, region, overview, adminLevel, dateType } = options;
         console.log(`${varType}_${dateType}_${adminLevel}_${region}`);
-        
+
         // Set loading states
         setDataLoading(true);
         setLoadingMessage(`Loading ${varType} data for ${region}...`);
-        
+
         try {
             // Generate request URL
             const url = `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`;
-            
+
             // Set map loading state
             setMapLoading(true);
-            
+
             const response = await fetch(url);
-            
+
             if (!response.ok) {
-                throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+                throw new Error(
+                    `Failed to fetch data: ${response.status} ${response.statusText}`
+                );
             }
 
             if (adminLevel === "Grid") {
@@ -1060,16 +1064,16 @@ export default function Home() {
         <>
             {/* Initial application loading */}
             {initialLoading && (
-                <LoadingSpinner 
-                    isLoading={true} 
-                    message="Initializing Rice Map Application..." 
+                <LoadingSpinner
+                    isLoading={true}
+                    message="Initializing Rice Map Application..."
                     size="large"
                 />
             )}
-            
+
             {/* Data loading indicator */}
             <DataLoadingIndicator isLoading={dataLoading} />
-            
+
             <DashTop
                 options={options}
                 updateOption={updateOption}
@@ -1179,10 +1183,16 @@ export default function Home() {
                 <div className="chart-panel">
                     <>
                         {timeSeries.length > 0 ? (
-                            <ChartComponent data={timeSeries} options={options} />
+                            <ChartComponent
+                                data={timeSeries}
+                                options={options}
+                            />
                         ) : (
                             <div className="no-data-message">
-                                <p>Select a region on the map to view time series data</p>
+                                <p>
+                                    Select a region on the map to view time
+                                    series data
+                                </p>
                             </div>
                         )}
                     </>
@@ -1201,10 +1211,20 @@ const formatDateDisplay = (selectedDate) => {
     const day = selectedDate.length === 8 ? selectedDate.slice(6, 8) : null;
 
     const monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
     ];
-    
+
     const monthFormatted = month ? monthNames[parseInt(month, 10) - 1] : "";
 
     if (selectedDate.length === 4) {

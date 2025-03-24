@@ -78,45 +78,53 @@ export const GeojsonLayer = ({
             dateType: data_url.data_dateType,
             region: options.region
         });
-        
+
         // If no thresholds defined, clear alerts and return
         if (!thresholds.high && !thresholds.low) {
             setAlerts([]);
             return;
         }
-        
+
         // Filter features to find those exceeding thresholds
         const newAlerts = features
-            .filter(feature => {
+            .filter((feature) => {
                 const baseKey = `y${date}`;
-                const value = feature.properties[`${baseKey}_0`] ?? 
-                            feature.properties[baseKey] ?? 
-                            null;
-                            
-                return value !== null && 
-                    (value > thresholds.high || value < thresholds.low);
+                const value =
+                    feature.properties[`${baseKey}_0`] ??
+                    feature.properties[baseKey] ??
+                    null;
+
+                return (
+                    value !== null &&
+                    (value > thresholds.high || value < thresholds.low)
+                );
             })
-            .map(feature => {
+            .map((feature) => {
                 const baseKey = `y${date}`;
-                const value = feature.properties[`${baseKey}_0`] ?? 
-                            feature.properties[baseKey];
+                const value =
+                    feature.properties[`${baseKey}_0`] ??
+                    feature.properties[baseKey];
                 const name = feature.properties.name;
                 const center = getFeatureCenter(feature);
-                
+
                 // Determine if this is a high or low alert
                 const isHigh = value > thresholds.high;
-                
+
                 return {
                     position: center,
-                    type: isHigh ? 'high' : 'low',
-                    message: isHigh 
-                        ? `${thresholds.highMessage}: ${value.toFixed(2)}${thresholds.unit}` 
-                        : `${thresholds.lowMessage}: ${value.toFixed(2)}${thresholds.unit}`,
+                    type: isHigh ? "high" : "low",
+                    message: isHigh
+                        ? `${thresholds.highMessage}: ${value.toFixed(2)}${
+                              thresholds.unit
+                          }`
+                        : `${thresholds.lowMessage}: ${value.toFixed(2)}${
+                              thresholds.unit
+                          }`,
                     name: name,
                     value: value
                 };
             });
-        
+
         setAlerts(newAlerts);
     };
 
@@ -193,7 +201,7 @@ export const GeojsonLayer = ({
                     throw new Error("Invalid GeoJSON data received");
                 }
                 console.log("Received GeoJSON data:", data);
-                
+
                 // Process features to identify alerts based on thresholds
                 processAlerts(data.features, selectedDate);
 
@@ -263,7 +271,7 @@ export const GeojsonLayer = ({
                             handleFeatureClick(feature, layer);
                             handleProvClickToGenerateTimeSeries(feature);
                         });
-                        
+
                         // Update info control on mouseover
                         layer.on("mouseover", function (e) {
                             infoRef.current.update(
@@ -285,7 +293,10 @@ export const GeojsonLayer = ({
                             }
 
                             // Reset the feature style
-                            if (highlightRef.current && selectedFeature !== feature) {
+                            if (
+                                highlightRef.current &&
+                                selectedFeature !== feature
+                            ) {
                                 highlightRef.current.setStyle(
                                     styleGeoJSON(feature)
                                 );
@@ -294,12 +305,12 @@ export const GeojsonLayer = ({
                         });
                     }
                 });
-                
+
                 geojsonLayer.addTo(map);
                 geoJsonLayerRef.current = geojsonLayer; // Store the new layer
             })
             .catch((error) => console.error("Error loading GeoJSON:", error));
-            
+
         // Clean up on unmount
         return () => {
             if (infoRef.current) {
@@ -309,39 +320,55 @@ export const GeojsonLayer = ({
                 map.removeLayer(geoJsonLayerRef.current);
             }
         };
-    }, [map, selectedDate, data_url.url, options, selectedFeature, setSelectedFeature, setSelectedProvince, setTimeSeries]);
+    }, [
+        map,
+        selectedDate,
+        data_url.url,
+        options,
+        selectedFeature,
+        setSelectedFeature,
+        setSelectedProvince,
+        setTimeSeries
+    ]);
 
     // Update alerts when relevant data changes
     useEffect(() => {
         // If no geoJsonLayer yet, don't try to process alerts
         if (!geoJsonLayerRef.current) return;
-        
+
         // Get the current GeoJSON data from the layer
         const features = [];
-        geoJsonLayerRef.current.eachLayer(layer => {
+        geoJsonLayerRef.current.eachLayer((layer) => {
             if (layer.feature) {
                 features.push(layer.feature);
             }
         });
-        
+
         // Process alerts with the current features
         if (features.length > 0) {
             processAlerts(features, selectedDate);
         }
-    }, [selectedDate, data_url.data_vartype, data_url.data_adminLevel, data_url.data_dateType, options.region]);
+    }, [
+        selectedDate,
+        data_url.data_vartype,
+        data_url.data_adminLevel,
+        data_url.data_dateType,
+        options.region
+    ]);
 
     // Render alert markers if showWarnings is true
     return (
         <>
-            {showWarnings && alerts.map((alert, index) => (
-                <AlertMarker
-                    key={`alert-${index}`}
-                    position={alert.position}
-                    type={alert.type}
-                    message={alert.message}
-                    name={alert.name}
-                />
-            ))}
+            {showWarnings &&
+                alerts.map((alert, index) => (
+                    <AlertMarker
+                        key={`alert-${index}`}
+                        position={alert.position}
+                        type={alert.type}
+                        message={alert.message}
+                        name={alert.name}
+                    />
+                ))}
         </>
     );
 };

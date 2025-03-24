@@ -1,391 +1,722 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 
-// export const ChartComponent = ({ data }) => {
-//     // console.log("data:", data);
-//     const chartRef = useRef(null);
-//     const chartInstanceRef = useRef(null);
-
-//     const [startYear, setStartYear] = useState(data[0].year); // 起始年份
-//     const [endYear, setEndYear] = useState(data[data.length - 1].year); // 结束年份
-//     const [filteredData, setFilteredData] = useState(data); // 过滤后的数据
-
-//     useEffect(() => {
-//         if (!chartRef.current) return;
-
-//         // 销毁现有的图表实例以避免重复渲染
-//         if (chartInstanceRef.current) {
-//             chartInstanceRef.current.destroy();
-//         }
-
-//         // 处理输入数据
-//         const labels = filteredData.map((item) => item.year);
-//         const values = filteredData.map((item) => item.value);
-
-//         // 创建图表实例
-//         chartInstanceRef.current = new Chart(chartRef.current, {
-//             type: "line",
-//             data: {
-//                 labels,
-//                 datasets: [
-//                     {
-//                         label: "Time Series Data",
-//                         data: values,
-//                         borderColor: "rgba(75, 192, 192, 1)",
-//                         backgroundColor: "rgba(75, 192, 192, 0.2)",
-//                         borderWidth: 2
-//                     }
-//                 ]
-//             },
-//             options: {
-//                 responsive: true,
-//                 maintainAspectRatio: false,
-//                 plugins: {
-//                     legend: {
-//                         display: true,
-//                         position: "top"
-//                     }
-//                 },
-//                 scales: {
-//                     x: {
-//                         title: {
-//                             display: true,
-//                             text: "Year"
-//                         }
-//                     },
-//                     y: {
-//                         title: {
-//                             display: true,
-//                             text: "Value"
-//                         }
-//                     }
-//                 }
-//             }
-//         });
-
-//         // After the chart is created, update it if needed
-//         if (chartInstanceRef.current) {
-//             chartInstanceRef.current.update(); // Ensure the chart updates with new data
-//         }
-
-//         return () => {
-//             if (chartInstanceRef.current) {
-//                 chartInstanceRef.current.destroy();
-//             }
-//         };
-//     }, [filteredData]);
-
-//     // 更新图表数据范围
-//     const handleRangeChange = () => {
-//         const newFilteredData = data.filter(
-//             (item) => item.year >= startYear && item.year <= endYear
-//         );
-//         setFilteredData(newFilteredData);
-//     };
-
-//     // export CSV file
-//     const downloadCSV = () => {
-//         const csvRows = [["Year", "Value"]];
-//         filteredData.forEach(({ year, value }) => {
-//             csvRows.push([year, value]);
-//         });
-
-//         const csvContent = csvRows.map((row) => row.join(",")).join("\n");
-//         const blob = new Blob([csvContent], { type: "text/csv" });
-//         const url = URL.createObjectURL(blob);
-
-//         const link = document.createElement("a");
-//         link.href = url;
-//         link.download = `time_series_${startYear}-${endYear}.csv`;
-//         link.click();
-//         URL.revokeObjectURL(url);
-//     };
-
-//     return (
-//         <div>
-//             {/* time range select */}
-//             <div style={{ marginBottom: "20px" }}>
-//                 <label>
-//                     Start Year:
-//                     <select
-//                         value={startYear}
-//                         onChange={(e) => setStartYear(Number(e.target.value))}
-//                     >
-//                         {data.map((item) => (
-//                             <option key={item.year} value={item.year}>
-//                                 {item.year}
-//                             </option>
-//                         ))}
-//                     </select>
-//                 </label>
-//                 <label style={{ marginLeft: "20px" }}>
-//                     End Year:
-//                     <select
-//                         value={endYear}
-//                         onChange={(e) => setEndYear(Number(e.target.value))}
-//                     >
-//                         {data.map((item) => (
-//                             <option key={item.year} value={item.year}>
-//                                 {item.year}
-//                             </option>
-//                         ))}
-//                     </select>
-//                 </label>
-//                 <button
-//                     onClick={handleRangeChange}
-//                     style={{
-//                         marginLeft: "20px",
-//                         backgroundColor: "#4CAF50", // Green background
-//                         color: "white", // Text color
-//                         border: "none", // Remove default border
-//                         padding: "10px 20px", // Padding for better click area
-//                         fontSize: "16px", // Font size for readability
-//                         borderRadius: "5px", // Rounded corners
-//                         cursor: "pointer", // Pointer cursor on hover
-//                         transition: "background-color 0.3s ease" // Smooth background transition
-//                     }}
-//                     onMouseEnter={(e) =>
-//                         (e.target.style.backgroundColor = "#45a049")
-//                     } // Darker green on hover
-//                     onMouseLeave={(e) =>
-//                         (e.target.style.backgroundColor = "#4CAF50")
-//                     } // Revert back to original color
-//                 >
-//                     Update Chart
-//                 </button>
-//             </div>
-
-//             {/* download button */}
-//             <button
-//                 onClick={downloadCSV}
-//                 style={{
-//                     margin: "10px",
-//                     padding: "10px 20px",
-//                     backgroundColor: "white",
-//                     color: "rgba(75, 192, 192, 1)",
-//                     border: "2px solid",
-//                     borderRadius: "5px",
-//                     cursor: "pointer"
-//                 }}
-//             >
-//                 Download Selected Data
-//             </button>
-
-//             {/* the chart */}
-//             <div
-//                 style={{ position: "relative", height: "400px", width: "100%" }}
-//             >
-//                 <canvas ref={chartRef}></canvas>
-//             </div>
-//         </div>
-//     );
-// };
-
 export const ChartComponent = ({ data, options }) => {
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
-    const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
+    // For date filtering and range selection
+    const [startYear, setStartYear] = useState(null);
+    const [endYear, setEndYear] = useState(null);
+    const [filteredData, setFilteredData] = useState([]);
+    const [dataReady, setDataReady] = useState(false);
+    const [showDownloadOptions, setShowDownloadOptions] = useState(false);
+
+    // Process data when it changes
     useEffect(() => {
-        if (!data || data.length === 0 || !chartRef.current) return;
+        if (!data || data.length === 0) return;
 
-        console.log("Updating chart with options:", options);
-        console.log("Updating chart with received data:", data);
+        // Set initial year range based on available data
+        const years = [...new Set(data.map((d) => d.year))].sort(
+            (a, b) => a - b
+        );
+        if (!startYear && years.length > 0) setStartYear(years[0]);
+        if (!endYear && years.length > 0) setEndYear(years[years.length - 1]);
 
-        const labels = [...new Set(data.map((d) => d.year))].sort(); // 确保 X 轴按时间排序
-        const ensembleMembers = [...new Set(data.map((d) => d.ensemble))]; // 获取所有 ensemble 成员
+        // Process data for chart
+        processData(data);
+    }, [data]);
 
-        const datasets = ensembleMembers.map((member) => ({
-            label: `Ensemble Member ${member}`,
-            data: labels.map((year) => {
-                const entry = data.find(
-                    (d) => d.year === year && d.ensemble === member
-                );
-                return entry ? entry.value : null;
-            }),
-            borderColor: `rgba(${Math.random() * 255}, ${
-                Math.random() * 255
-            }, ${Math.random() * 255}, 1)`,
-            backgroundColor: `rgba(${Math.random() * 255}, ${
-                Math.random() * 255
-            }, ${Math.random() * 255}, 0.2)`,
-            borderWidth: 2,
-            fill: false,
-            spanGaps: true
-        }));
-
-        setChartData({ labels, datasets });
-    }, [data, options]);
-
+    // Filter data when range changes
     useEffect(() => {
-        if (!chartRef.current || !chartData.labels.length) return;
+        if (!data || data.length === 0 || !startYear || !endYear) return;
 
+        const newFilteredData = data.filter(
+            (item) => item.year >= startYear && item.year <= endYear
+        );
+        setFilteredData(newFilteredData);
+        setDataReady(true);
+    }, [data, startYear, endYear]);
+
+    // Process data to prepare for visualization
+    const processData = (rawData) => {
+        if (!rawData || rawData.length === 0) return;
+
+        // If the data contains ensemble members, process it differently
+        if (rawData.some((d) => d.hasOwnProperty("ensemble"))) {
+            processEnsembleData(rawData);
+        } else {
+            setFilteredData(rawData);
+            setDataReady(true);
+        }
+    };
+
+    // Special processing for ensemble forecast data
+    const processEnsembleData = (rawData) => {
+        // No additional processing needed at this level
+        // We will handle the ensemble visualization in the chart creation
+        setFilteredData(rawData);
+        setDataReady(true);
+    };
+
+    // Update chart when filtered data changes
+    useEffect(() => {
+        if (!dataReady || !chartRef.current) return;
+
+        createChart();
+    }, [filteredData, dataReady]);
+
+    // Create and render the chart
+    const createChart = () => {
+        // Clean up existing chart
         if (chartInstanceRef.current) {
             chartInstanceRef.current.destroy();
         }
 
-        chartInstanceRef.current = new Chart(chartRef.current, {
+        const ctx = chartRef.current.getContext("2d");
+
+        // Check if data contains ensemble members
+        const hasEnsembleMembers = filteredData.some((d) =>
+            d.hasOwnProperty("ensemble")
+        );
+
+        if (hasEnsembleMembers) {
+            createEnsembleChart(ctx);
+        } else {
+            createStandardChart(ctx);
+        }
+    };
+
+    // Create a chart for non-ensemble data
+    const createStandardChart = (ctx) => {
+        // Sort data chronologically
+        const sortedData = [...filteredData].sort((a, b) => a.year - b.year);
+
+        // Prepare datasets
+        const datasets = [
+            {
+                label: getChartLabel(),
+                data: sortedData.map((item) => ({
+                    x: item.year,
+                    y: item.value
+                })),
+                borderColor: "rgba(75, 192, 192, 1)",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderWidth: 3,
+                tension: 0.3, // Adds slight curve to lines
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }
+        ];
+
+        // If data has upper/lower bounds, add them
+        if (
+            sortedData.some(
+                (d) =>
+                    d.hasOwnProperty("upper_bound") &&
+                    d.hasOwnProperty("lower_bound")
+            )
+        ) {
+            datasets.push({
+                label: "Upper Bound",
+                data: sortedData.map((item) => ({
+                    x: item.year,
+                    y: item.upper_bound
+                })),
+                borderColor: "rgba(75, 192, 192, 0.5)",
+                borderWidth: 1,
+                borderDash: [5, 5],
+                pointRadius: 0,
+                fill: false
+            });
+
+            datasets.push({
+                label: "Lower Bound",
+                data: sortedData.map((item) => ({
+                    x: item.year,
+                    y: item.lower_bound
+                })),
+                borderColor: "rgba(75, 192, 192, 0.5)",
+                borderWidth: 1,
+                borderDash: [5, 5],
+                pointRadius: 0,
+                fill: {
+                    target: "-1",
+                    above: "rgba(75, 192, 192, 0.1)"
+                }
+            });
+        }
+
+        chartInstanceRef.current = new Chart(ctx, {
             type: "line",
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: "top"
+            data: { datasets },
+            options: createChartOptions()
+        });
+    };
+
+    // Create a chart for ensemble data (spaghetti plot)
+    const createEnsembleChart = (ctx) => {
+        // Extract unique years and ensemble members
+        const years = [...new Set(filteredData.map((d) => d.year))].sort(
+            (a, b) => a - b
+        );
+        const ensembleMembers = [
+            ...new Set(filteredData.map((d) => d.ensemble))
+        ].sort((a, b) => a - b);
+
+        // Create stats by year
+        const yearlyStats = years.map((year) => {
+            const yearData = filteredData.filter((d) => d.year === year);
+            const values = yearData
+                .map((d) => d.value)
+                .filter((v) => v !== null && v !== undefined);
+
+            return {
+                year,
+                mean: values.length
+                    ? values.reduce((sum, val) => sum + val, 0) / values.length
+                    : null,
+                min: values.length ? Math.min(...values) : null,
+                max: values.length ? Math.max(...values) : null,
+                values: yearData
+            };
+        });
+
+        // Prepare datasets for ensemble members (thin lines)
+        const ensembleDatasets = ensembleMembers.map((member) => {
+            return {
+                label: `Ensemble ${member}`,
+                data: years.map((year) => {
+                    const entry = filteredData.find(
+                        (d) => d.year === year && d.ensemble === member
+                    );
+                    return { x: year, y: entry ? entry.value : null };
+                }),
+                borderColor: `rgba(200, 200, 200, 0.3)`,
+                borderWidth: 1,
+                pointRadius: 0,
+                tension: 0.1,
+                spanGaps: true
+            };
+        });
+
+        // Prepare datasets for statistics (thick lines)
+        const statDatasets = [
+            {
+                label: "Mean",
+                data: yearlyStats.map((stat) => ({
+                    x: stat.year,
+                    y: stat.mean
+                })),
+                borderColor: "rgba(75, 192, 192, 1)",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderWidth: 3,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                tension: 0.3,
+                spanGaps: true,
+                order: 1 // Lower order = drawn on top
+            },
+            {
+                label: "Max",
+                data: yearlyStats.map((stat) => ({
+                    x: stat.year,
+                    y: stat.max
+                })),
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.3,
+                spanGaps: true,
+                order: 2
+            },
+            {
+                label: "Min",
+                data: yearlyStats.map((stat) => ({
+                    x: stat.year,
+                    y: stat.min
+                })),
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.3,
+                spanGaps: true,
+                fill: {
+                    target: "-1",
+                    above: "rgba(54, 162, 235, 0.1)"
+                },
+                order: 2
+            }
+        ];
+
+        // Combine ensemble members with statistics
+        // Put ensemble members first so stats are drawn on top
+        const datasets = [...ensembleDatasets, ...statDatasets];
+
+        chartInstanceRef.current = new Chart(ctx, {
+            type: "line",
+            data: { datasets },
+            options: createChartOptions(true) // Pass true for ensemble charts
+        });
+    };
+
+    // Create chart options based on chart type
+    const createChartOptions = (isEnsemble = false) => {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: getChartTitle(),
+                    font: {
+                        size: 18,
+                        weight: "bold"
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
                     }
                 },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Year"
+                legend: {
+                    display: true,
+                    position: "top",
+                    labels: {
+                        font: {
+                            size: 14
+                        },
+                        // For ensemble charts, only show the statistics in the legend
+                        filter: isEnsemble
+                            ? (legendItem) => {
+                                  return !legendItem.text.startsWith(
+                                      "Ensemble"
+                                  );
+                              }
+                            : undefined
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (tooltipItems) => {
+                            return `Year: ${tooltipItems[0].parsed.x}`;
+                        },
+                        label: (tooltipItem) => {
+                            return `${
+                                tooltipItem.dataset.label
+                            }: ${tooltipItem.parsed.y.toFixed(2)}`;
                         }
                     },
-                    y: {
-                        title: {
-                            display: true,
-                            text: "Value"
+                    bodyFont: {
+                        size: 14
+                    },
+                    titleFont: {
+                        size: 16,
+                        weight: "bold"
+                    }
+                }
+            },
+            interaction: {
+                mode: "nearest",
+                intersect: false
+            },
+            scales: {
+                x: {
+                    type: "linear",
+                    title: {
+                        display: true,
+                        text: "Year",
+                        font: {
+                            size: 16,
+                            weight: "bold"
+                        },
+                        padding: {
+                            top: 10
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 14
+                        },
+                        callback: function (value) {
+                            // Ensure ticks are whole years
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: getYAxisLabel(),
+                        font: {
+                            size: 16,
+                            weight: "bold"
+                        },
+                        padding: {
+                            bottom: 10
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 14
                         }
                     }
                 }
             }
+        };
+    };
+
+    // Get appropriate chart title based on options
+    const getChartTitle = () => {
+        let title = "";
+
+        if (options && options.varType) {
+            if (options.varType.startsWith("SPI")) {
+                title = `Standardized Precipitation Index (${options.varType.slice(
+                    3
+                )} month${options.varType.slice(3) > 1 ? "s" : ""})`;
+            } else if (options.varType === "Yield") {
+                title = "Rice Yield";
+            } else if (options.varType === "Prcp") {
+                title = "Precipitation";
+            } else if (options.varType === "Temp") {
+                title = "Temperature";
+            } else if (options.varType === "Area") {
+                title = "Rice Area";
+            } else if (options.varType === "Production") {
+                title = "Rice Production";
+            } else {
+                title = options.varType;
+            }
+        }
+
+        return title;
+    };
+
+    // Get appropriate y-axis label
+    const getYAxisLabel = () => {
+        if (!options || !options.varType) return "Value";
+
+        switch (options.varType) {
+            case "SPI1":
+            case "SPI3":
+            case "SPI6":
+            case "SPI12":
+                return "SPI Value";
+            case "Yield":
+                return "Yield (ton/ha)";
+            case "Area":
+                return "Area (ha)";
+            case "Production":
+                return "Production (ton)";
+            case "Prcp":
+                return "Precipitation (mm)";
+            case "Temp":
+                return "Temperature (°C)";
+            default:
+                return "Value";
+        }
+    };
+
+    // Get appropriate dataset label
+    const getChartLabel = () => {
+        if (!options || !options.varType) return "Value";
+
+        switch (options.varType) {
+            case "SPI1":
+            case "SPI3":
+            case "SPI6":
+            case "SPI12":
+                return `${options.varType} Value`;
+            case "Yield":
+                return "Rice Yield";
+            case "Area":
+                return "Rice Area";
+            case "Production":
+                return "Rice Production";
+            case "Prcp":
+                return "Precipitation";
+            case "Temp":
+                return "Temperature";
+            default:
+                return options.varType;
+        }
+    };
+
+    // Handle year range selection change
+    const handleYearRangeChange = () => {
+        if (!startYear || !endYear) return;
+
+        const newFilteredData = data.filter((item) => {
+            return item.year >= startYear && item.year <= endYear;
         });
-    }, [chartData]);
+
+        setFilteredData(newFilteredData);
+    };
+
+    // Export chart data as CSV
+    const downloadCSV = () => {
+        if (!filteredData || filteredData.length === 0) return;
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        // Check if we have ensemble data
+        const hasEnsembleMembers = filteredData.some((d) =>
+            d.hasOwnProperty("ensemble")
+        );
+
+        if (hasEnsembleMembers) {
+            // Create headers
+            const years = [...new Set(filteredData.map((d) => d.year))].sort(
+                (a, b) => a - b
+            );
+            const ensembleMembers = [
+                ...new Set(filteredData.map((d) => d.ensemble))
+            ].sort((a, b) => a - b);
+
+            // Create row for each ensemble member
+            csvContent += "Ensemble,";
+            csvContent += years.join(",");
+            csvContent += "\r\n";
+
+            ensembleMembers.forEach((member) => {
+                csvContent += `${member},`;
+                years.forEach((year) => {
+                    const entry = filteredData.find(
+                        (d) => d.year === year && d.ensemble === member
+                    );
+                    csvContent += `${
+                        entry && entry.value !== undefined ? entry.value : ""
+                    },`;
+                });
+                csvContent += "\r\n";
+            });
+
+            // Add statistics rows
+            csvContent += "Mean,";
+            years.forEach((year) => {
+                const yearData = filteredData.filter((d) => d.year === year);
+                const values = yearData
+                    .map((d) => d.value)
+                    .filter((v) => v !== null && v !== undefined);
+                const mean = values.length
+                    ? values.reduce((sum, val) => sum + val, 0) / values.length
+                    : "";
+                csvContent += `${mean !== "" ? mean.toFixed(2) : ""},`;
+            });
+            csvContent += "\r\n";
+
+            csvContent += "Min,";
+            years.forEach((year) => {
+                const yearData = filteredData.filter((d) => d.year === year);
+                const values = yearData
+                    .map((d) => d.value)
+                    .filter((v) => v !== null && v !== undefined);
+                const min = values.length ? Math.min(...values) : "";
+                csvContent += `${min !== "" ? min.toFixed(2) : ""},`;
+            });
+            csvContent += "\r\n";
+
+            csvContent += "Max,";
+            years.forEach((year) => {
+                const yearData = filteredData.filter((d) => d.year === year);
+                const values = yearData
+                    .map((d) => d.value)
+                    .filter((v) => v !== null && v !== undefined);
+                const max = values.length ? Math.max(...values) : "";
+                csvContent += `${max !== "" ? max.toFixed(2) : ""},`;
+            });
+        } else {
+            // Simple time series
+            csvContent += "Year,Value\r\n";
+            filteredData.forEach((item) => {
+                csvContent += `${item.year},${
+                    item.value !== undefined ? item.value : ""
+                }\r\n`;
+            });
+        }
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute(
+            "download",
+            `time_series_${startYear}-${endYear}.csv`
+        );
+        document.body.appendChild(link);
+
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Download chart as image
+    const downloadImage = (format = "png") => {
+        if (!chartInstanceRef.current) return;
+
+        const canvas = chartRef.current;
+        const link = document.createElement("a");
+
+        if (format === "png") {
+            link.href = canvas.toDataURL("image/png");
+            link.download = `chart_${startYear}-${endYear}.png`;
+        } else if (format === "jpg") {
+            link.href = canvas.toDataURL("image/jpeg", 0.8);
+            link.download = `chart_${startYear}-${endYear}.jpg`;
+        }
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Generate years array for select options
+    const getYearOptions = () => {
+        if (!data || data.length === 0) return [];
+
+        const years = [...new Set(data.map((d) => d.year))].sort(
+            (a, b) => a - b
+        );
+        return years;
+    };
 
     return (
-        <div style={{ position: "relative", height: "400px", width: "100%" }}>
-            <canvas ref={chartRef}></canvas>
+        <div className="chart-component">
+            {/* Title area */}
+            <div className="chart-header">
+                <h2 className="chart-title">{getChartTitle()}</h2>
+                {data && data.length > 0 && (
+                    <div className="chart-controls">
+                        <div className="range-selector">
+                            <div className="year-range">
+                                <label>
+                                    Start Year:
+                                    <select
+                                        value={startYear || ""}
+                                        onChange={(e) =>
+                                            setStartYear(Number(e.target.value))
+                                        }
+                                        className="year-select"
+                                    >
+                                        {getYearOptions().map((year) => (
+                                            <option
+                                                key={`start-${year}`}
+                                                value={year}
+                                            >
+                                                {year}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <label>
+                                    End Year:
+                                    <select
+                                        value={endYear || ""}
+                                        onChange={(e) =>
+                                            setEndYear(Number(e.target.value))
+                                        }
+                                        className="year-select"
+                                    >
+                                        {getYearOptions().map((year) => (
+                                            <option
+                                                key={`end-${year}`}
+                                                value={year}
+                                            >
+                                                {year}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <button
+                                    onClick={handleYearRangeChange}
+                                    className="update-button"
+                                >
+                                    Update Chart
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="download-options">
+                            <button
+                                onClick={() =>
+                                    setShowDownloadOptions(!showDownloadOptions)
+                                }
+                                className="download-button"
+                            >
+                                Download ▼
+                            </button>
+                            {showDownloadOptions && (
+                                <div className="download-dropdown">
+                                    <button onClick={downloadCSV}>
+                                        CSV Data
+                                    </button>
+                                    <button
+                                        onClick={() => downloadImage("png")}
+                                    >
+                                        PNG Image
+                                    </button>
+                                    <button
+                                        onClick={() => downloadImage("jpg")}
+                                    >
+                                        JPG Image
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Chart container */}
+            <div className="chart-container">
+                {data && data.length > 0 ? (
+                    <canvas ref={chartRef}></canvas>
+                ) : (
+                    <div className="no-data-message">
+                        <p>
+                            No data available. Please select a region on the
+                            map.
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            {/* Chart footer with explanations */}
+            {data &&
+                data.length > 0 &&
+                data.some((d) => d.hasOwnProperty("ensemble")) && (
+                    <div className="chart-footer">
+                        <h3>Chart Legend</h3>
+                        <ul>
+                            <li>
+                                <span className="legend-item mean"></span>{" "}
+                                <strong>Mean</strong>: Average of all ensemble
+                                members
+                            </li>
+                            <li>
+                                <span className="legend-item max"></span>{" "}
+                                <strong>Max</strong>: Maximum value across
+                                ensemble members
+                            </li>
+                            <li>
+                                <span className="legend-item min"></span>{" "}
+                                <strong>Min</strong>: Minimum value across
+                                ensemble members
+                            </li>
+                            <li>
+                                <span className="legend-item ensemble"></span>{" "}
+                                <strong>Ensembles</strong>: Individual forecast
+                                runs
+                            </li>
+                        </ul>
+                        <p className="ensemble-explainer">
+                            Ensemble forecasts combine multiple model runs with
+                            slightly different initial conditions to capture
+                            uncertainty. The spread between min and max values
+                            indicates the range of possible outcomes.
+                        </p>
+                    </div>
+                )}
         </div>
     );
 };
-
-// import React, { useEffect, useRef, useState } from "react";
-// import Chart from "chart.js/auto";
-
-// export const ChartComponent = ({ data, options }) => {
-//     const chartRef = useRef(null);
-//     const chartInstanceRef = useRef(null);
-//     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
-
-//     useEffect(() => {
-//         if (!data || data.length === 0 || !chartRef.current) return;
-
-//         console.log("Updating chart with options:", options); // 调试输出
-
-//         const cutoffYear = parseInt(options.date) || 2020;
-//         const historyData = data.filter((d) => d.year <= cutoffYear);
-//         const forecastData = data.filter((d) => d.year >= cutoffYear);
-
-//         const labels = data.map((d) => d.year); // 确保所有数据的横坐标一致
-
-//         let datasets = [
-//             {
-//                 label: "Historical Data",
-//                 data: labels.map((year) => {
-//                     const entry = historyData.find((d) => d.year === year);
-//                     return entry ? entry.value : null;
-//                 }),
-//                 borderColor: "rgba(75, 192, 192, 1)",
-//                 backgroundColor: "rgba(75, 192, 192, 0.2)",
-//                 borderWidth: 2,
-//                 fill: false,
-//                 spanGaps: true // 允许数据间的间隙连线
-//             }
-//         ];
-
-//         if (options?.overview === "forecast") {
-//             datasets.push(
-//                 {
-//                     label: "Forecast Data",
-//                     data: labels.map((year) => {
-//                         const entry = forecastData.find((d) => d.year === year);
-//                         return entry ? entry.value : null;
-//                     }),
-//                     borderColor: "rgba(255, 99, 132, 1)",
-//                     backgroundColor: "rgba(255, 99, 132, 0.2)",
-//                     borderWidth: 2,
-//                     fill: false,
-//                     borderDash: [5, 5],
-//                     spanGaps: true // 允许预测数据与历史数据相连
-//                 },
-//                 {
-//                     label: "Confidence Interval Upper",
-//                     data: labels.map((year) => {
-//                         const entry = forecastData.find((d) => d.year === year);
-//                         return entry ? entry.upper_bound : null;
-//                     }),
-//                     borderColor: "rgba(255, 99, 132, 0.3)",
-//                     borderWidth: 0,
-//                     fill: {
-//                         target: "-1",
-//                         above: "rgba(255, 99, 132, 0.1)",
-//                         below: "rgba(255, 99, 132, 0.1)"
-//                     },
-//                     spanGaps: true
-//                 },
-//                 {
-//                     label: "Confidence Interval Lower",
-//                     data: labels.map((year) => {
-//                         const entry = forecastData.find((d) => d.year === year);
-//                         return entry ? entry.lower_bound : null;
-//                     }),
-//                     borderColor: "rgba(255, 99, 132, 0.3)",
-//                     borderWidth: 0,
-//                     fill: {
-//                         target: "-1",
-//                         above: "rgba(255, 99, 132, 0.1)",
-//                         below: "rgba(255, 99, 132, 0.1)"
-//                     },
-//                     spanGaps: true
-//                 }
-//             );
-//         }
-
-//         setChartData({ labels, datasets });
-//     }, [data, options]);
-
-//     useEffect(() => {
-//         if (!chartRef.current || !chartData.labels.length) return;
-
-//         if (chartInstanceRef.current) {
-//             chartInstanceRef.current.destroy();
-//         }
-
-//         chartInstanceRef.current = new Chart(chartRef.current, {
-//             type: "line",
-//             data: chartData,
-//             options: {
-//                 responsive: true,
-//                 maintainAspectRatio: false,
-//                 plugins: {
-//                     legend: {
-//                         display: true,
-//                         position: "top"
-//                     }
-//                 },
-//                 scales: {
-//                     x: {
-//                         title: {
-//                             display: true,
-//                             text: "Year"
-//                         }
-//                     },
-//                     y: {
-//                         title: {
-//                             display: true,
-//                             text: "Value"
-//                         }
-//                     }
-//                 }
-//             }
-//         });
-//     }, [chartData]);
-
-//     return (
-//         <div style={{ position: "relative", height: "400px", width: "100%" }}>
-//             <canvas ref={chartRef}></canvas>
-//         </div>
-//     );
-// };
