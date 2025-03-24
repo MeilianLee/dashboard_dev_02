@@ -518,7 +518,6 @@ export default function handler(req, res) {
             //     Temp: `${region}_Temperature_monthly.geojson`
             // }
             //---------------------------BACKUP FOR HIST DATA -------------------------------//
-
         };
 
         // 生成 key 并查询文件名
@@ -593,7 +592,126 @@ export default function handler(req, res) {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     }
 
+    // New logic of detecting directory, modified on 20250324:
+
+    // function getDirectory({ region, varType, adminLevel, dateType, overview, overviewDir }) {
+    //     // Map special directory cases
+    //     const specialDirectories = {
+    //         // Weather Grid data
+    //         'Prcp_Grid': 'weatherGrid',
+    //         'Temp_Grid': 'weatherGrid',
+
+    //         // Yield Grid data
+    //         'Yield_Grid': 'yield_grid',
+
+    //         // SPI Grid data
+    //         'SPI1_Grid': 'SPI_grid',
+    //         'SPI3_Grid': 'SPI_grid',
+    //         'SPI6_Grid': 'SPI_grid',
+    //         'SPI12_Grid': 'SPI_grid',
+
+    //         // SPI JSON data (non-Grid)
+    //         'SPI1_Country': 'SPI_json',
+    //         'SPI3_Country': 'SPI_json',
+    //         'SPI6_Country': 'SPI_json',
+    //         'SPI12_Country': 'SPI_json',
+    //         'SPI1_Prov': 'SPI_json',
+    //         'SPI3_Prov': 'SPI_json',
+    //         'SPI6_Prov': 'SPI_json',
+    //         'SPI12_Prov': 'SPI_json',
+
+    //         // SPI Provincial forecast data
+    //         'SPI1_Prov_forecast': path.join('SPI1', 'Forecast', 'Prov', dateType),
+    //         'SPI3_Prov_forecast': path.join('SPI3', 'Forecast', 'Prov', dateType),
+    //         'SPI6_Prov_forecast': path.join('SPI6', 'Forecast', 'Prov', dateType),
+    //         'SPI12_Prov_forecast': path.join('SPI12', 'Forecast', 'Prov', dateType),
+
+    //         // SPI with Monthly data structure
+    //         'SPI1_Prov_Monthly_hist': path.join('SPI1', 'Hist', 'Prov', 'Monthly'),
+    //         'SPI3_Prov_Monthly_hist': path.join('SPI3', 'Hist', 'Prov', 'Monthly'),
+    //         'SPI6_Prov_Monthly_hist': path.join('SPI6', 'Hist', 'Prov', 'Monthly'),
+    //         'SPI12_Prov_Monthly_hist': path.join('SPI12', 'Hist', 'Prov', 'Monthly'),
+    //         'SPI1_Country_Monthly_hist': path.join('SPI1', 'Hist', 'Country', 'Monthly'),
+    //         'SPI3_Country_Monthly_hist': path.join('SPI3', 'Hist', 'Country', 'Monthly'),
+    //         'SPI6_Country_Monthly_hist': path.join('SPI6', 'Hist', 'Country', 'Monthly'),
+    //         'SPI12_Country_Monthly_hist': path.join('SPI12', 'Hist', 'Country', 'Monthly'),
+
+    //         // Yield forecast data
+    //         'Yield_forecast_nonGrid': 'yield_json_forecast',
+
+    //         // Precipitation forecast data
+    //         'Prcp_forecast': 'Precipitation_forecast',
+
+    //         // Temperature forecast data
+    //         'Temp_forecast': 'Temperature_forecast',
+
+    //         // Production data
+    //         'Production_Prov': path.join('Production', overviewDir, 'Prov', dateType),
+    //         'Production_Country': path.join('Production', overviewDir, 'Country', dateType),
+
+    //         // Area data
+    //         'Area_Prov': path.join('Area', overviewDir, 'Prov', dateType),
+    //         'Area_Country': path.join('Area', overviewDir, 'Country', dateType)
+    //     };
+
+    //     // Handle special cases for SPI variables with forecast data
+    //     if (varType.startsWith('SPI') && adminLevel === 'Prov' && overview === 'forecast') {
+    //         return specialDirectories[`${varType}_Prov_forecast`];
+    //     }
+
+    //     // Handle special cases for SPI variables with monthly historical data
+    //     if (varType.startsWith('SPI') && dateType === 'Monthly' && overview === 'hist' &&
+    //         (adminLevel === 'Prov' || adminLevel === 'Country')) {
+    //         return specialDirectories[`${varType}_${adminLevel}_Monthly_hist`];
+    //     }
+
+    //     // Handle Yield forecast for non-Grid data
+    //     if (varType === 'Yield' && overview === 'forecast' && adminLevel !== 'Grid') {
+    //         return specialDirectories['Yield_forecast_nonGrid'];
+    //     }
+
+    //     // Handle generic SPI Grid data
+    //     if (varType.startsWith('SPI') && adminLevel === 'Grid') {
+    //         return specialDirectories[`${varType}_Grid`];
+    //     }
+
+    //     // Handle generic SPI JSON data (non-Grid)
+    //     if (varType.startsWith('SPI') && adminLevel !== 'Grid') {
+    //         return specialDirectories[`${varType}_${adminLevel}`];
+    //     }
+
+    //     // Handle weather Grid data
+    //     if ((varType === 'Prcp' || varType === 'Temp') && adminLevel === 'Grid') {
+    //         return specialDirectories[`${varType}_Grid`];
+    //     }
+
+    //     // Handle forecast data for Prcp and Temp
+    //     if ((varType === 'Prcp' || varType === 'Temp') && overview === 'forecast') {
+    //         return specialDirectories[`${varType}_forecast`];
+    //     }
+
+    //     // Handle Yield Grid data
+    //     if (varType === 'Yield' && adminLevel === 'Grid') {
+    //         return specialDirectories['Yield_Grid'];
+    //     }
+
+    //     // Handle Production and Area data
+    //     if (varType === 'Production') {
+    //         return specialDirectories[`Production_${adminLevel}`];
+    //     }
+
+    //     if (varType === 'Area') {
+    //         return specialDirectories[`Area_${adminLevel}`];
+    //     }
+
+    //     // Default to a standardized path if no special case matches
+    //     return null;
+    // }
+
+    // directory = getDirectory({ region, varType, adminLevel, dateType, overview, overviewDir })
+
     // **security check**：防止路径遍历攻击
+
     const safeFileName = path.basename(fileName); // 仅保留文件名
     // const safeDirectory = directory ? path.basename(directory) : ""; // 可选的目录
 
@@ -606,16 +724,6 @@ export default function handler(req, res) {
     const filePath = directory
         ? path.join(basePath, directory, safeFileName) // `/data/dir1/data.json`
         : path.join(basePath, safeFileName); // `/data/data.json`
-
-    // // 拼接完整路径
-    // const dirPath = path.join(
-    //     basePath,
-    //     varType,
-    //     overviewDir,
-    //     adminLevel,
-    //     dateType
-    // );
-    // const filePath = path.join(dirPath, safeFileName);
 
     // **security check**：ensure safe directory access
     if (!filePath.startsWith(basePath)) {
