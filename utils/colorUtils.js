@@ -448,7 +448,7 @@ export function getThresholds(options) {
     if (varType === "Prcp") {
         if (dateType === "Monthly") {
             return {
-                high: 500,
+                high: 700,
                 low: -5,
                 unit: "mm",
                 highMessage: "High precipitation",
@@ -476,26 +476,26 @@ export function getThresholds(options) {
         };
     }
 
-    // Yield thresholds
-    if (varType === "Yield") {
-        if (adminLevel === "Country") {
-            return {
-                high: 50,
-                low: -1,
-                unit: "ton/ha",
-                highMessage: "Yield significantly above average",
-                lowMessage: "Yield significantly below average"
-            };
-        } else {
-            return {
-                high: 50,
-                low: -1,
-                unit: "ton/ha",
-                highMessage: "Regional yield above average",
-                lowMessage: "Regional yield below average"
-            };
-        }
-    }
+    // // Yield thresholds
+    // if (varType === "Yield") {
+    //     if (adminLevel === "Country") {
+    //         return {
+    //             high: 50,
+    //             low: -1,
+    //             unit: "ton/ha",
+    //             highMessage: "Yield significantly above average",
+    //             lowMessage: "Yield significantly below average"
+    //         };
+    //     } else {
+    //         return {
+    //             high: 50,
+    //             low: -1,
+    //             unit: "ton/ha",
+    //             highMessage: "Regional yield above average",
+    //             lowMessage: "Regional yield below average"
+    //         };
+    //     }
+    // }
 
     //   // Production thresholds
     //   if (varType === "Production") {
