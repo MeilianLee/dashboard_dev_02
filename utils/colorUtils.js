@@ -181,8 +181,8 @@ function getSoilMoistureColor(value) {
     // const maxSaturation = 100;
     // const minLightness = 90;
     // const maxLightness = 40;
-    const minHue = 200
-    const maxHue = 0
+    const minHue = 0
+    const maxHue = 200
 
     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
 
