@@ -175,7 +175,7 @@ function getSoilMoistureColor(value) {
     if (value <= 0) return "hsl(210, 10%, 100%)";
 
     const minVal = 0;
-    const maxVal = 100;
+    const maxVal = 1;
 
     const minSaturation = 10;
     const maxSaturation = 100;

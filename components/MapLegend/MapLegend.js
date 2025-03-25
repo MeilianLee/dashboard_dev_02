@@ -403,14 +403,16 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "hsl(120, 100%, 40%)"
             ]
         },
-        SMPct: {
-            title: "SMPct",
-            grades: [20, 40, 60, 80]
+        smpct1: {
+            title: "Soil Moisture",
+            grades: [0, 25, 50, 75, 100]
         }
     };
 
     let vartype = data.data_vartype.startsWith("SPI")
         ? "SPI"
+        : data.data_vartype === "smpct1"
+        ? "smpct1"
         : data.data_vartype === "Yield"
         ? "YieldProv"
         : data.data_vartype === "Area" && data.data_adminLevel === "Grid"
