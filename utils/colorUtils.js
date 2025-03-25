@@ -366,7 +366,7 @@ export function getColorConfig(options) {
         },
         smpct1: {
             title: "Soil Moisture Percentile",
-            grades: [20, 40, 60, 80],
+            grades: [0, 25, 50, 75, 100],
             colors: [
                 "hsl(0, 100%, 50%)",
                 "hsl(50, 100%, 50%)",
