@@ -330,12 +330,12 @@ export default function handler(req, res) {
             if (overview === "hist") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        // return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        // return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
@@ -434,15 +434,15 @@ export default function handler(req, res) {
                 Yield: `${region}_yield_yearly_${selectedDate}.tif`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Prcp: `${region}_precipitation_${selectedDate}.tif`,
-                Temp: `${region}_temperature_${selectedDate}.tif`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Prcp: `${region}_precipitation_${selectedDate}.tif`,
-                Temp: `${region}_temperature_${selectedDate}.tif`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Country_Yearly: {
                 Yield: `${region}_yield_country.geojson`,
