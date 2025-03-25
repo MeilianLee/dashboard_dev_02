@@ -597,7 +597,7 @@ export default function handler(req, res) {
         }
 
         // SMPCT
-        if (varType === "smpct") {
+        if (varType.startsWith("smpct")) {
             directory = path.join(
                 "ERA5",
                 varType,
