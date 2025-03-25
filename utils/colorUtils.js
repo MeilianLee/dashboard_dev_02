@@ -21,9 +21,7 @@ export function getColor(value, options = {}) {
         return getSPIColor(value);
     }
 
-    if (varType === "smpct1") {
-        return getSoilMoistureColor(value);
-    }
+
 
     // Different color scales based on variable and admin level
     if (varType === "Yield") {
@@ -36,7 +34,9 @@ export function getColor(value, options = {}) {
         return getPrecipitationColor(value, adminLevel, dateType);
     } else if (varType === "Temp") {
         return getTemperatureColor(value);
-    } 
+    } else if (varType === "smpct1") {
+        return getSoilMoistureColor(value);
+    }
 
     // Default color - should not reach here if all variable types are handled
     return "#CCCCCC";
@@ -189,6 +189,7 @@ function getSoilMoistureColor(value) {
     // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
     // let lightness = minLightness - ratio * (minLightness - maxLightness);
     let hue = minHue - ratio * (minHue - maxHue);
+
 
     return `hsl(${hue}, 100%, 50%)`;
 }
@@ -367,11 +368,11 @@ export function getColorConfig(options) {
             title: "Soil Moisture Percentile",
             grades: [20, 40, 60, 80],
             colors: [
-                "hsl(200, 100%, 50%)",
-                "hsl(150, 100%, 50%)",
-                "hsl(100, 100%, 50%)",
+                "hsl(0, 100%, 50%)",
                 "hsl(50, 100%, 50%)",
-                "hsl(0, 100%, 50%)"
+                "hsl(100, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(200, 100%, 50%)"
             ]
         }
     };
@@ -568,7 +569,7 @@ export function getThresholds(options) {
     //   }
 
     // Soil moisture thresholds
-    if (varType === "SMPct") {
+    if (varType === "smpct1") {
         return {
             high: 75,
             low: 25,

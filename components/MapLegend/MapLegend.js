@@ -407,11 +407,11 @@ export const MapLegend = ({ data, selectedDate }) => {
             title: "Soil Moisture",
             grades: [0, 25, 50, 75, 100],
             colors: [
-                "hsl(200, 100%, 50%)",
-                "hsl(150, 100%, 50%)",
-                "hsl(100, 100%, 50%)",
+                "hsl(0, 100%, 50%)",
                 "hsl(50, 100%, 50%)",
-                "hsl(0, 100%, 50%)"
+                "hsl(100, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(200, 100%, 50%)"
             ]
         }
     };
