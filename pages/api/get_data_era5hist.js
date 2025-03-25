@@ -392,7 +392,7 @@ export default function handler(req, res) {
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
-                Temp: `${region}_temperature_${selectedDate}.tif`
+                Temp: `${region}_temperature_${selectedDate}.tif`,
             },
             forecast_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
@@ -435,42 +435,48 @@ export default function handler(req, res) {
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Country_Yearly: {
                 Yield: `${region}_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Country_Monthly: {
                 Yield: `${region}_monthly_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Prov_Yearly: {
                 Yield: `${region}_yield_prov.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Prov_Monthly: {
                 Yield: `${region}_monthly_yield_province.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             }
             // -------------------- ERA5 BASED HIST DATA API -------------------- //
 
