@@ -21,7 +21,7 @@ export function getColor(value, options = {}) {
         return getSPIColor(value);
     }
 
-    if (varType?.startsWith("smpct")) {
+    if (varType === "smpct1") {
         return getSoilMoistureColor(value);
     }
 
@@ -177,15 +177,18 @@ function getSoilMoistureColor(value) {
     const minVal = 0;
     const maxVal = 1;
 
-    const minSaturation = 10;
-    const maxSaturation = 100;
-    const minLightness = 90;
-    const maxLightness = 40;
+    // const minSaturation = 10;
+    // const maxSaturation = 100;
+    // const minLightness = 90;
+    // const maxLightness = 40;
+    const minHue = 200
+    const maxHue = 0
 
     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
 
-    let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
-    let lightness = minLightness - ratio * (minLightness - maxLightness);
+    // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+    // let lightness = minLightness - ratio * (minLightness - maxLightness);
+    let hue = minHue - ratio * (minHue - maxHue);
 
     return `hsl(210, ${saturation}%, ${lightness}%)`;
 }
@@ -360,9 +363,16 @@ export function getColorConfig(options) {
                 "hsl(120, 100%, 40%)"
             ]
         },
-        smpct: {
+        smpct1: {
             title: "Soil Moisture Percentile",
-            grades: [20, 40, 60, 80]
+            grades: [20, 40, 60, 80],
+            colors: [
+                "hsl(200, 100%, 50%)",
+                "hsl(150, 100%, 50%)",
+                "hsl(100, 100%, 50%)",
+                "hsl(50, 100%, 50%)",
+                "hsl(0, 100%, 50%)"
+            ]
         }
     };
 
