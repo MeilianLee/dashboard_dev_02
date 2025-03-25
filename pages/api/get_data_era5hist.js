@@ -436,7 +436,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${varType}_${overviewDir}_${adminLevel}_${dateType}_${region}_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
@@ -444,7 +444,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${varType}_${overviewDir}_${adminLevel}_${dateType}_${region}_${selectedDate}.tif`
             },
             hist_Country_Yearly: {
                 Yield: `${region}_yield_country.geojson`,
@@ -452,7 +452,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Country_Monthly: {
                 Yield: `${region}_monthly_yield_country.geojson`,
@@ -460,7 +460,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Yearly: {
                 Yield: `${region}_yield_prov.geojson`,
@@ -468,7 +468,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Monthly: {
                 Yield: `${region}_monthly_yield_province.geojson`,
@@ -476,7 +476,7 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             }
             // -------------------- ERA5 BASED HIST DATA API -------------------- //
 
