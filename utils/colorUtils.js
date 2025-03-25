@@ -190,7 +190,7 @@ function getSoilMoistureColor(value) {
     // let lightness = minLightness - ratio * (minLightness - maxLightness);
     let hue = minHue - ratio * (minHue - maxHue);
 
-    return `hsl(210, ${saturation}%, ${lightness}%)`;
+    return `hsl(${hue}, 100%, 50%)`;
 }
 
 // Helper function to interpolate colors
