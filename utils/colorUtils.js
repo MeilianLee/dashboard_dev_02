@@ -21,6 +21,10 @@ export function getColor(value, options = {}) {
         return getSPIColor(value);
     }
 
+    if (varType?.startsWith("smpct")) {
+        return getSoilMoistureColor(value);
+    }
+
     // Different color scales based on variable and admin level
     if (varType === "Yield") {
         return getYieldColor(value, adminLevel);
@@ -32,9 +36,7 @@ export function getColor(value, options = {}) {
         return getPrecipitationColor(value, adminLevel, dateType);
     } else if (varType === "Temp") {
         return getTemperatureColor(value);
-    } else if (varType === "SMPct") {
-        return getSoilMoistureColor(value);
-    }
+    } 
 
     // Default color - should not reach here if all variable types are handled
     return "#CCCCCC";
@@ -172,8 +174,8 @@ function getTemperatureColor(temp) {
 function getSoilMoistureColor(value) {
     if (value <= 0) return "hsl(210, 10%, 100%)";
 
-    const minVal = 20;
-    const maxVal = 80;
+    const minVal = 0;
+    const maxVal = 100;
 
     const minSaturation = 10;
     const maxSaturation = 100;
@@ -358,8 +360,8 @@ export function getColorConfig(options) {
                 "hsl(120, 100%, 40%)"
             ]
         },
-        SMPct: {
-            title: "SMPct",
+        smpct: {
+            title: "Soil Moisture Percentile",
             grades: [20, 40, 60, 80]
         }
     };
