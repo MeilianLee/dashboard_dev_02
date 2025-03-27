@@ -131,43 +131,49 @@ export default function handler(req, res) {
                 Yield: `${region}_yield_yearly_${selectedDate}.tif`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Prcp: `${region}_precipitation_${selectedDate}.tif`,
-                Temp: `${region}_temperature_${selectedDate}.tif`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Grid_Monthly: {
                 Yield: `${region}_yield_monthly_${selectedDate}.tif`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
-                Prcp: `${region}_precipitation_${selectedDate}.tif`,
-                Temp: `${region}_temperature_${selectedDate}.tif`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             hist_Country_Yearly: {
                 Yield: `${region}_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_annual.geojson`,
-                Temp: `${region}_country_Temperature_annual.geojson`
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Country_Monthly: {
                 Yield: `${region}_monthly_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_monthly.geojson`,
-                Temp: `${region}_country_Temperature_monthly.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Yearly: {
                 Yield: `${region}_yield_prov.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_Precipitation_annual.geojson`,
-                Temp: `${region}_Temperature_annual.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
             hist_Prov_Monthly: {
                 Yield: `${region}_monthly_yield_province.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_precipitation_monthly.geojson`,
-                Temp: `${region}_Temperature_monthly.geojson`
+                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             }
             // -------------------- ERA5 BASED HIST DATA API -------------------- //
 
@@ -234,156 +240,156 @@ export default function handler(req, res) {
 
     let directory;
 
-    // get directory logic, added on 2025-03-24
-    // cannot use because of data problem
-    // function getDirectory({
-    //     region,
-    //     varType,
-    //     adminLevel,
-    //     dateType,
-    //     overview,
-    //     overviewDir
-    // }) {
-    //     // hist SPI in ERA5/
-    //     if (varType.startsWith("SPI") && overview === "hist") {
-    //         directory = path.join(
-    //             "ERA5",
-    //             varType,
-    //             overviewDir,
-    //             adminLevel,
-    //             dateType
-    //         );
-    //     }
+    function getDirectory({
+        region,
+        varType,
+        adminLevel,
+        dateType,
+        overview,
+        overviewDir
+    }) {
+        // hist SPI in ERA5/
+        if (varType.startsWith("SPI") && overview === "hist") {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
+        }
 
-    //     // Prcp
-    //     if (varType === "Prcp" && overview === "hist") {
-    //         directory = path.join(
-    //             "ERA5",
-    //             varType,
-    //             overviewDir,
-    //             adminLevel,
-    //             dateType
-    //         );
-    //     }
+        // Prcp
+        if (varType === "Prcp" && overview === "hist") {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
+        }
 
-    //     //Prcp raster forecast has its own directory
-    //     else if (varType === "Prcp" && adminLevel === "Grid") {
-    //         directory = "weatherGrid";
-    //     }
+        //Prcp raster forecast has its own directory
+        else if (varType === "Prcp" && adminLevel === "Grid") {
+            directory = "weatherGrid";
+        }
 
-    //     // Temp
-    //     if (varType === "Temp" && overview === "hist") {
-    //         directory = path.join(
-    //             "ERA5",
-    //             varType,
-    //             overviewDir,
-    //             adminLevel,
-    //             dateType
-    //         );
-    //     }
+        // Temp
+        if (varType === "Temp" && overview === "hist") {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
+        }
 
-    //     //Temp raster forecast has its own directory
-    //     else if (varType === "Temp" && adminLevel === "Grid") {
-    //         directory = "weatherGrid";
-    //     }
+        //Temp raster forecast has its own directory
+        else if (varType === "Temp" && adminLevel === "Grid") {
+            directory = "weatherGrid";
+        }
 
-    //     // SMPCT
-    //     if (varType === "smpct") {
-    //         directory = path.join(
-    //             "ERA5",
-    //             varType,
-    //             overviewDir,
-    //             adminLevel,
-    //             dateType
-    //         );
-    //     }
+        // SMPCT
+        if (varType.startsWith("smpct")) {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
+        }
 
-    //     // Yield handle
-    //     if (varType === "Yield" && adminLevel === "Grid") {
-    //         directory = "yield_grid"; //Yield raster forecast has its own directory
-    //     } else if (
-    //         varType === "Yield" &&
-    //         overview === "forecast" &&
-    //         adminLevel !== "Grid"
-    //     ) {
-    //         directory = "yield_json_forecast"; //yield prov/country forecast
-    //     }
+        // Yield handle
+        if (varType === "Yield" && adminLevel === "Grid") {
+            directory = "yield_grid"; //Yield raster forecast has its own directory
+        } else if (
+            varType === "Yield" &&
+            overview === "forecast" &&
+            adminLevel !== "Grid"
+        ) {
+            directory = "yield_json_forecast"; //yield prov/country forecast
+        }
 
-    //     // Production
-    //     if (varType === "Production") {
-    //         directory = path.join(varType, overviewDir, adminLevel, dateType);
-    //     }
+        // Production
+        if (varType === "Production") {
+            directory = path.join(varType, overviewDir, adminLevel, dateType);
+        }
 
-    //     // Area
-    //     if (varType === "Area") {
-    //         directory = path.join(varType, overviewDir, adminLevel, dateType);
-    //     }
+        // Area
+        if (varType === "Area") {
+            directory = path.join(varType, overviewDir, adminLevel, dateType);
+        }
 
-    //     return directory;
-    // }
-    // directory = getDirectory({
-    //     region,
-    //     varType,
-    //     adminLevel,
-    //     dateType,
-    //     overview,
-    //     overviewDir
-    // });
-
-    if (varType === "Prcp" && adminLevel === "Grid") {
-        directory = "weatherGrid"; //Prcp raster forecast has its own directory
-    } else if (varType === "Temp" && adminLevel === "Grid") {
-        directory = "weatherGrid"; //Temp raster forecast has its own directory
-    } else if (varType === "Yield" && adminLevel === "Grid") {
-        directory = "yield_grid"; //Yield raster forecast has its own directory
-    } else if (
-        varType.startsWith("SPI") &&
-        overview === "hist" &&
-        (adminLevel === "Prov") | (adminLevel === "Country") &&
-        dateType === "Monthly"
-    ) {
-        directory = path.join(varType, overviewDir, adminLevel, dateType);
+        return directory;
     }
+    directory = getDirectory({
+        region,
+        varType,
+        adminLevel,
+        dateType,
+        overview,
+        overviewDir
+    });
 
-    // else if (
+    // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
+    // if (varType === "Prcp" && adminLevel === "Grid") {
+    //     directory = "weatherGrid"; //Prcp raster forecast has its own directory
+    // } else if (varType === "Temp" && adminLevel === "Grid") {
+    //     directory = "weatherGrid"; //Temp raster forecast has its own directory
+    // } else if (varType === "Yield" && adminLevel === "Grid") {
+    //     directory = "yield_grid"; //Yield raster forecast has its own directory
+    // } else if (
     //     varType.startsWith("SPI") &&
-    //     adminLevel === "Grid" &&
+    //     overview === "hist" &&
+    //     (adminLevel === "Prov") | (adminLevel === "Country") &&
     //     dateType === "Monthly"
     // ) {
     //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // }
+
+    // // else if (
+    // //     varType.startsWith("SPI") &&
+    // //     adminLevel === "Grid" &&
+    // //     dateType === "Monthly"
+    // // ) {
+    // //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // // } else if (
+    // //     varType.startsWith("SPI") &&
+    // //     adminLevel === "Grid" &&
+    // //     dateType === "Yearly"
+    // // ) {
+    // //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // // }
+    // else if (varType.startsWith("SPI") && adminLevel === "Grid") {
+    //     directory = "SPI_grid"; //SPI raster data has its own directory
     // } else if (
     //     varType.startsWith("SPI") &&
-    //     adminLevel === "Grid" &&
-    //     dateType === "Yearly"
+    //     adminLevel === "Prov" &&
+    //     overview === "forecast"
     // ) {
+    //     directory = path.join(varType, overviewDir, adminLevel, dateType); //SPI prov forecast has its own directory
+    //     // directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
+    // } else if (varType.startsWith("SPI") && adminLevel !== "Grid") {
+    //     directory = "SPI_json"; //SPI json has its own directory
+    // } else if (
+    //     varType === "Yield" &&
+    //     overview === "forecast" &&
+    //     adminLevel !== "Grid"
+    // ) {
+    //     directory = "yield_json_forecast"; //yield prov/country forecast has its own directory
+    // } else if (overview === "forecast" && varType === "Prcp") {
+    //     directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
+    // } else if (overview === "forecast" && varType === "Temp") {
+    //     directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
+    // } else if (varType === "Production") {
+    //     directory = path.join(varType, overviewDir, adminLevel, dateType);
+    // } else if (varType === "Area") {
     //     directory = path.join(varType, overviewDir, adminLevel, dateType);
     // }
-    else if (varType.startsWith("SPI") && adminLevel === "Grid") {
-        directory = "SPI_grid"; //SPI raster data has its own directory
-    } else if (
-        varType.startsWith("SPI") &&
-        adminLevel === "Prov" &&
-        overview === "forecast"
-    ) {
-        directory = path.join(varType, overviewDir, adminLevel, dateType); //SPI prov forecast has its own directory
-        // directory = "SPI_prov_forecast"; //SPI prov forecast has its own directory
-    } else if (varType.startsWith("SPI") && adminLevel !== "Grid") {
-        directory = "SPI_json"; //SPI json has its own directory
-    } else if (
-        varType === "Yield" &&
-        overview === "forecast" &&
-        adminLevel !== "Grid"
-    ) {
-        directory = "yield_json_forecast"; //yield prov/country forecast has its own directory
-    } else if (overview === "forecast" && varType === "Prcp") {
-        directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
-    } else if (overview === "forecast" && varType === "Temp") {
-        directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
-    } else if (varType === "Production") {
-        directory = path.join(varType, overviewDir, adminLevel, dateType);
-    } else if (varType === "Area") {
-        directory = path.join(varType, overviewDir, adminLevel, dateType);
-    }
+    // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
 
     // **security check**：防止路径遍历攻击
 

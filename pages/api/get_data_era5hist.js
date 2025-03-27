@@ -544,7 +544,6 @@ export default function handler(req, res) {
     let directory;
 
     // get directory logic, added on 2025-03-24
-    // cannot use because of data problem
     function getDirectory({
         region,
         varType,
