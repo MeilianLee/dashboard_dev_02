@@ -81,7 +81,7 @@ export default function handler(req, res) {
                 }
             }
         }
-        
+
         // map list from varType to fileName
         const fileMappings = {
             forecast_Grid_Yearly: {
@@ -252,6 +252,13 @@ export default function handler(req, res) {
         if (varType.startsWith("SPI") && overview === "hist") {
             directory = path.join(
                 "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
+        } else if (varType.startsWith("SPI") && overview === "forecast") {
+            directory = path.join(
                 varType,
                 overviewDir,
                 adminLevel,
