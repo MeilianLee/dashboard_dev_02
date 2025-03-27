@@ -27,17 +27,17 @@ export default function handler(req, res) {
             if (overview === "hist") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        // return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${selectedDate}.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+                        // return `${region}_${varType}_${selectedDate}.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
                     if (dateType === "Yearly") {
-                        return `${region}_country_${varType}_hist_yearly.geojson`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                     if (dateType === "Monthly") {
                         return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
@@ -45,7 +45,7 @@ export default function handler(req, res) {
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${dateType}_${adminLevel}.json`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                     if (dateType === "Monthly") {
                         return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
@@ -81,7 +81,7 @@ export default function handler(req, res) {
                 }
             }
         }
-
+        
         // map list from varType to fileName
         const fileMappings = {
             forecast_Grid_Yearly: {

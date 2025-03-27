@@ -1244,8 +1244,8 @@ export const ChartComponent = ({ data, options }) => {
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
                 borderWidth: 3,
                 tension: 0.3, // Adds slight curve to lines
-                pointRadius: 4,
-                pointHoverRadius: 6
+                pointRadius: 0,
+                pointHoverRadius: 4
             }
         ];
 
