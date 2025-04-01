@@ -455,3 +455,42 @@ export default function handler(req, res) {
         });
     }
 }
+
+
+//----- Use this if all data is well organized and prepared -----//
+
+// function getFileName(
+//     overview,
+//     adminLevel,
+//     dateType,
+//     varType,
+//     region,
+//     selectedDate
+// ) {
+//     if (adminLevel === "Grid") {
+//         return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`;
+//     } else if (adminLevel === "Prov") {
+//         return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
+//     }else if (adminLevel === "Country") {
+//         return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
+//     }
+// }
+
+// let fileName
+// fileName = getFileName(
+//     overview,
+//     adminLevel,
+//     dateType,
+//     varType,
+//     region,
+//     selectedDate
+// ) 
+
+// let directory
+// directory = path.join(
+//                 "ERA5",
+//                 varType,
+//                 overviewDir,
+//                 adminLevel,
+//                 dateType
+//             );
