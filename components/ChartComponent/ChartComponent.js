@@ -1773,7 +1773,7 @@ export const ChartComponent = ({ data, options }) => {
         <div className="chart-component">
             {/* Title area */}
             <div className="chart-header">
-                <h2 className="chart-title">{getChartTitle()}</h2>
+                {/* <h2 className="chart-title">{getChartTitle()}</h2> */}
                 {data && data.length > 0 && (
                     <div className="chart-controls">
                         <div className="range-selector">
@@ -1903,12 +1903,6 @@ export const ChartComponent = ({ data, options }) => {
                             <strong>Ensembles</strong>: Individual forecast runs
                         </li>
                     </ul>
-                    <p className="ensemble-explainer">
-                        Ensemble forecasts combine multiple model runs with
-                        slightly different initial conditions to capture
-                        uncertainty. The spread between min and max values
-                        indicates the range of possible outcomes.
-                    </p>
                 </div>
             )}
         </div>
