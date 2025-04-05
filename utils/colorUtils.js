@@ -36,6 +36,8 @@ export function getColor(value, options = {}) {
         return getTemperatureColor(value);
     } else if (varType === "smpct1") {
         return getSoilMoistureColor(value);
+    } else if (varType === "yieldAnom") {
+        return getYieldAnomColor(value);
     }
 
     // Default color - should not reach here if all variable types are handled
@@ -183,6 +185,30 @@ function getSoilMoistureColor(value) {
     // const maxLightness = 40;
     const minHue = 0
     const maxHue = 200
+
+    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+
+    // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+    // let lightness = minLightness - ratio * (minLightness - maxLightness);
+    let hue = minHue - ratio * (minHue - maxHue);
+
+
+    return `hsl(${hue}, 100%, 50%)`;
+}
+
+// Get soil moisture percentile color
+function getYieldAnomColor(value) {
+    if (value <= 0) return "hsl(210, 10%, 100%)";
+
+    const minVal = -1.5;
+    const maxVal = 1.5;
+
+    // const minSaturation = 10;
+    // const maxSaturation = 100;
+    // const minLightness = 90;
+    // const maxLightness = 40;
+    const minHue = 0
+    const maxHue = 210
 
     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
 
