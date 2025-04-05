@@ -413,12 +413,27 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "hsl(150, 100%, 50%)",
                 "hsl(200, 100%, 50%)"
             ]
+        },
+        yieldAnom: {
+            title: "Yield Anomaly",
+            grades: [-1.5, -1, -0.5, 0, 0.5, 1.0, 1.5],
+            colors: [
+                "hsl(0, 100%, 50%)",
+                "hsl(35, 100%, 50%)",
+                "hsl(70, 100%, 50%)",
+                "hsl(105, 100%, 50%)",
+                "hsl(140, 100%, 50%)",
+                "hsl(175, 100%, 50%)",
+                "hsl(210, 100%, 50%)",
+            ]
         }
     };
 
     let vartype = data.data_vartype.startsWith("SPI")
         ? "SPI"
         : data.data_vartype === "smpct1"
+        ? "smpct1"
+        : data.data_vartype === "yieldAnom"
         ? "smpct1"
         : data.data_vartype === "Yield"
         ? "YieldProv"

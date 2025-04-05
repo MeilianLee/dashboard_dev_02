@@ -7,7 +7,8 @@ export const VariableSelector = ({ selectedVar, updateOption }) => {
     const productionOptions = [
         { value: "Yield", label: "Rice Yield" },
         { value: "Area", label: "Rice Area" },
-        { value: "Production", label: "Rice Production" }
+        { value: "Production", label: "Rice Production" },
+        { value: "yieldAnom", label: "Yield Anomaly" }
     ];
     const meteorologyOptions = [
         { value: "SPI1", label: "Drought Index (1 month)" },

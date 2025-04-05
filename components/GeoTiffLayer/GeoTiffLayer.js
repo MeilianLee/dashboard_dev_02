@@ -39,7 +39,8 @@ export const GeoTiffLayer = ({
                                   data_url.data_vartype === "Production" ||
                                   data_url.data_vartype === "Prcp" ||
                                   data_url.data_vartype === "Temp" ||
-                                  data_url.data_vartype === "smpct1"
+                                  data_url.data_vartype === "smpct1" ||
+                                  data_url.data_vartype === "yieldAnom"
                     ? 0 // Use first band for these types
                     : Number(selectedDate - 1950); // Calculate band index for time series data
                 
