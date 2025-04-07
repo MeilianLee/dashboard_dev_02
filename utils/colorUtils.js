@@ -403,14 +403,13 @@ export function getColorConfig(options) {
         },
         yieldAnom: {
             title: "Yield Anomaly",
-            grades: [-1.5, -1, -0.5, 0, 0.5, 1.0, 1.5],
+            grades: [-5.0, -2.5, 0, 2.5, 5.0],
             colors: [
                 "hsl(0, 100%, 50%)",
-                "hsl(35, 100%, 50%)",
-                "hsl(70, 100%, 50%)",
-                "hsl(105, 100%, 50%)",
-                "hsl(140, 100%, 50%)",
-                "hsl(175, 100%, 50%)",
+                "hsl(42, 100%, 50%)",
+                "hsl(84, 100%, 50%)",
+                "hsl(126, 100%, 50%)",
+                "hsl(168, 100%, 50%)",
                 "hsl(210, 100%, 50%)",
             ]
         }
@@ -621,8 +620,8 @@ export function getThresholds(options) {
     // Soil moisture thresholds
     if (varType === "yieldAnom") {
         return {
-            high: 1.49,
-            low: -1.49,
+            high: 4.99,
+            low: -4.99,
             unit: "",
             highMessage: "High yield anomaly",
             lowMessage: "Low yield anomaly"
