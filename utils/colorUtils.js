@@ -198,10 +198,10 @@ function getSoilMoistureColor(value) {
 
 // Get soil moisture percentile color
 function getYieldAnomColor(value) {
-    // if (value <= 0) return "hsl(210, 10%, 100%)";
+    if (value <= -999 || value == null ) return "hsl(210, 10%, 100%)";
 
-    const minVal = -1.5;
-    const maxVal = 1.5;
+    const minVal = -5;
+    const maxVal = 5;
 
     // const minSaturation = 10;
     // const maxSaturation = 100;
