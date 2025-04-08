@@ -433,7 +433,7 @@ export const MapLegend = ({ data, selectedDate }) => {
         : data.data_vartype === "smpct1"
         ? "smpct1"
         : data.data_vartype === "yieldAnom"
-        ? "smpct1"
+        ? "yieldAnom"
         : data.data_vartype === "Yield"
         ? "YieldProv"
         : data.data_vartype === "Area" && data.data_adminLevel === "Grid"
