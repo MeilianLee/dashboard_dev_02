@@ -175,29 +175,32 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                 position: 'top',
                 labels: {
                     font: { size: 15},
+                    // color: 'black',
                     // For ensemble charts, only show statistical lines
                     filter: isEnsemble ? 
                         (legendItem) => !legendItem.text.startsWith('Ensemble') : 
                         undefined,
                     usePointStyle: false,
                     boxWidth: 40,
-                    boxHeight: 3,
+                    boxHeight: 2,
                     // Change legend style from boxes to lines
-                    generateLabels: function(chart) {
-                        const datasets = isEnsemble 
-                            ? chart.data.datasets.filter(d => !d.label.startsWith('Ensemble'))
-                            : chart.data.datasets;
+
+                    // generateLabels: function(chart) {
+                    //     const datasets = isEnsemble 
+                    //         ? chart.data.datasets.filter(d => !d.label.startsWith('Ensemble'))
+                    //         : chart.data.datasets;
                             
-                        return datasets.map((dataset) => ({
-                            text: dataset.label,
-                            fillStyle: 'transparent',
-                            strokeStyle: dataset.borderColor,
-                            lineWidth: 3,
-                            hidden: !chart.isDatasetVisible(chart.data.datasets.indexOf(dataset)),
-                            index: chart.data.datasets.indexOf(dataset)
-                        }));
-                    }
+                    //     return datasets.map((dataset) => ({
+                    //         text: dataset.label,
+                    //         // fillStyle: 'transparent',
+                    //         strokeStyle: dataset.borderColor,
+                    //         lineWidth: 3,
+                    //         hidden: !chart.isDatasetVisible(chart.data.datasets.indexOf(dataset)),
+                    //         index: chart.data.datasets.indexOf(dataset)
+                    //     }));
+                    // }
                 }
+                
             }
         },
         interaction: {
