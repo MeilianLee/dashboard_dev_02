@@ -1123,34 +1123,6 @@ export const ChartComponent = ({ data, options }) => {
                     </div>
                 )}
             </div>
-
-            {/* Chart footer with explanations - only shown for ensemble charts */}
-            {/* {data && data.length > 0 && chartType === "ensemble" && (
-                <div className="chart-footer">
-                    <h3>Chart Legend</h3>
-                    <ul>
-                        <li>
-                            <span className="chart-legend-item mean"></span>{" "}
-                            <strong>Mean</strong>: Average of all ensemble members
-                        </li>
-                        <li>
-                            <span className="chart-legend-item max"></span>{" "}
-                            <strong>Max</strong>: Maximum value across ensemble members
-                        </li>
-                        <li>
-                            <span className="chart-legend-item min"></span>{" "}
-                            <strong>Min</strong>: Minimum value across ensemble members
-                        </li>
-                        <li>
-                            <span className="chart-legend-item ensemble"></span>{" "}
-                            <strong>Ensembles</strong>: Individual forecast runs
-                        </li>
-                    </ul>
-                    <p className="ensemble-explainer">
-                        Ensemble forecasts combine multiple model runs with slightly different initial conditions to capture uncertainty. The spread between min and max values indicates the range of possible outcomes.
-                    </p>
-                </div>
-            )} */}
         </div>
     );
 };
