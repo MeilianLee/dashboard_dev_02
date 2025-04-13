@@ -106,8 +106,8 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
                 if (options && options.varType && options.varType.startsWith('SPI')) {
                     if (value > 2) value += " | Extremely Wet"; // Extremely wet
                     else if (value > 1) value += " | Moderately Wet"; // Moderately wet
-                    else if (value < -2) value += " | Extremely Wet"; // Extremely dry
-                    else if (value < -1) value += " | Moderately Wet"; // Moderately dry
+                    else if (value < -2) value += " | Extremely Dry"; // Extremely dry
+                    else if (value < -1) value += " | Moderately Dry"; // Moderately dry
                 }
                 return `${tooltipItem.dataset.label}: ${value}`;
             }
@@ -246,8 +246,8 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
                 if (options && options.varType && options.varType.startsWith('SPI')) {
                     if (value > 2) value += " | Extremely Wet"; // Extremely wet
                     else if (value > 1) value += " | Moderately Wet"; // Moderately wet
-                    else if (value < -2) value += " | Extremely Wet"; // Extremely dry
-                    else if (value < -1) value += " | Moderately Wet"; // Moderately dry
+                    else if (value < -2) value += " | Extremely Dry"; // Extremely dry
+                    else if (value < -1) value += " | Moderately Dry"; // Moderately dry
                 }
                 return `${tooltipItem.dataset.label}: ${value}`;
             }
