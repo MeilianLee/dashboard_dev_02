@@ -197,27 +197,51 @@ function getSoilMoistureColor(value) {
 }
 
 // Get soil moisture percentile color
+// function getYieldAnomColor(value) {
+//     if (value <= -999 || value == null ) return "hsl(210, 10%, 100%)";
+
+//     const minVal = -5;
+//     const maxVal = 5;
+
+//     // const minSaturation = 10;
+//     // const maxSaturation = 100;
+//     // const minLightness = 90;
+//     // const maxLightness = 40;
+//     const minHue = 0
+//     const maxHue = 210
+
+//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+
+//     // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+//     // let lightness = minLightness - ratio * (minLightness - maxLightness);
+//     let hue = minHue - ratio * (minHue - maxHue);
+
+
+//     return `hsl(${hue}, 100%, 50%)`;
+// }
 function getYieldAnomColor(value) {
-    if (value <= -999 || value == null ) return "hsl(210, 10%, 100%)";
+    if (value == null || value <= -999) return "hsl(0, 0%, 95%)"; // light gray for nodata
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
     const minVal = -5;
     const maxVal = 5;
+    const midVal = 0;
 
-    // const minSaturation = 10;
-    // const maxSaturation = 100;
-    // const minLightness = 90;
-    // const maxLightness = 40;
-    const minHue = 0
-    const maxHue = 210
+    // Clamp value within range
+    value = clamp(value, minVal, maxVal);
 
-    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-
-    // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
-    // let lightness = minLightness - ratio * (minLightness - maxLightness);
-    let hue = minHue - ratio * (minHue - maxHue);
-
-
-    return `hsl(${hue}, 100%, 50%)`;
+    if (value < midVal) {
+        // Red (0°) → Yellow (60°)
+        const ratio = (value - minVal) / (midVal - minVal); // [-5, 0] → [0, 1]
+        const hue = 0 + ratio * (60 - 0);
+        return `hsl(${hue}, 100%, 50%)`;
+    } else {
+        // Yellow (60°) → Blue (210°)
+        const ratio = (value - midVal) / (maxVal - midVal); // [0, 5] → [0, 1]
+        const hue = 60 + ratio * (210 - 60);
+        return `hsl(${hue}, 100%, 50%)`;
+    }
 }
 
 // Helper function to interpolate colors
@@ -401,16 +425,27 @@ export function getColorConfig(options) {
                 "hsl(200, 100%, 50%)"
             ]
         },
+        // yieldAnom: {
+        //     title: "Yield Anomaly",
+        //     grades: [-5.0, -2.5, 0, 2.5, 5.0],
+        //     colors: [
+        //         "hsl(0, 100%, 50%)",
+        //         "hsl(42, 100%, 50%)",
+        //         "hsl(84, 100%, 50%)",
+        //         "hsl(126, 100%, 50%)",
+        //         "hsl(168, 100%, 50%)",
+        //         "hsl(210, 100%, 50%)",
+        //     ]
+        // }
         yieldAnom: {
-            title: "Yield Anomaly",
+            title: "Yield Anomaly (Z-score)",
             grades: [-5.0, -2.5, 0, 2.5, 5.0],
             colors: [
-                "hsl(0, 100%, 50%)",
-                "hsl(42, 100%, 50%)",
-                "hsl(84, 100%, 50%)",
-                "hsl(126, 100%, 50%)",
-                "hsl(168, 100%, 50%)",
-                "hsl(210, 100%, 50%)",
+                "hsl(0, 100%, 50%)",   // Red
+                "hsl(30, 100%, 50%)",  // Orange
+                "hsl(60, 100%, 50%)",  // Yellow (neutral)
+                "hsl(135, 100%, 50%)", // Cyan-green
+                "hsl(210, 100%, 50%)"  // Blue
             ]
         }
     };
