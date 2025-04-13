@@ -183,6 +183,8 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                     usePointStyle: false,
                     boxWidth: 40,
                     boxHeight: 2,
+
+                    // I do not really know what this part means. It is from ChatGPT. I asked ChatGPT to give me codes for making filled boxes to be lines and it returns this bunch of wierd things.
                     // Change legend style from boxes to lines
 
                     // generateLabels: function(chart) {
@@ -200,7 +202,7 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                     //     }));
                     // }
                 }
-                
+
             }
         },
         interaction: {

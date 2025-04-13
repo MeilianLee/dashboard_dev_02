@@ -104,10 +104,10 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
                 let value = tooltipItem.parsed.y.toFixed(2);
                 // Add color indicators for SPI values
                 if (options && options.varType && options.varType.startsWith('SPI')) {
-                    if (value > 2) value += " |🟩 Extremely Wet"; // Extremely wet
-                    else if (value > 1) value += " |🟩 Moderately Wet"; // Moderately wet
-                    else if (value < -2) value += " |🟥 Extremely Wet"; // Extremely dry
-                    else if (value < -1) value += " |🟥 Moderately Wet"; // Moderately dry
+                    if (value > 2) value += " | Extremely Wet"; // Extremely wet
+                    else if (value > 1) value += " | Moderately Wet"; // Moderately wet
+                    else if (value < -2) value += " | Extremely Wet"; // Extremely dry
+                    else if (value < -1) value += " | Moderately Wet"; // Moderately dry
                 }
                 return `${tooltipItem.dataset.label}: ${value}`;
             }
@@ -244,10 +244,10 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
                 let value = tooltipItem.parsed.y.toFixed(2);
                 // Add color indicators for SPI values
                 if (options && options.varType && options.varType.startsWith('SPI')) {
-                    if (value > 2) value += " 🟢"; 
-                    else if (value > 1) value += " 🟩"; 
-                    else if (value < -2) value += " 🔴"; 
-                    else if (value < -1) value += " 🟥"; 
+                    if (value > 2) value += " | Extremely Wet"; // Extremely wet
+                    else if (value > 1) value += " | Moderately Wet"; // Moderately wet
+                    else if (value < -2) value += " | Extremely Wet"; // Extremely dry
+                    else if (value < -1) value += " | Moderately Wet"; // Moderately dry
                 }
                 return `${tooltipItem.dataset.label}: ${value}`;
             }
