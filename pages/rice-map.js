@@ -29,6 +29,14 @@ const ChartComponent = dynamic(
     { ssr: false }
 );
 
+const D3TimeSeriesChart = dynamic(
+    () =>
+        import("@components/D3TimeSeriesChart").then(
+            (mod) => mod.D3TimeSeriesChart
+        ),
+    { ssr: false }
+);
+
 const DashMapTif = dynamic(
     () => import("../components/DashMapTif/DashMapTif"),
     {
@@ -461,14 +469,14 @@ export default function Home() {
                     Back to Map
                 </button>
                 <div className="info-panel">
-                    <h2>Information</h2>
+                    {/* <h2>Information</h2> */}
                     {selectedFeature ? (
                         <div>
-                            <p>
+                            {/* <p>
                                 <strong>Name:</strong>{" "}
                                 {selectedFeature.properties.name}
-                            </p>
-                            {options.overview === "forecast" ? (
+                            </p> */}
+                            {/* {options.overview === "forecast" ? (
                                 <p>
                                     <em>
                                         Showing forecast data with ensemble
@@ -479,7 +487,7 @@ export default function Home() {
                                 <p>
                                     <em>Showing historical data</em>
                                 </p>
-                            )}
+                            )} */}
                         </div>
                     ) : (
                         <p>Click on a region to see details.</p>
@@ -492,6 +500,11 @@ export default function Home() {
                                 data={timeSeries}
                                 options={options}
                             />
+                            // <D3TimeSeriesChart
+                            // data={timeSeries}
+                            // options={options}
+                            // />
+                            
                         ) : (
                             <div className="no-data-message">
                                 <p>

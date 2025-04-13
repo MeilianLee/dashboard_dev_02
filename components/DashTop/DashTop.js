@@ -27,7 +27,7 @@ export const DashTop = ({
             updateOption("varType", "SPI1"); // if select current, show SPI1 forecast
             updateOption("dateType", "Monthly"); // make sure dateType is correct before set date
             setSelectedYear("2025");
-            setSelectedMonth("02");
+            setSelectedMonth("04");
             setSelectedCurrent(true);
         }
         if (options.overview === "hist") {
@@ -35,7 +35,7 @@ export const DashTop = ({
             updateOption("varType", "SPI1"); // if select current, show SPI1 forecast
             updateOption("dateType", "Monthly"); // make sure dateType is correct before set date
             setSelectedYear("2025");
-            setSelectedMonth("02");
+            setSelectedMonth("04");
             setSelectedCurrent(true);
         }
     };
