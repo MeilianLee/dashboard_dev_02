@@ -1,3 +1,4 @@
+
 /**
  * Chart rendering functions for ChartComponent
  */
@@ -85,6 +86,35 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
         determineTimeUnit(filteredData),
         false
     );
+
+    // Special handling for SPI values - set fixed y-axis scale
+    if (options && options.varType && options.varType.startsWith('SPI')) {
+        // Get min and max values from the data
+        const values = sortedData.map(d => d.value).filter(v => v !== null && v !== undefined);
+        const minValue = Math.min(...values);
+        const maxValue = Math.max(...values);
+        
+        // Check if all values are within the range [-2, 2]
+        if (minValue >= -2 && maxValue <= 2) {
+            // If all values are within [-2, 2], use fixed scale
+            chartOptions.scales.y.min = -2;
+            chartOptions.scales.y.max = 2;
+        } else if (minValue >= -2 && maxValue > 2) {
+            // If all values are within [-2, 2], use fixed scale
+            chartOptions.scales.y.min = -2;
+        } else if (minValue < -2 && maxValue <= 2) {
+            // If all values are within [-2, 2], use fixed scale
+            chartOptions.scales.y.max = 2;
+        } 
+        else {
+            // If values exceed the range, use automatic scaling with padding
+            // No need to set min/max explicitly, Chart.js will auto-scale
+            // Just ensure we have some padding
+            chartOptions.scales.y.ticks = {
+                padding: 5
+            };
+        }
+    }
 
     // Add tooltip callback
     chartOptions.plugins.tooltip = {
@@ -233,6 +263,30 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
         'year',
         true  // This is an ensemble chart
     );
+
+    // Special handling for SPI values - set fixed y-axis scale for ensemble charts
+    if (options && options.varType && options.varType.startsWith('SPI')) {
+        // Get min and max values from all datasets
+        const allValues = filteredData
+            .map(d => d.value)
+            .filter(v => v !== null && v !== undefined);
+        
+        const minValue = Math.min(...allValues);
+        const maxValue = Math.max(...allValues);
+        
+        // Check if all values are within the range [-2, 2]
+        if (minValue >= -2 && maxValue <= 2) {
+            // If all values are within [-2, 2], use fixed scale
+            chartOptions.scales.y.min = -2;
+            chartOptions.scales.y.max = 2;
+        } else {
+            // If values exceed the range, use automatic scaling with padding
+            // No need to set min/max explicitly, Chart.js will auto-scale
+            chartOptions.scales.y.ticks = {
+                padding: 5
+            };
+        }
+    }
 
     // Add tooltip callback
     chartOptions.plugins.tooltip = {

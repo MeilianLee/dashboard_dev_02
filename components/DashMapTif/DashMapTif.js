@@ -22,9 +22,17 @@ export default function DashMapTif({
     const [showWarnings, setShowWarnings] = useState(true);
 
     // Check if data is null, if so, set the default URL
+    // if (data === null) {
+    //     data = {
+    //         url: "/api/get_Yield_Yearly_Country_SEA",
+    //         datatype: "geojson",
+    //         data_vartype: "Yield",
+    //         data_adminLevel: "Country"
+    //     };
+    // }
     if (data === null) {
         data = {
-            url: "/api/get_Yield_Yearly_Country_SEA",
+            url: "/api/no_data",
             datatype: "geojson",
             data_vartype: "Yield",
             data_adminLevel: "Country"
