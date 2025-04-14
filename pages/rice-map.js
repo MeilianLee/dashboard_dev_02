@@ -109,13 +109,22 @@ export default function Home() {
         // Set loading states
         setDataLoading(true);
         setLoadingMessage(`Loading ${varType} data for ${region}...`);
+        
+        // Set map loading state
+        setMapLoading(true);
+
+        // Clear previous data immediately to prevent old data showing
+        setGeojsonData(null);
+        setGeoRasterData(null);
+        setMapData(null);
+        setSelectedProvince(null);
+        setTimeSeries([]);
 
         try {
             // Generate request URL
             const url = `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`;
 
-            // Set map loading state
-            setMapLoading(true);
+
 
             const response = await fetch(url);
 
