@@ -219,29 +219,51 @@ function getSoilMoistureColor(value) {
 
 //     return `hsl(${hue}, 100%, 50%)`;
 // }
+// function getYieldAnomColor(value) {
+//     if (value == null || value <= -999) return "hsl(0, 0%, 95%)"; // light gray for nodata
+
+//     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+//     const minVal = -5;
+//     const maxVal = 5;
+//     const midVal = 0;
+
+//     // Clamp value within range
+//     value = clamp(value, minVal, maxVal);
+
+//     if (value < midVal) {
+//         // Red (0°) → Yellow (60°)
+//         const ratio = (value - minVal) / (midVal - minVal); // [-5, 0] → [0, 1]
+//         const hue = 0 + ratio * (60 - 0);
+//         return `hsl(${hue}, 100%, 50%)`;
+//     } else {
+//         // Yellow (60°) → Blue (210°)
+//         const ratio = (value - midVal) / (maxVal - midVal); // [0, 5] → [0, 1]
+//         const hue = 60 + ratio * (210 - 60);
+//         return `hsl(${hue}, 100%, 50%)`;
+//     }
+// }
 function getYieldAnomColor(value) {
     if (value == null || value <= -999) return "hsl(0, 0%, 95%)"; // light gray for nodata
 
-    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+    // Define thresholds and corresponding colors
+    const thresholds = [-5.0, -1.1990, -0.3995, 0.4001, 1.1987, 5.0];
+    const colors = [
+        "#a50026", // Significantly Below Normal (< -1.1990)
+        "#f46d43", // Moderately Below Normal (-1.1990 to -0.3)
+        "#d9d9d9", // Near Normal (-0.3 to 0.3)
+        "#74add1", // Moderately Above Normal (0.3 to 1.5)
+        "#1a9850"  // Significantly Above Normal (> 1.5)
+    ];
 
-    const minVal = -5;
-    const maxVal = 5;
-    const midVal = 0;
-
-    // Clamp value within range
-    value = clamp(value, minVal, maxVal);
-
-    if (value < midVal) {
-        // Red (0°) → Yellow (60°)
-        const ratio = (value - minVal) / (midVal - minVal); // [-5, 0] → [0, 1]
-        const hue = 0 + ratio * (60 - 0);
-        return `hsl(${hue}, 100%, 50%)`;
-    } else {
-        // Yellow (60°) → Blue (210°)
-        const ratio = (value - midVal) / (maxVal - midVal); // [0, 5] → [0, 1]
-        const hue = 60 + ratio * (210 - 60);
-        return `hsl(${hue}, 100%, 50%)`;
+    // Find the category index
+    for (let i = 0; i < thresholds.length - 1; i++) {
+        if (value > thresholds[i] && value <= thresholds[i + 1]) {
+            return colors[i];
+        }
     }
+
+    return "#ffffff"; // fallback (shouldn't be reached)
 }
 
 // Helper function to interpolate colors

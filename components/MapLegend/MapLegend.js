@@ -419,17 +419,23 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         yieldAnom: {
-            title: "Yield Anomaly",
-            grades: [-5.0, -2.5, 0, 2.5, 5.0],
+            title: "Yield Anomaly (Ton/ha)",
+            grades: [-5.0, -1.199, -0.3, 0.3, 1.5, 5.0],
+            labels: [
+                "Significantly Below Normal",
+                "Moderately Below Normal",
+                "Near Normal",
+                "Moderately Above Normal",
+                "Significantly Above Normal"
+            ],
             colors: [
-                "hsl(0, 100%, 50%)",
-                "hsl(42, 100%, 50%)",
-                "hsl(84, 100%, 50%)",
-                "hsl(126, 100%, 50%)",
-                "hsl(168, 100%, 50%)",
-                "hsl(210, 100%, 50%)",
+                "#a50026", // Significantly Below Normal
+                "#f46d43", // Moderately Below Normal
+                "#d9d9d9", // Near Normal
+                "#74add1", // Moderately Above Normal
+                "#1a9850" // Significantly Above Normal
             ]
-        }
+            }
     };
 
     let vartype = data.data_vartype.startsWith("SPI")
