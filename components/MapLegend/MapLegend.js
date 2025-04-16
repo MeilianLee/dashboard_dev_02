@@ -225,6 +225,10 @@ import L from "leaflet";
 // import React from "react";
 
 export const MapLegend = ({ data, selectedDate }) => {
+    // If no data is available, don't render the legend at all
+    // check whether it is no data by checking data.url, cuz I set defaut data.url to be "no_data" for null data
+    if (data.url === "no_data") return null;
+
     // month names map
     const formatDateDisplay = (selectedDate) => {
         if (!selectedDate) return "Unknown Date";
@@ -332,7 +336,7 @@ export const MapLegend = ({ data, selectedDate }) => {
             grades: [1, 3, 5, 7],
             colors: [
                 "hsl(30, 100%, 40%)",
-                "hsl(60, 100%, 40%)",
+                "hsl(60, 100%, 40%)",   
                 "hsl(90, 100%, 40%)",
                 "hsl(120, 100%, 40%)"
             ]
@@ -349,8 +353,8 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         AreaProv: {
-            title: "Rice Area (ha)",
-            grades: [0, 125000, 250000, 375000, 500000],
+            title: "Rice Area (k ha)",
+            grades: [0, 125, 250, 375, 500],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",
@@ -360,8 +364,8 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         AreaCountry: {
-            title: "Rice Area (ha)",
-            grades: [0, "2.5m", "5m", "7.5m", "10m"],
+            title: "Rice Area (million ha)",
+            grades: [0, "2.5", "5", "7.5", "10"],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",
@@ -382,8 +386,8 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         ProductionProv: {
-            title: "Production (ton)",
-            grades: [0, 500000, 1000000, 1500000, 2000000],
+            title: "Production (million ton)",
+            grades: [0, 0.5, 1, 1.5, 2],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",
@@ -393,8 +397,8 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         ProductionCountry: {
-            title: "Production (ton)",
-            grades: [0, 2500000, 5000000, 7500000, 100000000],
+            title: "Production (million ton)",
+            grades: [0, 2.5, 5, 7.5, 10],
             colors: [
                 "hsl(30, 100%, 40%)",
                 "hsl(48, 100%, 40%)",

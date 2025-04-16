@@ -128,7 +128,7 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
                         month: 'long'
                     });
                 }
-                return tooltipItems[0].label || `Year: ${xValue}`;
+                return tooltipItems[0].label || `Date: ${xValue}`;
             },
             label: (tooltipItem) => {
                 let value = tooltipItem.parsed.y.toFixed(2);
@@ -292,7 +292,7 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
     chartOptions.plugins.tooltip = {
         callbacks: {
             title: (tooltipItems) => {
-                return `Year: ${tooltipItems[0].label}`;
+                return `Date: ${tooltipItems[0].label}`;
             },
             label: (tooltipItem) => {
                 let value = tooltipItem.parsed.y.toFixed(2);

@@ -32,9 +32,9 @@ export default function DashMapTif({
     // }
     if (data === null) {
         data = {
-            url: "/api/no_data",
+            url: "no_data",
             datatype: "geojson",
-            data_vartype: "Yield",
+            data_vartype: "no_data",
             data_adminLevel: "Country"
         };
     }

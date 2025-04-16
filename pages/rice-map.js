@@ -482,7 +482,7 @@ export default function Home() {
                     {selectedFeature ? (
                         <div>
                             {/* <p>
-                                <strong>Name:</strong>{" "}
+                                <strong>Selected Feature:</strong>{" "}
                                 {selectedFeature.properties.name}
                             </p> */}
                             {/* {options.overview === "forecast" ? (
