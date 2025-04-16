@@ -358,12 +358,28 @@ export default function handler(req, res) {
     //     overview,
     //     overviewDir
     // });
+    // no data for yield anomaly grid, add a text saying not available.
+    // if (varType === "yieldAnom" && adminLevel === "Grid") {
+    //      return res.status(200).json({
+    //     status: "unavailable",
+    //     message: "Yield anomaly data is not available at the grid level."
+    //   });
+    // }
 
     // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
     if (varType === "Prcp" && adminLevel === "Grid") {
-        directory = "weatherGrid"; //Prcp raster forecast has its own directory
+        if (overview == 'hist'){
+            directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
+        } else {
+            directory = "weatherGrid"; //Prcp raster forecast has its own directory
+        }
+        
     } else if (varType === "Temp" && adminLevel === "Grid") {
+        if (overview == 'hist'){
+            directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
+        } else {
         directory = "weatherGrid"; //Temp raster forecast has its own directory
+        }
     } else if (varType === "Yield" && adminLevel === "Grid") {
         directory = "yield_grid"; //Yield raster forecast has its own directory
     } else if (varType.startsWith("SPI") &&
@@ -420,6 +436,8 @@ export default function handler(req, res) {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (varType === "yieldAnom") {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
+    } else if (varType === 'smpct1'){
+        directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
     }
     // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
 
