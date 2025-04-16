@@ -125,7 +125,8 @@ export default function DashMapTif({
             />
             
             {/* Add Warning Controls */}
-            <WarningControls showWarnings={showWarnings} setShowWarnings={setShowWarnings} />
+            {/* Still testing it. Turn off when we want to use a stable version. */}
+            {/* <WarningControls showWarnings={showWarnings} setShowWarnings={setShowWarnings} /> */}
             
             {options.adminLevel === "Grid" && filteredBoundaries && (
                 <GeoJSON

@@ -53,6 +53,8 @@ export const getChartTitle = (options) => {
             title = "Rice Area";
         } else if (options.varType === "Production") {
             title = "Rice Production";
+        } else if (options.varType === "smpct1") {
+            title = "Soil Moisture Percentile";
         } else {
             title = options.varType;
         }
@@ -81,6 +83,8 @@ export const getYAxisLabel = (options) => {
             return "Precipitation (mm)";
         case "Temp":
             return "Temperature (°C)";
+        case "smpct1":
+            return "Soil Moisture Percentile";
         default:
             return "Value";
     }
@@ -170,7 +174,9 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                 font: { size: 18, weight: 'bold' },
                 padding: { top: 10, bottom: 20 }
             },
-            legend: {
+            legend: 
+            isEnsemble ? // if it is Ensemble (forecast), only show legend labels for statistic curves
+            {
                 display: true,
                 position: 'top',
                 labels: {
@@ -203,6 +209,10 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                     // }
                 }
 
+            } : // if it is not Ensemble (forecast), do not show legend labels
+            {
+                display: false,
+                position: 'top',
             }
         },
         interaction: {

@@ -361,13 +361,14 @@ export const GeojsonLayer = ({
         <>
             {showWarnings &&
                 alerts.map((alert, index) => (
-                    <AlertMarker
-                        key={`alert-${index}`}
-                        position={alert.position}
-                        type={alert.type}
-                        message={alert.message}
-                        name={alert.name}
-                    />
+                    // <AlertMarker
+                    //     key={`alert-${index}`}
+                    //     position={alert.position}
+                    //     type={alert.type}
+                    //     message={alert.message}
+                    //     name={alert.name}
+                    // />
+                    <div></div>
                 ))}
         </>
     );

@@ -404,7 +404,7 @@ export const MapLegend = ({ data, selectedDate }) => {
             ]
         },
         smpct1: {
-            title: "Soil Moisture",
+            title: "Soil Moisture Percentile",
             grades: [0, 25, 50, 75, 100],
             colors: [
                 "hsl(0, 100%, 50%)",
