@@ -4,16 +4,24 @@
 
 import { color } from "d3";
 
-// Format date string from year and month
+// // Format date string from year and month
+// export const formatDateString = (year, month) => {
+//     if (!month) return `${year}`;
+    
+//     const monthNames = [
+//         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+//         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+//     ];
+    
+//     return `${monthNames[month-1]} ${year}`;
+// };
+
+// Format date string from year and month with splitting symbol
 export const formatDateString = (year, month) => {
     if (!month) return `${year}`;
     
-    const monthNames = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    
-    return `${monthNames[month-1]} ${year}`;
+    // Use dot as splitting symbol between year and month
+    return `${year}.${String(month).padStart(2, '0')}`;
 };
 
 // Determine the appropriate time unit based on the data points
@@ -42,7 +50,7 @@ export const getChartTitle = (options) => {
 
     if (options && options.varType) {
         if (options.varType.startsWith("SPI")) {
-            title = `Standardized Precipitation Index (${options.varType.slice(3)} month${options.varType.slice(3) > 1 ? "s" : ""})`;
+            title = `Drought Index (${options.varType.slice(3)} month${options.varType.slice(3) > 1 ? "s" : ""})`;
         } else if (options.varType === "Yield") {
             title = "Rice Yield";
         } else if (options.varType === "Prcp") {
@@ -72,7 +80,7 @@ export const getYAxisLabel = (options) => {
         case "SPI3":
         case "SPI6":
         case "SPI12":
-            return "SPI Value";
+            return `Drought Index Value`;
         case "Yield":
             return "Yield (ton/ha)";
         case "Area":
@@ -189,24 +197,6 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                     usePointStyle: false,
                     boxWidth: 40,
                     boxHeight: 2,
-
-                    // I do not really know what this part means. It is from ChatGPT. I asked ChatGPT to give me codes for making filled boxes to be lines and it returns this bunch of wierd things.
-                    // Change legend style from boxes to lines
-
-                    // generateLabels: function(chart) {
-                    //     const datasets = isEnsemble 
-                    //         ? chart.data.datasets.filter(d => !d.label.startsWith('Ensemble'))
-                    //         : chart.data.datasets;
-                            
-                    //     return datasets.map((dataset) => ({
-                    //         text: dataset.label,
-                    //         // fillStyle: 'transparent',
-                    //         strokeStyle: dataset.borderColor,
-                    //         lineWidth: 3,
-                    //         hidden: !chart.isDatasetVisible(chart.data.datasets.indexOf(dataset)),
-                    //         index: chart.data.datasets.indexOf(dataset)
-                    //     }));
-                    // }
                 }
 
             } : // if it is not Ensemble (forecast), do not show legend labels
@@ -227,11 +217,11 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                         unit: timeUnit,
                         displayFormats: {
                             day: 'MMM d, yyyy',
-                            month: 'MMM yyyy',
-                            quarter: 'MMM yyyy',
+                            month: 'yyyy.MM',  // Update format here
+                            quarter: 'yyyy.MM', // Update format here
                             year: 'yyyy'
                         },
-                        tooltipFormat: 'MMM yyyy'
+                        tooltipFormat: 'yyyy.MM'  // Update format here
                     },
                     title: {
                         display: true,
@@ -247,7 +237,16 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                         text: 'Date',
                         font: { size: 16, weight: 'bold' },
                         padding: { top: 10 }
-                    }
+                    },
+                    // ticks: {
+                    //     callback: function(value, index, values) {
+                    //         if (typeof value === 'string' && value.length === 6 && /^\d+$/.test(value)) {
+                    //             return `${value.substring(0, 4)}.${value.substring(4, 6)}`;
+                    //         }
+                    //         return value;
+                    //     },
+                    //     font: { size: 14 }
+                    // }
                 },
             y: {
                 title: {
@@ -259,5 +258,7 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                 ticks: { font: { size: 14 } }
             }
         }
+
+
     };
 };
