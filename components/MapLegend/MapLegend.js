@@ -343,6 +343,17 @@ export const MapLegend = ({ data, selectedDate }) => {
             // ]
             colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
         },
+        YieldGrid: {
+            title: "Yield (ton/ha)",
+            grades: [1, 3, 5, 7],
+            // colors: [
+            //     "hsl(30, 100%, 40%)",
+            //     "hsl(60, 100%, 40%)",   
+            //     "hsl(90, 100%, 40%)",
+            //     "hsl(120, 100%, 40%)"
+            // ]
+            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+        },
         Area: {
             title: "Rice Area (ha)",
             grades: [0, 2500, 5000, 7500, 10000],
@@ -447,8 +458,10 @@ export const MapLegend = ({ data, selectedDate }) => {
         ? "smpct1"
         : data.data_vartype === "yieldAnom"
         ? "yieldAnom"
-        : data.data_vartype === "Yield"
+        : data.data_vartype === "Yield" && (data.data_adminLevel === "Country" || data.data_adminLevel === "Prov")
         ? "YieldProv"
+        : data.data_vartype === "Yield" && data.data_adminLevel === "Grid"
+        ? "YieldGrid"
         : data.data_vartype === "Area" && data.data_adminLevel === "Grid"
         ? "Area"
         : data.data_vartype === "Area" && data.data_adminLevel === "Prov"

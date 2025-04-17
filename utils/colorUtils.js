@@ -154,16 +154,25 @@ function getTemperatureColor(temp) {
 // }
 // Get yield color using YlGn (Yellow-Green) color scale - standard for agricultural productivity
 function getYieldColor(value, adminLevel) {
-    let minVal = 3;
+    let minVal;
     let maxVal;
+
+    // Set minimum yield values based on admin level
+    if (adminLevel === "Country") {
+        minVal = 4;
+    } else if (adminLevel === "Prov") {
+        minVal = 4;
+    } else {
+        minVal = 1;
+    }
 
     // Set maximum yield values based on admin level
     if (adminLevel === "Country") {
-        maxVal = 6; // Maximum country-level yield
+        maxVal = 7; // Maximum country-level yield
     } else if (adminLevel === "Prov") {
         maxVal = 7; // Maximum province-level yield
     } else {
-        maxVal = 8; // Maximum grid-level yield
+        maxVal = 9; // Maximum grid-level yield
     }
 
     // YlGn color scale for yield (low to high)
