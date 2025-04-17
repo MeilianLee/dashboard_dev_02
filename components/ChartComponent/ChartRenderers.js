@@ -2,6 +2,8 @@
 /**
  * Chart rendering functions for ChartComponent
  */
+
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import {
     getChartTitle,
@@ -24,6 +26,44 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
     // Determine if we need a time scale
     const useTimeScale = chartType === "timeSeries";
 
+// START: New labels and values setting
+    // // Extract labels and values for better control
+    // const labels = sortedData.map(item => 
+    //     useTimeScale ? item.date : (item.formattedDate || formatYearMonth(item))
+    // );
+        
+    // const values = sortedData.map(item => item.value);
+
+    // // Helper function to format year/month if formattedDate is missing
+    // function formatYearMonth(item) {
+    //     if (item.month) {
+    //         return `${item.year}.${String(item.month).padStart(2, '0')}`;
+    //     }
+    //     // Handle case where date might be in format "202502"
+    //     if (typeof item.year === 'string' && item.year.length === 6) {
+    //         return `${item.year.substring(0, 4)}.${item.year.substring(4, 6)}`;
+    //     }
+    //     return item.year.toString();
+    // }
+
+    // // Prepare datasets - now using index-based data with explicit labels
+    // const datasets = [
+    //     {
+    //         label: getChartLabel(options),
+    //         data: values,
+    //         borderColor: "rgba(75, 192, 192, 1)",
+    //         backgroundColor: "rgba(75, 192, 192, 0.2)",
+    //         borderWidth: 3,
+    //         tension: 0.3, // Adds slight curve to lines
+    //         pointRadius: 0,
+    //         pointHoverRadius: 6
+    //     }
+    // ];
+// END: New labels and values setting
+
+
+
+    
     // Choose x-value based on chart type
     const xValueSelector = useTimeScale ? 
         (item => item.date) : 
@@ -45,6 +85,7 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
             pointHoverRadius: 6
         }
     ];
+
 
     // If data has upper/lower bounds, add them
     if (sortedData.some(d => d.hasOwnProperty('upper_bound') && d.hasOwnProperty('lower_bound'))) {
@@ -156,6 +197,17 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
         options: chartOptions,
         plugins: [backgroundPlugin]
     });
+
+    // // Create the chart with (labels + values)
+    // chartInstanceRef.current = new Chart(ctx, {
+    //     type: 'line',
+    //     data: { 
+    //         labels: labels,
+    //         datasets: datasets 
+    //     },
+    //     options: chartOptions,
+    //     plugins: [backgroundPlugin]
+    // });
 };
 
 // Create an ensemble chart

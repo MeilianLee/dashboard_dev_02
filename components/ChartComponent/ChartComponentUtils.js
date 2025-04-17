@@ -21,8 +21,17 @@ export const formatDateString = (year, month) => {
     if (!month) return `${year}`;
     
     // Use dot as splitting symbol between year and month
-    return `${year}.${String(month).padStart(2, '0')}`;
+    // return `${year}.${String(month).padStart(2, '0')}`;
+    return `${String(year)}${String(month)}`;
 };
+
+// // Format date string from year and month with splitting symbol
+// export const formatDateString = (year, month) => {
+//     if (!month) return `${year}`;
+    
+//     // Use dot as splitting symbol between year and month
+//     return `${year}.${String(month).padStart(2, '0')}`;
+// };
 
 // Determine the appropriate time unit based on the data points
 export const determineTimeUnit = (dataPoints) => {
@@ -210,7 +219,7 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
             intersect: false
         },
         scales: {
-            x: useTimeScale ? 
+            x: 
                 {
                     type: 'time',
                     time: {
@@ -229,25 +238,37 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                         font: { size: 16, weight: 'bold' },
                         padding: { top: 10 }
                     }
-                } : 
-                {
-                    type: 'category', 
-                    title: {
-                        display: true,
-                        text: 'Date',
-                        font: { size: 16, weight: 'bold' },
-                        padding: { top: 10 }
-                    },
-                    // ticks: {
-                    //     callback: function(value, index, values) {
-                    //         if (typeof value === 'string' && value.length === 6 && /^\d+$/.test(value)) {
-                    //             return `${value.substring(0, 4)}.${value.substring(4, 6)}`;
-                    //         }
-                    //         return value;
-                    //     },
-                    //     font: { size: 14 }
-                    // }
                 },
+            // useTimeScale ? 
+            //     {
+            //         type: 'time',
+            //         time: {
+            //             unit: timeUnit,
+            //             displayFormats: {
+            //                 day: 'MMM d, yyyy',
+            //                 month: 'yyyy.MM',  // Update format here
+            //                 quarter: 'yyyy.MM', // Update format here
+            //                 year: 'yyyy'
+            //             },
+            //             tooltipFormat: 'yyyy.MM'  // Update format here
+            //         },
+            //         title: {
+            //             display: true,
+            //             text: 'Date',
+            //             font: { size: 16, weight: 'bold' },
+            //             padding: { top: 10 }
+            //         }
+            //     }
+            //     : 
+            //     {
+            //         type: 'category', 
+            //         title: {
+            //             display: true,
+            //             text: 'Date',
+            //             font: { size: 16, weight: 'bold' },
+            //             padding: { top: 10 }
+            //         },
+            //     },
             y: {
                 title: {
                     display: true,
