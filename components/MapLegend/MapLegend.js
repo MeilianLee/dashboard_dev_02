@@ -420,22 +420,23 @@ export const MapLegend = ({ data, selectedDate }) => {
         },
         yieldAnom: {
             title: "Yield Anomaly (Ton/ha)",
-            grades: [-5.0, -1.199, -0.3, 0.3, 1.5, 5.0],
+            grades: [1.5, 0.3, -0.3, -1.199, -5],
             labels: [
-                "Significantly Below Normal",
-                "Moderately Below Normal",
-                "Near Normal",
-                "Moderately Above Normal",
-                "Significantly Above Normal"
+                "Significantly Above Normal",  // Significantly Above Normal
+                "Moderately Above Normal",  // Moderately Above Normal
+                "Near Normal",  // Near Normal
+                "Moderately Below Normal",  // Moderately Below Normal
+                "Significantly Below Normal"   // Significantly Below Normal
             ],
             colors: [
-                "#a50026", // Significantly Below Normal
-                "#f46d43", // Moderately Below Normal
-                "#d9d9d9", // Near Normal
-                "#74add1", // Moderately Above Normal
-                "#1a9850" // Significantly Above Normal
-            ]
-            }
+                "#1a9850",  // Significantly Above Normal
+                "#74add1",  // Moderately Above Normal
+                "#d9d9d9",  // Near Normal
+                "#f46d43",  // Moderately Below Normal
+                "#a50026"   // Significantly Below Normal
+            ],
+            className: "legend-yieldAnom"
+        }
     };
 
     let vartype = data.data_vartype.startsWith("SPI")
@@ -479,6 +480,59 @@ export const MapLegend = ({ data, selectedDate }) => {
 
     const config = legendConfig[vartype] || legendConfig["Yield"];
 
+    // return (
+    //     <div
+    //         className={`legend-container ${
+    //             config.className || "legend-default"
+    //         }`}
+    //     >
+    //         <div className="legend-title">{config.title}</div>
+    //         {vartype === "SPI" ? (
+    //             <div className="legend-items">
+    //                 {config.labels.map((label, i) => (
+    //                     <div key={i} className="legend-item">
+    //                         {/* 问号图标及 Tooltip */}
+    //                         <div className="info-icon">
+    //                             ?
+    //                             <div className="tooltip">
+    //                                 {tooltipTexts[label] ||
+    //                                     "No information available"}
+    //                             </div>
+    //                         </div>
+
+    //                         {/* 颜色块 */}
+    //                         <div
+    //                             className="color-box"
+    //                             style={{ backgroundColor: config.colors[i] }}
+    //                         ></div>
+
+    //                         {/* 标签文本 */}
+    //                         <span className="legend-text">
+    //                             {legendTexts[label]}
+    //                         </span>
+    //                     </div>
+    //                 ))}
+    //             </div>
+    //         ) : (
+    //             <div className="legend-gradient-container">
+    //                 <div
+    //                     className="legend-gradient"
+    //                     style={{
+    //                         background: `linear-gradient(to right, ${config.colors.join(
+    //                             ", "
+    //                         )})`
+    //                     }}
+    //                 ></div>
+    //                 <div className="legend-labels">
+    //                     {config.grades.map((grade, i) => (
+    //                         <span key={i}>{grade}</span>
+    //                     ))}
+    //                 </div>
+    //             </div>
+    //         )}
+    //     </div>
+    // );
+
     return (
         <div
             className={`legend-container ${
@@ -486,11 +540,12 @@ export const MapLegend = ({ data, selectedDate }) => {
             }`}
         >
             <div className="legend-title">{config.title}</div>
-            {vartype === "SPI" ? (
+    
+            {(vartype === "SPI" || vartype === "yieldAnom") ? (
                 <div className="legend-items">
                     {config.labels.map((label, i) => (
                         <div key={i} className="legend-item">
-                            {/* 问号图标及 Tooltip */}
+                            {/* Optional tooltip */}
                             <div className="info-icon">
                                 ?
                                 <div className="tooltip">
@@ -498,16 +553,16 @@ export const MapLegend = ({ data, selectedDate }) => {
                                         "No information available"}
                                 </div>
                             </div>
-
-                            {/* 颜色块 */}
+    
+                            {/* Color swatch */}
                             <div
                                 className="color-box"
                                 style={{ backgroundColor: config.colors[i] }}
                             ></div>
-
-                            {/* 标签文本 */}
+    
+                            {/* Label text */}
                             <span className="legend-text">
-                                {legendTexts[label]}
+                                {legendTexts[label] || label}
                             </span>
                         </div>
                     ))}
@@ -517,9 +572,7 @@ export const MapLegend = ({ data, selectedDate }) => {
                     <div
                         className="legend-gradient"
                         style={{
-                            background: `linear-gradient(to right, ${config.colors.join(
-                                ", "
-                            )})`
+                            background: `linear-gradient(to right, ${config.colors.join(", ")})`
                         }}
                     ></div>
                     <div className="legend-labels">
@@ -541,7 +594,12 @@ const tooltipTexts = {
     D0: "Typical climate conditions, no significant anomalies.",
     W1: "Above-normal precipitation, beneficial for agriculture and water supply.",
     W2: "High rainfall, increased runoff, risk of localized flooding.",
-    W3: "Unusual flooding, excessive soil moisture, potential waterlogging."
+    W3: "Unusual flooding, excessive soil moisture, potential waterlogging.",
+    "Significantly Above Normal": "Crop yield is significantly above averag, among the top 20% of all years",
+    "Moderately Above Normal": "Crop yield in this range is higher than usual, among the top 20% to 40% of all years",
+    "Near Normal": "Crop yield is close to the historical average, within the middle 20% of all years",
+    "Moderately Below Normal": "Crop yield is lower than average — among the bottom 20% to 40% of all years",
+    "Significantly Below Normal": "Crop yield is significantly below average, among the lowest 20% of all years"
 };
 
 // SPI 级别的文本标签
