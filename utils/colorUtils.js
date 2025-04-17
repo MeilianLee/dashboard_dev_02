@@ -55,53 +55,52 @@ function getSPIColor(value) {
     return "#b22222"; // Extremely dry
 }
 
-// // Get precipitation color based on admin level and date type
-// function getPrecipitationColor(value, adminLevel, dateType) {
-//     if (value <= 0) return "#FFFFFF";
-
-//     let minVal = 0;
-//     let maxVal;
-
-//     if (dateType === "Monthly") {
-//         maxVal = 500; // Monthly precipitation max
-//     } else {
-//         maxVal = adminLevel === "Grid" ? 1000 : 3000; // Annual precipitation max
-//     }
-
-//     // HSL color interpolation from blue to red
-//     const minHue = 200; // Blue
-//     const maxHue = 0; // Red
-
-//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-//     let hue = minHue - ratio * (minHue - maxHue);
-
-//     return `hsl(${hue}, 100%, 50%)`;
-// }
-
-// NEW: Get precipitation color using Blues color scale
+// Get precipitation color based on admin level and date type
 function getPrecipitationColor(value, adminLevel, dateType) {
-    if (value <= 0) return "#FFFFFF"; // No precipitation
+    if (value <= 0) return "#FFFFFF";
 
     let minVal = 0;
     let maxVal;
 
-    // Set maximum values based on temporal and spatial resolution
     if (dateType === "Monthly") {
-        maxVal = 500; // Monthly maximum precipitation
-    } else if (adminLevel === "Grid") {
-        maxVal = 3000; // Annual precipitation for grid cells
+        maxVal = 500; // Monthly precipitation max
     } else {
-        maxVal = 4000; // Annual precipitation for provinces/countries
+        maxVal = adminLevel === "Grid" ? 1000 : 3000; // Annual precipitation max
     }
 
-    // Blues color scale - scientifically standard for precipitation
-    const colors = ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c"];
-    
-    // Calculate normalized value and select color
-    const normalizedValue = Math.min(value / maxVal, 1);
-    const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
-    return colors[colorIndex];
+    // HSL color interpolation from blue to red
+    const minHue = 200; // Blue
+    const maxHue = 0; // Red
+
+    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+    let hue = minHue - ratio * (minHue - maxHue);
+
+    return `hsl(${hue}, 100%, 50%)`;
 }
+// // NEW: Get precipitation color using Blues color scale
+// function getPrecipitationColor(value, adminLevel, dateType) {
+//     if (value <= 0) return "#FFFFFF"; // No precipitation
+
+//     let minVal = 0;
+//     let maxVal;
+
+//     // Set maximum values based on temporal and spatial resolution
+//     if (dateType === "Monthly") {
+//         maxVal = 500; // Monthly maximum precipitation
+//     } else if (adminLevel === "Grid") {
+//         maxVal = 3000; // Annual precipitation for grid cells
+//     } else {
+//         maxVal = 4000; // Annual precipitation for provinces/countries
+//     }
+
+//     // Blues color scale - scientifically standard for precipitation
+//     const colors = ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c"];
+    
+//     // Calculate normalized value and select color
+//     const normalizedValue = Math.min(value / maxVal, 1);
+//     const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+//     return colors[colorIndex];
+// }
 
 // Get temperature color
 function getTemperatureColor(temp) {
