@@ -25,44 +25,6 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
 
     // Determine if we need a time scale
     const useTimeScale = chartType === "timeSeries";
-
-// START: New labels and values setting
-    // // Extract labels and values for better control
-    // const labels = sortedData.map(item => 
-    //     useTimeScale ? item.date : (item.formattedDate || formatYearMonth(item))
-    // );
-        
-    // const values = sortedData.map(item => item.value);
-
-    // // Helper function to format year/month if formattedDate is missing
-    // function formatYearMonth(item) {
-    //     if (item.month) {
-    //         return `${item.year}.${String(item.month).padStart(2, '0')}`;
-    //     }
-    //     // Handle case where date might be in format "202502"
-    //     if (typeof item.year === 'string' && item.year.length === 6) {
-    //         return `${item.year.substring(0, 4)}.${item.year.substring(4, 6)}`;
-    //     }
-    //     return item.year.toString();
-    // }
-
-    // // Prepare datasets - now using index-based data with explicit labels
-    // const datasets = [
-    //     {
-    //         label: getChartLabel(options),
-    //         data: values,
-    //         borderColor: "rgba(75, 192, 192, 1)",
-    //         backgroundColor: "rgba(75, 192, 192, 0.2)",
-    //         borderWidth: 3,
-    //         tension: 0.3, // Adds slight curve to lines
-    //         pointRadius: 0,
-    //         pointHoverRadius: 6
-    //     }
-    // ];
-// END: New labels and values setting
-
-
-
     
     // Choose x-value based on chart type
     const xValueSelector = useTimeScale ? 
@@ -85,7 +47,6 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
             pointHoverRadius: 6
         }
     ];
-
 
     // If data has upper/lower bounds, add them
     if (sortedData.some(d => d.hasOwnProperty('upper_bound') && d.hasOwnProperty('lower_bound'))) {
@@ -197,17 +158,6 @@ export const createTimeSeriesChart = (ctx, filteredData, chartType, options, cha
         options: chartOptions,
         plugins: [backgroundPlugin]
     });
-
-    // // Create the chart with (labels + values)
-    // chartInstanceRef.current = new Chart(ctx, {
-    //     type: 'line',
-    //     data: { 
-    //         labels: labels,
-    //         datasets: datasets 
-    //     },
-    //     options: chartOptions,
-    //     plugins: [backgroundPlugin]
-    // });
 };
 
 // Create an ensemble chart
@@ -232,7 +182,22 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
         };
     });
 
-    const xValueSelector = item => item.formattedDate || item.year.toString();
+    // const xValueSelector = item => item.formattedDate || item.year.toString();
+    // const xValueSelector = item => new Date(Number(item.year), 0, 1);
+    const xValueSelector = (item) => {
+        const val = item.year?.toString?.() ?? '';
+        if (val.length === 6) {
+          // 年月，例如 202502
+          const year = parseInt(val.slice(0, 4));
+          const month = parseInt(val.slice(4, 6)) - 1; // JS 中月份从 0 开始
+          return new Date(year, month, 1);
+        } else if (val.length === 4) {
+          // 只有年份
+          return new Date(parseInt(val), 0, 1);  // 默认为1月
+        } else {
+          return null; // 或抛出错误
+        }
+      };
 
     // Prepare datasets for ensemble members (thin lines)
     const ensembleDatasets = ensembleMembers.map(member => {
@@ -303,6 +268,77 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
         }
     ];
 
+
+    // // Prepare datasets for ensemble members (thin lines)
+    // const ensembleDatasets = ensembleMembers.map(member => {
+    //     const color = getEnsembleColor(member);
+    //     return {
+    //         label: `Ensemble ${member}`,
+    //         data: years.map(year => {
+    //             const entry = filteredData.find(d => d.year === year && d.ensemble === member);
+    //             return { 
+    //                 x: new Date(year, 0, 1), // Always use Date objects for time scale
+    //                 y: entry ? entry.value : null 
+    //             };
+    //         }),
+    //         borderColor: color,
+    //         borderWidth: 1,
+    //         pointRadius: 0,
+    //         tension: 0.1,
+    //         spanGaps: true
+    //     };
+    // });
+
+    // // Prepare datasets for statistics (thick lines)
+    // const statDatasets = [
+    //     {
+    //         label: "Mean",
+    //         data: yearlyStats.map(stat => ({
+    //             x: new Date(stat.year, 0, 1), // Use Date object
+    //             y: stat.mean
+    //         })),
+    //         borderColor: "rgba(75, 192, 192, 1)",
+    //         backgroundColor: "rgba(75, 192, 192, 0.2)",
+    //         borderWidth: 3,
+    //         pointRadius: 4,
+    //         pointHoverRadius: 6,
+    //         tension: 0.3,
+    //         spanGaps: true,
+    //         order: 1 // Lower order = drawn on top
+    //     },
+    //     {
+    //         label: "Max",
+    //         data: yearlyStats.map(stat => ({
+    //             x: new Date(stat.year, 0, 1), // Use Date object
+    //             y: stat.max
+    //         })),
+    //         borderColor: "rgba(255, 99, 132, 1)",
+    //         borderWidth: 2,
+    //         pointRadius: 0,
+    //         tension: 0.3,
+    //         spanGaps: true,
+    //         order: 2
+    //     },
+    //     {
+    //         label: "Min",
+    //         data: yearlyStats.map(stat => ({
+    //             x: new Date(stat.year, 0, 1), // Use Date object
+    //             y: stat.min
+    //         })),
+    //         borderColor: "rgba(54, 162, 235, 1)",
+    //         borderWidth: 2,
+    //         pointRadius: 0,
+    //         tension: 0.3,
+    //         spanGaps: true,
+    //         fill: {
+    //             target: '-1',
+    //             above: 'rgba(54, 162, 235, 0.1)'
+    //         },
+    //         order: 2
+    //     }
+    // ];
+
+
     // Combine ensemble members with statistics
     // Put ensemble members first so stats are drawn on top
     const datasets = [...ensembleDatasets, ...statDatasets];
@@ -311,8 +347,8 @@ export const createEnsembleChart = (ctx, filteredData, options, chartInstanceRef
     const chartOptions = createChartOptions(
         getChartTitle(options),
         getYAxisLabel(options),
-        false, // Not using time scale for ensemble charts
-        'year',
+        true,
+        'month', // change your preferred time showing resolution
         true  // This is an ensemble chart
     );
 

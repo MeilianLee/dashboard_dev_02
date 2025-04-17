@@ -237,7 +237,10 @@ export const createChartOptions = (title, yAxisLabel, useTimeScale, timeUnit, is
                         text: 'Date',
                         font: { size: 16, weight: 'bold' },
                         padding: { top: 10 }
-                    }
+                    },
+                    ticks: {
+                        font: { size: 14 }
+                    },
                 },
             // useTimeScale ? 
             //     {
