@@ -223,50 +223,116 @@ function getProductionColor(value, adminLevel) {
     return `hsl(${hue}, 100%, 40%)`;
 }
 
-// Get area color based on admin level
-function getAreaColor(value, adminLevel) {
-    let minVal = 0;
-    let maxVal;
+// // Get area color based on admin level
+// function getAreaColor(value, adminLevel) {
+//     let minVal = 0;
+//     let maxVal;
 
-    if (adminLevel === "Country") {
-        maxVal = 10000000;
-    } else if (adminLevel === "Prov") {
-        maxVal = 500000;
-    } else {
-        maxVal = 10000;
-    }
+//     if (adminLevel === "Country") {
+//         maxVal = 10000000;
+//     } else if (adminLevel === "Prov") {
+//         maxVal = 500000;
+//     } else {
+//         maxVal = 10000;
+//     }
 
-    const minHue = 30;
-    const maxHue = 120;
+//     const minHue = 30;
+//     const maxHue = 120;
 
-    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-    let hue = minHue + ratio * (maxHue - minHue);
+//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+//     let hue = minHue + ratio * (maxHue - minHue);
 
-    return `hsl(${hue}, 100%, 40%)`;
-}
+//     return `hsl(${hue}, 100%, 40%)`;
+// }
+// // Get area color using green sequential scale
+// function getAreaColor(value, adminLevel) {
+//     let minVal;
+//     let maxVal;
 
-// Get soil moisture percentile color
+//     // Set minimum area values based on admin level
+//     if (adminLevel === "Country") {
+//         minVal = 2000000; // 2 million hectares for country
+//     } else if (adminLevel === "Prov") {
+//         minVal = 200000; // 200,000 hectares for province
+//     } else {
+//         minVal = 0; // 2,000 hectares for grid cells
+//     }
+
+//     // Set maximum area values based on admin level
+//     if (adminLevel === "Country") {
+//         maxVal = 10000000; // 10 million hectares for country
+//     } else if (adminLevel === "Prov") {
+//         maxVal = 500000; // 500,000 hectares for province
+//     } else {
+//         maxVal = 10000; // 10,000 hectares for grid cells
+//     }
+
+//     // Green sequential scale for area
+//     const colors = ["#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#005a32"];
+    
+//     // Calculate normalized value and select color
+//     const normalizedValue = Math.min( (value - minVal) / (maxVal - minVal), 1);
+//     const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+    
+//     return colors[Math.max(0, colorIndex)];
+// }
+
+// // Get soil moisture percentile color
+// function getSoilMoistureColor(value) {
+//     if (value <= 0) return "hsl(210, 10%, 100%)";
+
+//     const minVal = 0;
+//     const maxVal = 1;
+
+//     // const minSaturation = 10;
+//     // const maxSaturation = 100;
+//     // const minLightness = 90;
+//     // const maxLightness = 40;
+//     const minHue = 0
+//     const maxHue = 200
+
+//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+
+//     // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
+//     // let lightness = minLightness - ratio * (minLightness - maxLightness);
+//     let hue = minHue - ratio * (minHue - maxHue);
+
+
+//     return `hsl(${hue}, 100%, 50%)`;
+// }
+// Get soil moisture percentile color using brown-blue diverging scale
 function getSoilMoistureColor(value) {
-    if (value <= 0) return "hsl(210, 10%, 100%)";
+    if (value <= 0) return "#f7f7f7"; // No data
+    
+    // BrBG color scale for soil moisture (dry to wet)
+    // const colors = [
+    //     "#80cdc1", // Very Wet (Somewhat wet - teal)
+    //     "#c7eae5", // Wet (Slightly wet - light teal)
+    //     "#f5f5f5", // No Drought / D0 (Normal - light gray)
+    //     "#f6e8c3", // D1 (Moderate Drought - slightly dry)
+    //     "#dfc27d", // D2 (Severe Drought - somewhat dry)
+    //     "#bf812d", // D3 (Extreme Drought - dry)
+    //     "#8c510a"  // D4 (Exceptional Drought - very dry)
+    // ];
 
-    const minVal = 0;
-    const maxVal = 1;
+    const colors = [
+        "#8c510a", // D3/D4 - Extreme/Exceptional Drought
+        "#bf812d", // D2 - Severe Drought
+        "#dfc27d", // D1 - Moderate Drought
+        "#f6e8c3", // D0 - Abnormally Dry
+        "#f5f5f5", // No Drought (正常)
+        "#c7eae5", // Slightly Wet
+        "#80cdc1", // Somewhat Wet
+    ];
 
-    // const minSaturation = 10;
-    // const maxSaturation = 100;
-    // const minLightness = 90;
-    // const maxLightness = 40;
-    const minHue = 0
-    const maxHue = 200
+    const thresholds = [0, 0.05, 0.10, 0.20, 0.30, 0.5, 0.7, 1.0];
 
-    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-
-    // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
-    // let lightness = minLightness - ratio * (minLightness - maxLightness);
-    let hue = minHue - ratio * (minHue - maxHue);
-
-
-    return `hsl(${hue}, 100%, 50%)`;
+    // Find the category index
+    for (let i = 0; i < thresholds.length - 1; i++) {
+        if (value > thresholds[i] && value <= thresholds[i + 1]) {
+            return colors[i];
+        }
+    }
 }
 
 

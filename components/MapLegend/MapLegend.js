@@ -423,13 +423,25 @@ export const MapLegend = ({ data, selectedDate }) => {
         smpct1: {
             title: "Soil Moisture Percentile",
             grades: [0, 25, 50, 75, 100],
+            labels: [
+                "Very Wet",  // Significantly Above Normal
+                "Wet",  // Moderately Above Normal
+                "Near Normal",  // Near Normal
+                "Abnormally Dry",
+                "Moderate Drought",
+                "Severe Drought", 
+                "Extreme Drought"
+            ],
             colors: [
-                "hsl(0, 100%, 50%)",
-                "hsl(50, 100%, 50%)",
-                "hsl(100, 100%, 50%)",
-                "hsl(150, 100%, 50%)",
-                "hsl(200, 100%, 50%)"
-            ]
+                "#80cdc1", // Somewhat Wet
+                "#c7eae5", // Slightly Wet
+                "#f5f5f5", // No Drought (正常)
+                "#f6e8c3", // D0 - Abnormally Dry
+                "#dfc27d", // D1 - Moderate Drought
+                "#bf812d", // D2 - Severe Drought
+                "#8c510a"  // D3/D4 - Extreme/Exceptional Drought
+            ],
+            className: "legend-smpct1"
         },
         yieldAnom: {
             title: "Yield Anomaly (Ton/ha)",
@@ -465,7 +477,7 @@ export const MapLegend = ({ data, selectedDate }) => {
         : data.data_vartype === "Area" && data.data_adminLevel === "Grid"
         ? "Area"
         : data.data_vartype === "Area" && data.data_adminLevel === "Prov"
-        ? "AreaCountry"
+        ? "AreaProv"
         : data.data_vartype === "Area" && data.data_adminLevel === "Country"
         ? "AreaCountry"
         : data.data_vartype === "Production" && data.data_adminLevel === "Grid"
@@ -568,6 +580,32 @@ export const MapLegend = ({ data, selectedDate }) => {
                                         "No information available"}
                                 </div>
                             </div>
+    
+                            {/* Color swatch */}
+                            <div
+                                className="color-box"
+                                style={{ backgroundColor: config.colors[i] }}
+                            ></div>
+    
+                            {/* Label text */}
+                            <span className="legend-text">
+                                {legendTexts[label] || label}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            ) : (vartype === "smpct1") ? (
+                <div className="legend-items">
+                    {config.labels.map((label, i) => (
+                        <div key={i} className="legend-item">
+                            {/* Optional tooltip */}
+                            {/* <div className="info-icon">
+                                ?
+                                <div className="tooltip">
+                                    {tooltipTexts[label] ||
+                                        "No information available"}
+                                </div>
+                            </div> */}
     
                             {/* Color swatch */}
                             <div
