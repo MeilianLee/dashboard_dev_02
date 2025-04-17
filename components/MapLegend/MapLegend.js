@@ -341,7 +341,7 @@ export const MapLegend = ({ data, selectedDate }) => {
             //     "hsl(90, 100%, 40%)",
             //     "hsl(120, 100%, 40%)"
             // ]
-            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+            colors: ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
         },
         YieldGrid: {
             title: "Yield (ton/ha)",
@@ -352,7 +352,7 @@ export const MapLegend = ({ data, selectedDate }) => {
             //     "hsl(90, 100%, 40%)",
             //     "hsl(120, 100%, 40%)"
             // ]
-            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+            colors: ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
         },
         Area: {
             title: "Rice Area (ha)",

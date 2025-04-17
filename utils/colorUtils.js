@@ -139,9 +139,26 @@ function getTemperatureColor(temp) {
 
 // // Get yield color based on admin level
 // function getYieldColor(value, adminLevel) {
-//     // Different scales for different admin levels
-//     const minVal = 1;
-//     const maxVal = adminLevel === "Country" ? 8 : 7;
+//     let minVal;
+//     let maxVal;
+
+//     // Set minimum yield values based on admin level
+//     if (adminLevel === "Country") {
+//         minVal = 4;
+//     } else if (adminLevel === "Prov") {
+//         minVal = 4;
+//     } else {
+//         minVal = 1;
+//     }
+
+//     // Set maximum yield values based on admin level
+//     if (adminLevel === "Country") {
+//         maxVal = 7; // Maximum country-level yield
+//     } else if (adminLevel === "Prov") {
+//         maxVal = 7; // Maximum province-level yield
+//     } else {
+//         maxVal = 9; // Maximum grid-level yield
+//     }
 
 //     // Use HSL color interpolation from orange to green
 //     const minHue = 30;
@@ -176,7 +193,7 @@ function getYieldColor(value, adminLevel) {
     }
 
     // YlGn color scale for yield (low to high)
-    const colors = ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"];
+    const colors = ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"];
     
     // Calculate normalized value and select color
     const normalizedValue = Math.min( (value - minVal) / (maxVal - minVal) , 1);
