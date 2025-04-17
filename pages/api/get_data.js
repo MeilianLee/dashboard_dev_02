@@ -90,7 +90,8 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`,
+                // smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`,
+                smpct1: `${varType}_${overviewDir}_${adminLevel}_${dateType}_${region}_${selectedDate}_1.tif`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             forecast_Grid_Monthly: {
@@ -99,7 +100,8 @@ export default function handler(req, res) {
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`,
                 Prcp: `${region}_precipitation_${selectedDate}.tif`,
                 Temp: `${region}_temperature_${selectedDate}.tif`,
-                smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`,
+                // smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`,
+                smpct1: `${varType}_${overviewDir}_${adminLevel}_${dateType}_${region}_${selectedDate}_1.tif`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}.tif`
             },
             forecast_Country_Yearly: {
