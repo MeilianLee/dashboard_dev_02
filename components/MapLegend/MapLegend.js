@@ -323,23 +323,25 @@ export const MapLegend = ({ data, selectedDate }) => {
         },
         Yield: {
             title: "Yield (ton/ha)",
-            grades: [1, 3, 5, 7],
-            colors: [
-                "hsl(30, 100%, 40%)",
-                "hsl(60, 100%, 40%)",
-                "hsl(90, 100%, 40%)",
-                "hsl(120, 100%, 40%)"
-            ]
+            grades: [4, 5, 6, 7],
+            // colors: [
+            //     "hsl(30, 100%, 40%)",
+            //     "hsl(60, 100%, 40%)",
+            //     "hsl(90, 100%, 40%)",
+            //     "hsl(120, 100%, 40%)"
+            // ]
+            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
         },
         YieldProv: {
             title: "Yield (ton/ha)",
-            grades: [1, 3, 5, 7],
-            colors: [
-                "hsl(30, 100%, 40%)",
-                "hsl(60, 100%, 40%)",   
-                "hsl(90, 100%, 40%)",
-                "hsl(120, 100%, 40%)"
-            ]
+            grades: [4, 5, 6, 7],
+            // colors: [
+            //     "hsl(30, 100%, 40%)",
+            //     "hsl(60, 100%, 40%)",   
+            //     "hsl(90, 100%, 40%)",
+            //     "hsl(120, 100%, 40%)"
+            // ]
+            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
         },
         Area: {
             title: "Rice Area (ha)",

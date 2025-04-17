@@ -55,20 +55,125 @@ function getSPIColor(value) {
     return "#b22222"; // Extremely dry
 }
 
-// Get yield color based on admin level
+// // Get precipitation color based on admin level and date type
+// function getPrecipitationColor(value, adminLevel, dateType) {
+//     if (value <= 0) return "#FFFFFF";
+
+//     let minVal = 0;
+//     let maxVal;
+
+//     if (dateType === "Monthly") {
+//         maxVal = 500; // Monthly precipitation max
+//     } else {
+//         maxVal = adminLevel === "Grid" ? 1000 : 3000; // Annual precipitation max
+//     }
+
+//     // HSL color interpolation from blue to red
+//     const minHue = 200; // Blue
+//     const maxHue = 0; // Red
+
+//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+//     let hue = minHue - ratio * (minHue - maxHue);
+
+//     return `hsl(${hue}, 100%, 50%)`;
+// }
+
+// NEW: Get precipitation color using Blues color scale
+function getPrecipitationColor(value, adminLevel, dateType) {
+    if (value <= 0) return "#FFFFFF"; // No precipitation
+
+    let minVal = 0;
+    let maxVal;
+
+    // Set maximum values based on temporal and spatial resolution
+    if (dateType === "Monthly") {
+        maxVal = 500; // Monthly maximum precipitation
+    } else if (adminLevel === "Grid") {
+        maxVal = 3000; // Annual precipitation for grid cells
+    } else {
+        maxVal = 4000; // Annual precipitation for provinces/countries
+    }
+
+    // Blues color scale - scientifically standard for precipitation
+    const colors = ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c"];
+    
+    // Calculate normalized value and select color
+    const normalizedValue = Math.min(value / maxVal, 1);
+    const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+    return colors[colorIndex];
+}
+
+// Get temperature color
+function getTemperatureColor(temp) {
+    if (temp == null || temp === 0 || isNaN(temp)) {
+        return "#333";
+    }
+
+    const colorStops = [
+        { temp: 10, color: "#08306B" }, // Dark Blue - Cold
+        { temp: 15, color: "#4292C6" }, // Light Blue - Cool
+        { temp: 20, color: "#41AB5D" }, // Green - Mild
+        { temp: 25, color: "#F7DC6F" }, // Yellow - Warm
+        { temp: 30, color: "#E67E22" }, // Orange - Hot
+        { temp: 35, color: "#C0392B" } // Red - Very hot
+    ];
+
+    // Find the right color range and interpolate
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        const t1 = colorStops[i].temp;
+        const t2 = colorStops[i + 1].temp;
+
+        if (temp <= t1) return colorStops[i].color;
+        if (temp <= t2) {
+            const factor = (temp - t1) / (t2 - t1);
+            return interpolateColor(
+                colorStops[i].color,
+                colorStops[i + 1].color,
+                factor
+            );
+        }
+    }
+
+    return colorStops[colorStops.length - 1].color;
+}
+
+// // Get yield color based on admin level
+// function getYieldColor(value, adminLevel) {
+//     // Different scales for different admin levels
+//     const minVal = 1;
+//     const maxVal = adminLevel === "Country" ? 8 : 7;
+
+//     // Use HSL color interpolation from orange to green
+//     const minHue = 30;
+//     const maxHue = 120;
+
+//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+//     let hue = minHue + ratio * (maxHue - minHue);
+
+//     return `hsl(${hue}, 100%, 40%)`;
+// }
+// Get yield color using YlGn (Yellow-Green) color scale - standard for agricultural productivity
 function getYieldColor(value, adminLevel) {
-    // Different scales for different admin levels
-    const minVal = 1;
-    const maxVal = adminLevel === "Country" ? 8 : 7;
+    let minVal = 3;
+    let maxVal;
 
-    // Use HSL color interpolation from orange to green
-    const minHue = 30;
-    const maxHue = 120;
+    // Set maximum yield values based on admin level
+    if (adminLevel === "Country") {
+        maxVal = 6; // Maximum country-level yield
+    } else if (adminLevel === "Prov") {
+        maxVal = 7; // Maximum province-level yield
+    } else {
+        maxVal = 8; // Maximum grid-level yield
+    }
 
-    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-    let hue = minHue + ratio * (maxHue - minHue);
-
-    return `hsl(${hue}, 100%, 40%)`;
+    // YlGn color scale for yield (low to high)
+    const colors = ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"];
+    
+    // Calculate normalized value and select color
+    const normalizedValue = Math.min( (value - minVal) / (maxVal - minVal) , 1);
+    const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+    
+    return colors[Math.max(0, colorIndex)];
 }
 
 // Get production color based on admin level
@@ -115,63 +220,6 @@ function getAreaColor(value, adminLevel) {
     return `hsl(${hue}, 100%, 40%)`;
 }
 
-// Get precipitation color based on admin level and date type
-function getPrecipitationColor(value, adminLevel, dateType) {
-    if (value <= 0) return "#FFFFFF";
-
-    let minVal = 0;
-    let maxVal;
-
-    if (dateType === "Monthly") {
-        maxVal = 500; // Monthly precipitation max
-    } else {
-        maxVal = adminLevel === "Grid" ? 1000 : 3000; // Annual precipitation max
-    }
-
-    // HSL color interpolation from blue to red
-    const minHue = 200; // Blue
-    const maxHue = 0; // Red
-
-    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-    let hue = minHue - ratio * (minHue - maxHue);
-
-    return `hsl(${hue}, 100%, 50%)`;
-}
-
-// Get temperature color
-function getTemperatureColor(temp) {
-    if (temp == null || temp === 0 || isNaN(temp)) {
-        return "#333";
-    }
-
-    const colorStops = [
-        { temp: 10, color: "#08306B" }, // Dark Blue - Cold
-        { temp: 15, color: "#4292C6" }, // Light Blue - Cool
-        { temp: 20, color: "#41AB5D" }, // Green - Mild
-        { temp: 25, color: "#F7DC6F" }, // Yellow - Warm
-        { temp: 30, color: "#E67E22" }, // Orange - Hot
-        { temp: 35, color: "#C0392B" } // Red - Very hot
-    ];
-
-    // Find the right color range and interpolate
-    for (let i = 0; i < colorStops.length - 1; i++) {
-        const t1 = colorStops[i].temp;
-        const t2 = colorStops[i + 1].temp;
-
-        if (temp <= t1) return colorStops[i].color;
-        if (temp <= t2) {
-            const factor = (temp - t1) / (t2 - t1);
-            return interpolateColor(
-                colorStops[i].color,
-                colorStops[i + 1].color,
-                factor
-            );
-        }
-    }
-
-    return colorStops[colorStops.length - 1].color;
-}
-
 // Get soil moisture percentile color
 function getSoilMoistureColor(value) {
     if (value <= 0) return "hsl(210, 10%, 100%)";
@@ -196,29 +244,7 @@ function getSoilMoistureColor(value) {
     return `hsl(${hue}, 100%, 50%)`;
 }
 
-// Get soil moisture percentile color
-// function getYieldAnomColor(value) {
-//     if (value <= -999 || value == null ) return "hsl(210, 10%, 100%)";
 
-//     const minVal = -5;
-//     const maxVal = 5;
-
-//     // const minSaturation = 10;
-//     // const maxSaturation = 100;
-//     // const minLightness = 90;
-//     // const maxLightness = 40;
-//     const minHue = 0
-//     const maxHue = 210
-
-//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-
-//     // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
-//     // let lightness = minLightness - ratio * (minLightness - maxLightness);
-//     let hue = minHue - ratio * (minHue - maxHue);
-
-
-//     return `hsl(${hue}, 100%, 50%)`;
-// }
 // function getYieldAnomColor(value) {
 //     if (value == null || value <= -999) return "hsl(0, 0%, 95%)"; // light gray for nodata
 
