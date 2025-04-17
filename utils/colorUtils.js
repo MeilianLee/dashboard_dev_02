@@ -168,7 +168,41 @@ function getTemperatureColor(temp) {
 
 //     return `hsl(${hue}, 100%, 40%)`;
 // }
-// Get yield color using YlGn (Yellow-Green) color scale - standard for agricultural productivity
+
+// // Get yield color using YlGn (Yellow-Green) color scale - standard for agricultural productivity
+// function getYieldColor(value, adminLevel) {
+//     let minVal;
+//     let maxVal;
+
+//     // Set minimum yield values based on admin level
+//     if (adminLevel === "Country") {
+//         minVal = 4;
+//     } else if (adminLevel === "Prov") {
+//         minVal = 4;
+//     } else {
+//         minVal = 1;
+//     }
+
+//     // Set maximum yield values based on admin level
+//     if (adminLevel === "Country") {
+//         maxVal = 7; // Maximum country-level yield
+//     } else if (adminLevel === "Prov") {
+//         maxVal = 7; // Maximum province-level yield
+//     } else {
+//         maxVal = 9; // Maximum grid-level yield
+//     }
+
+//     // YlGn color scale for yield (low to high)
+//     const colors = ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"];
+    
+//     // Calculate normalized value and select color
+//     const normalizedValue = Math.min( (value - minVal) / (maxVal - minVal) , 1);
+//     const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+    
+//     return colors[Math.max(0, colorIndex)];
+// }
+
+// Get yield color based on admin level
 function getYieldColor(value, adminLevel) {
     let minVal;
     let maxVal;
@@ -188,17 +222,36 @@ function getYieldColor(value, adminLevel) {
     } else if (adminLevel === "Prov") {
         maxVal = 7; // Maximum province-level yield
     } else {
-        maxVal = 9; // Maximum grid-level yield
+        maxVal = 5; // Maximum grid-level yield
     }
 
-    // YlGn color scale for yield (low to high)
-    const colors = ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"];
+    let range = maxVal - minVal;
+
+    // Yellow-Green color stops for yield
+    const colorStops = [
+        { value: minVal, color: "#F8FF96" },          // Very light yellow-green
+        { value: minVal + range * 0.125, color: "#F0F09A" },  // Light yellow-green
+        { value: minVal + range * 0.25, color: "#C9EC77" },   // Yellow-green
+        { value: minVal + range * 0.375, color: "#addd8e" },  // Light green
+        { value: minVal + range * 0.5, color: "#addd8e" },   // Medium green
+        { value: minVal + range * 0.625, color: "#78c679" },  // Medium-dark green
+        { value: minVal + range * 0.75, color: "#41ab5d" },   // Dark green
+        { value: minVal + range * 0.875, color: "#238443" },
+        { value: maxVal, color: "#005a32" }
+    ];
     
-    // Calculate normalized value and select color
-    const normalizedValue = Math.min( (value - minVal) / (maxVal - minVal) , 1);
-    const colorIndex = Math.floor(normalizedValue * (colors.length - 1));
+    // Find the right color range and interpolate
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        if (value <= colorStops[i].value) return colorStops[i].color;
+        if (value < colorStops[i+1].value) {
+            const factor = (value - colorStops[i].value) / 
+                          (colorStops[i+1].value - colorStops[i].value);
+            return interpolateColor(colorStops[i].color, colorStops[i+1].color, factor);
+        }
+    }
     
-    return colors[Math.max(0, colorIndex)];
+    // If value is greater than the highest stop
+    return colorStops[colorStops.length - 1].color;
 }
 
 // Get production color based on admin level
@@ -232,7 +285,7 @@ function getAreaColor(value, adminLevel) {
     if (adminLevel === "Country") {
         minVal = 2000000; // 2 million hectares for country
     } else if (adminLevel === "Prov") {
-        minVal = 200000; // 200,000 hectares for province
+        minVal = 100000; // 200,000 hectares for province
     } else {
         minVal = 0; // 2,000 hectares for grid cells
     }
