@@ -223,27 +223,36 @@ function getProductionColor(value, adminLevel) {
     return `hsl(${hue}, 100%, 40%)`;
 }
 
-// // Get area color based on admin level
-// function getAreaColor(value, adminLevel) {
-//     let minVal = 0;
-//     let maxVal;
+// Get area color based on admin level
+function getAreaColor(value, adminLevel) {
+    let minVal = 0;
+    let maxVal;
 
-//     if (adminLevel === "Country") {
-//         maxVal = 10000000;
-//     } else if (adminLevel === "Prov") {
-//         maxVal = 500000;
-//     } else {
-//         maxVal = 10000;
-//     }
+    // Set minimum area values based on admin level
+    if (adminLevel === "Country") {
+        minVal = 2000000; // 2 million hectares for country
+    } else if (adminLevel === "Prov") {
+        minVal = 200000; // 200,000 hectares for province
+    } else {
+        minVal = 0; // 2,000 hectares for grid cells
+    }
 
-//     const minHue = 30;
-//     const maxHue = 120;
+    if (adminLevel === "Country") {
+        maxVal = 10000000;
+    } else if (adminLevel === "Prov") {
+        maxVal = 500000;
+    } else {
+        maxVal = 10000;
+    }
 
-//     let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
-//     let hue = minHue + ratio * (maxHue - minHue);
+    const minHue = 40;
+    const maxHue = 120;
 
-//     return `hsl(${hue}, 100%, 40%)`;
-// }
+    let ratio = Math.min(1, (value - minVal) / (maxVal - minVal));
+    let hue = minHue + ratio * (maxHue - minHue);
+
+    return `hsl(${hue}, 80%, 50%)`;
+}
 // // Get area color using green sequential scale
 // function getAreaColor(value, adminLevel) {
 //     let minVal;
@@ -277,6 +286,9 @@ function getProductionColor(value, adminLevel) {
 //     return colors[Math.max(0, colorIndex)];
 // }
 
+
+
+
 // // Get soil moisture percentile color
 // function getSoilMoistureColor(value) {
 //     if (value <= 0) return "hsl(210, 10%, 100%)";
@@ -296,7 +308,6 @@ function getProductionColor(value, adminLevel) {
 //     // let saturation = minSaturation + ratio * (maxSaturation - minSaturation);
 //     // let lightness = minLightness - ratio * (minLightness - maxLightness);
 //     let hue = minHue - ratio * (minHue - maxHue);
-
 
 //     return `hsl(${hue}, 100%, 50%)`;
 // }
