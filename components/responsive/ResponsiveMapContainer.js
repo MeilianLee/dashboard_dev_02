@@ -98,12 +98,13 @@ export const ResponsiveMapContainer = ({
       />
 
       {/* Responsive scroll button - more prominent on mobile */}
-      {/* <button
+      ${isMobile && (
+      <button
         className={`scroll-to-details-btn ${isMobile ? 'w-4/5 py-3' : ''}`}
         onClick={() => document.getElementById('details-section').scrollIntoView({ behavior: 'smooth' })}
       >
         View Details ↓
-      </button> */}
+      </button>)}
     </div>
   );
 };

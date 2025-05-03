@@ -43,7 +43,8 @@
             font-size: $h2-size;
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: $sc-width-threshold) {
+          display: none;
             width: 100%;
             height: auto;
             max-height: 0;
@@ -109,7 +110,8 @@
             cursor: pointer;
             transition: left 0.3s ease;
             
-            @media (max-width: 767px) {
+            @media (max-width: $sc-width-threshold) {
+              display: none;
               top: 5px;
               left: auto;
               right: 10px;
@@ -122,7 +124,7 @@
           &.collapsed .toggle-btn {
             left: 50px;
             
-            @media (max-width: 767px) {
+            @media (max-width: $sc-width-threshold) {
               left: auto;
             }
           }
@@ -160,20 +162,20 @@
               opacity: 0;
             }
             
-            @media (max-width: 767px) {
+            @media (max-width: $sc-width-threshold) {
               padding: 8px;
             }
             
             // Make selectors more mobile-friendly
             select, button {
-              @media (max-width: 767px) {
+              @media (max-width: $sc-width-threshold) {
                 height: 40px;
                 font-size: 16px; // Prevent iOS zoom on focus
               }
             }
             
             .variable-section {
-              @media (max-width: 767px) {
+              @media (max-width: $sc-width-threshold) {
                 margin-bottom: 12px;
               }
             }

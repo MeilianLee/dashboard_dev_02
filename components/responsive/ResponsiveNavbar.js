@@ -22,7 +22,7 @@ export const ResponsiveNavbar = ({
   // Check if mobile on component mount and window resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1300);
     };
     
     // Set initial value
@@ -93,6 +93,23 @@ export const ResponsiveNavbar = ({
 
   return (
     <div className="dash-top-container bg-white backdrop-filter backdrop-blur-md bg-opacity-50 shadow-md">
+      {/* Left section with logo and tabs */}
+      <div className="dash-top-left">
+        <div
+          className="header-logo--container cursor-pointer"
+          onClick={() => window.location.reload()}
+        >
+          <Image
+            src="/rice_logo.png"
+            alt="logo"
+            className="h-14 w-auto md:max-h-12"
+            height="60"
+            width="200"
+            layout="intrinsic"
+            priority
+          />
+        </div>
+
       {/* Mobile menu button - only visible on small screens */}
       {isMobile && (
         <button
@@ -105,22 +122,6 @@ export const ResponsiveNavbar = ({
           </svg>
         </button>
       )}
-
-      {/* Left section with logo and tabs */}
-      <div className="dash-top-left">
-        <div
-          className="header-logo--container cursor-pointer"
-          onClick={() => window.location.reload()}
-        >
-          <Image
-            src="/rice_logo.png"
-            alt="logo"
-            className="h-10 w-auto md:h-14"
-            height="60"
-            width="200"
-            priority
-          />
-        </div>
 
         {/* Navigation tabs - hidden on mobile, shown on larger screens */}
         {!isMobile && (
@@ -205,8 +206,11 @@ export const ResponsiveNavbar = ({
       )}
 
       {/* Mobile menu - expanded dropdown when menu button is clicked */}
-      {isMobile && isMobileMenuOpen && (
-        <div className="mobile-menu-container absolute top-14 left-0 w-full bg-white shadow-lg z-50 p-4 transition-all duration-300 transform ease-in-out">
+      {/* {isMobile && isMobileMenuOpen && (
+        <div className="mobile-menu-container absolute top-14 left-0 w-full bg-white shadow-lg z-50 p-4 transition-all duration-300 transform ease-in-out"> */}
+      {isMobile && (
+        <div className={`mobile-menu-container ${isMobileMenuOpen ? 'open' : ''}`}>
+
           <div className="mb-4">
             <TimeIntervalSelector
               label="Date:"
