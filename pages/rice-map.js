@@ -940,7 +940,9 @@ export default function Home() {
             <ResponsiveNavbar
                 options={options}
                 updateOption={updateOption}
+                selectedYear={selectedYear}
                 setSelectedYear={setSelectedYear}
+                selectedMonth={selectedMonth}
                 setSelectedMonth={setSelectedMonth}
             />
 

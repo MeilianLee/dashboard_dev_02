@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
+import { TimeIntervalSelector } from "@components/TimeIntervalSelector";
+import { VariableSelector } from "@components/VariableSelector";
+import { AdminLevelSelector } from "@components/AdminLevelSelector";
+
 export const ResponsiveNavbar = ({
   options,
   updateOption,
+  selectedYear,
   setSelectedYear,
+  selectedMonth,
   setSelectedMonth
 }) => {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
@@ -76,7 +82,7 @@ export const ResponsiveNavbar = ({
       setSelectedYear("2000");
       setSelectedMonth("04");
     }
-    setMobileMenuOpen(false);
+    // setMobileMenuOpen(false);
   };
 
   // Region selection handler
@@ -202,6 +208,27 @@ export const ResponsiveNavbar = ({
       {isMobile && isMobileMenuOpen && (
         <div className="mobile-menu-container absolute top-14 left-0 w-full bg-white shadow-lg z-50 p-4 transition-all duration-300 transform ease-in-out">
           <div className="mb-4">
+            <TimeIntervalSelector
+              label="Date:"
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              options={options}
+              updateOption={updateOption}
+            />
+
+            <AdminLevelSelector
+              label="Administrative Level:"
+              options={options}
+              updateOption={updateOption}
+            />
+
+            <VariableSelector
+              selectedVar={options.varType}
+              updateOption={updateOption}
+            />
+
             <h3 className="font-bold mb-2 text-gray-700">Overview</h3>
             <div className="flex flex-col space-y-2">
               <button

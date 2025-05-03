@@ -6,6 +6,7 @@
 export { default as ResponsiveNavbar } from './ResponsiveNavbar';
 export { default as ResponsiveSidebar } from './ResponsiveSidebar';
 export { default as ResponsiveMapContainer } from './ResponsiveMapContainer';
+export { default as ResponsiveMenu } from './ResponsiveMenu';
 export { default as AdminLevelSelector } from './AdminLevelSelector';
 
 // Export the responsive utilities
