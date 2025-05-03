@@ -1,11 +1,11 @@
 @layer components {
-    .dashboard-container {
-        display: flex;
-        // height: 100vh; // 使地图和侧边栏共同占据整个屏幕高度
-        display: flex;
-        margin-top: 70px;
-        height: calc(100vh - 70px);
-    }
+    // .dashboard-container {
+    //     display: flex;
+    //     // height: 100vh; // 使地图和侧边栏共同占据整个屏幕高度
+    //     display: flex;
+    //     margin-top: 70px;
+    //     height: calc(100vh - 70px);
+    // }
 
     .sidebar {
         width: max(300px, 18vw);
@@ -43,6 +43,32 @@
             font-size: $h2-size;
         }
 
+        @media (max-width: 767px) {
+            width: 100%;
+            height: auto;
+            max-height: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 1011;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            
+            &.open {
+              max-height: 80vh;
+              overflow-y: auto;
+            }
+            
+            &.collapsed {
+              width: 100%;
+              max-height: 50px;
+            }
+        }
+
+        
+
         // .toggle-btn {
         //     background: #007bff;
         //     color: white;
@@ -53,11 +79,28 @@
         // }
 
         /* 固定按钮位置 */
+        // .toggle-btn {
+        //     position: absolute;
+        //     top: 30%;
+        //     left: max(300px, 18vw);
+        //     z-index: 1000; /* 确保按钮浮在地图之上 */
+        //     padding: 5px 10px;
+        //     background-color: #2d336b;
+        //     color: white;
+        //     border: none;
+        //     border-radius: 5px;
+        //     cursor: pointer;
+        //     transition: left 0.3s ease;
+        // }
+        // &.collapsed .toggle-btn {
+        //     left: 50px; /* 当 Side Bar 收起时，按钮的位置调整 */
+        //     transition: 0.3s ease;
+        // }
         .toggle-btn {
             position: absolute;
             top: 30%;
             left: max(300px, 18vw);
-            z-index: 1000; /* 确保按钮浮在地图之上 */
+            z-index: 1000;
             padding: 5px 10px;
             background-color: #2d336b;
             color: white;
@@ -65,28 +108,77 @@
             border-radius: 5px;
             cursor: pointer;
             transition: left 0.3s ease;
-        }
-        &.collapsed .toggle-btn {
-            left: 50px; /* 当 Side Bar 收起时，按钮的位置调整 */
-            transition: 0.3s ease;
-        }
+            
+            @media (max-width: 767px) {
+              top: 5px;
+              left: auto;
+              right: 10px;
+              padding: 2px 8px;
+              border-radius: 4px;
+              font-size: 14px;
+            }
+          }
+          
+          &.collapsed .toggle-btn {
+            left: 50px;
+            
+            @media (max-width: 767px) {
+              left: auto;
+            }
+          }
+
+
+        // .sidebar-content {
+        //     padding: 4px;
+        //     display: flex;
+        //     flex-direction: column;
+
+        //     opacity: 0;
+        //     transition: opacity 0.1s ease-in-out;
+
+        //     &.visible {
+        //         opacity: 1;
+        //     }
+
+        //     &.hidden {
+        //         opacity: 0;
+        //     }
+        // }
 
         .sidebar-content {
-            padding: 4px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-
             opacity: 0;
             transition: opacity 0.1s ease-in-out;
-
+            
             &.visible {
-                opacity: 1;
+              opacity: 1;
             }
-
+            
             &.hidden {
-                opacity: 0;
+              opacity: 0;
             }
-        }
+            
+            @media (max-width: 767px) {
+              padding: 8px;
+            }
+            
+            // Make selectors more mobile-friendly
+            select, button {
+              @media (max-width: 767px) {
+                height: 40px;
+                font-size: 16px; // Prevent iOS zoom on focus
+              }
+            }
+            
+            .variable-section {
+              @media (max-width: 767px) {
+                margin-bottom: 12px;
+              }
+            }
+          }
+
     }
 
     .map-container {
