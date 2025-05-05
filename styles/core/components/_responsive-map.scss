@@ -111,21 +111,23 @@
       // Responsive scroll button
       .scroll-to-details-btn {
         position: absolute;
-        bottom: 20px;
-        left: 50%;
+        bottom: 70px;
+        right: 10%;
+        width: 10%;
         transform: translateX(-50%);
         background: #2d336b;
         color: white;
         padding: 10px 20px;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         z-index: 999;
         
         @media (max-width: 767px) {
-          width: 80%;
+          width: 24%;
           padding: 12px;
-          bottom: 15px;
+          left: 85%;
+          bottom: 70px;
           font-weight: bold;
           font-size: $base-size;
         }

@@ -571,10 +571,6 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 
 // Import responsive components
-// import { ResponsiveNavbar } from "@components/ResponsiveNavbar";
-// import { ResponsiveSidebar } from "@components/ResponsiveSidebar";
-// import { ResponsiveMapContainer } from "@components/ResponsiveMapContainer";
-
 import { ResponsiveNavbar } from "@components/responsive/ResponsiveNavbar";
 import { ResponsiveSidebar } from "@components/responsive/ResponsiveSidebar";
 import { ResponsiveMapContainer } from "@components/responsive/ResponsiveMapContainer";
@@ -995,11 +991,11 @@ export default function Home() {
                             <h3 className="text-lg font-bold">{selectedProvince}</h3>
                             {options.overview === "forecast" ? (
                                 <p className="text-sm text-gray-600 italic">
-                                    Showing forecast data with ensemble members
+                                    {/* Showing forecast data with ensemble members */}
                                 </p>
                             ) : (
                                 <p className="text-sm text-gray-600 italic">
-                                    Showing historical data
+                                    {/* Showing historical data */}
                                 </p>
                             )}
                         </div>

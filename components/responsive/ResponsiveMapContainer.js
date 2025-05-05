@@ -73,11 +73,11 @@ export const ResponsiveMapContainer = ({
       </div>
 
       {/* Error message - centered on mobile, more prominent */}
-      {errorMessage && (
+      {/* {errorMessage && (
         <div className={`error-message ${isMobile ? 'top-16 w-5/6 left-1/2 transform-translate-x-50' : ''}`}>
           <p>{errorMessage}</p>
         </div>
-      )}
+      )} */}
 
       {/* Map loading overlay */}
       {mapLoading && (
