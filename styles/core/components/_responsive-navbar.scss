@@ -122,7 +122,7 @@
           // transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* Add transition */
 
           transition: all 0.2s ease-in-out;
-          // transform: translateY(-20px);
+          transform: translateY(-70px);
           opacity: 0;
           max-height: 0;
         
@@ -145,15 +145,15 @@
             font-size: 14px;
             
             &.bg-blue-500 {
-              background-color: #3b82f6;
+              background-color: #448457;
             }
             
             &.bg-red-600 {
-              background-color: #dc2626;
+              background-color: #b02b38;
             }
             
             &.bg-gray-700 {
-              background-color: #374151;
+              background-color: #2b6cb0;
             }
             
             &.bg-gray-100 {

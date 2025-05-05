@@ -66,7 +66,7 @@ export const ResponsiveNavbar = ({
       setSelectedMonth("04");
       setSelectedCurrent(true);
     }
-    setMobileMenuOpen(false);
+    // setMobileMenuOpen(false);
   };
 
   // When clicking hist or forecast trigger
@@ -88,7 +88,7 @@ export const ResponsiveNavbar = ({
   // Region selection handler
   const handleRegionSelect = (region) => {
     updateOption("region", region);
-    setMobileMenuOpen(false);
+    // setMobileMenuOpen(false);
   };
 
   return (
@@ -292,7 +292,7 @@ export const ResponsiveNavbar = ({
                   }`}
                   onClick={() => {
                     setSelectedLanguage(lang);
-                    setMobileMenuOpen(false);
+                    // setMobileMenuOpen(false);
                   }}
                 >
                   {lang}
