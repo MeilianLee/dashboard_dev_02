@@ -330,29 +330,56 @@ export const MapLegend = ({ data, selectedDate }) => {
             //     "hsl(90, 100%, 40%)",
             //     "hsl(120, 100%, 40%)"
             // ]
-            colors: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+            colors: [
+                "#ffffe5",
+                "#f7fcb9",
+                "#d9f0a3",
+                "#addd8e",
+                "#78c679",
+                "#41ab5d",
+                "#238443",
+                "#005a32"
+            ]
         },
         YieldProv: {
             title: "Yield (ton/ha)",
             grades: [4, 5, 6, 7],
             // colors: [
             //     "hsl(30, 100%, 40%)",
-            //     "hsl(60, 100%, 40%)",   
+            //     "hsl(60, 100%, 40%)",
             //     "hsl(90, 100%, 40%)",
             //     "hsl(120, 100%, 40%)"
             // ]
-            colors: ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+            colors: [
+                "#F8FF96",
+                "#F0F09A",
+                "#C9EC77",
+                "#addd8e",
+                "#78c679",
+                "#41ab5d",
+                "#238443",
+                "#005a32"
+            ]
         },
         YieldGrid: {
             title: "Yield (ton/ha)",
             grades: [1, 3, 5, 7],
             // colors: [
             //     "hsl(30, 100%, 40%)",
-            //     "hsl(60, 100%, 40%)",   
+            //     "hsl(60, 100%, 40%)",
             //     "hsl(90, 100%, 40%)",
             //     "hsl(120, 100%, 40%)"
             // ]
-            colors: ["#F8FF96", "#F0F09A", "#C9EC77", "#addd8e", "#78c679", "#41ab5d", "#238443", "#005a32"]
+            colors: [
+                "#F8FF96",
+                "#F0F09A",
+                "#C9EC77",
+                "#addd8e",
+                "#78c679",
+                "#41ab5d",
+                "#238443",
+                "#005a32"
+            ]
         },
         Area: {
             title: "Rice Area (ha)",
@@ -424,12 +451,12 @@ export const MapLegend = ({ data, selectedDate }) => {
             title: "Soil Moisture Percentile",
             grades: [0, 25, 50, 75, 100],
             labels: [
-                "Very Wet",  // Significantly Above Normal
-                "Wet",  // Moderately Above Normal
-                "Near Normal",  // Near Normal
+                "Very Wet", // Significantly Above Normal
+                "Wet", // Moderately Above Normal
+                "Near Normal", // Near Normal
                 "Abnormally Dry",
                 "Moderate Drought",
-                "Severe Drought", 
+                "Severe Drought",
                 "Extreme Drought"
             ],
             colors: [
@@ -439,7 +466,7 @@ export const MapLegend = ({ data, selectedDate }) => {
                 "#f6e8c3", // D0 - Abnormally Dry
                 "#dfc27d", // D1 - Moderate Drought
                 "#bf812d", // D2 - Severe Drought
-                "#8c510a"  // D3/D4 - Extreme/Exceptional Drought
+                "#8c510a" // D3/D4 - Extreme/Exceptional Drought
             ],
             className: "legend-smpct1"
         },
@@ -447,20 +474,21 @@ export const MapLegend = ({ data, selectedDate }) => {
             title: "Yield Anomaly (Ton/ha)",
             grades: [1.5, 0.3, -0.3, -1.199, -5],
             labels: [
-                "Significantly Above Normal",  // Significantly Above Normal
-                "Moderately Above Normal",  // Moderately Above Normal
-                "Near Normal",  // Near Normal
-                "Moderately Below Normal",  // Moderately Below Normal
-                "Significantly Below Normal"   // Significantly Below Normal
+                "Significantly Above Normal", // Significantly Above Normal
+                "Moderately Above Normal", // Moderately Above Normal
+                "Near Normal", // Near Normal
+                "Moderately Below Normal", // Moderately Below Normal
+                "Significantly Below Normal" // Significantly Below Normal
             ],
             colors: [
-                "#1a9850",  // Significantly Above Normal
-                "#74add1",  // Moderately Above Normal
-                "#d9d9d9",  // Near Normal
-                "#f46d43",  // Moderately Below Normal
-                "#a50026"   // Significantly Below Normal
+                "#1a9850", // Significantly Above Normal
+                "#74add1", // Moderately Above Normal
+                "#d9d9d9", // Near Normal
+                "#f46d43", // Moderately Below Normal
+                "#a50026" // Significantly Below Normal
             ],
             className: "legend-yieldAnom"
+            // className: "legend-yieldAnom"
         }
     };
 
@@ -470,7 +498,9 @@ export const MapLegend = ({ data, selectedDate }) => {
         ? "smpct1"
         : data.data_vartype === "yieldAnom"
         ? "yieldAnom"
-        : data.data_vartype === "Yield" && (data.data_adminLevel === "Country" || data.data_adminLevel === "Prov")
+        : data.data_vartype === "Yield" &&
+          (data.data_adminLevel === "Country" ||
+              data.data_adminLevel === "Prov")
         ? "YieldProv"
         : data.data_vartype === "Yield" && data.data_adminLevel === "Grid"
         ? "YieldGrid"
@@ -505,6 +535,7 @@ export const MapLegend = ({ data, selectedDate }) => {
         ? "PrcpProvMonthly"
         : data.data_vartype || "Default";
 
+    // set legend config to be what vartype you selected, or set it as default 'Yield'
     const config = legendConfig[vartype] || legendConfig["Yield"];
 
     // return (
@@ -567,8 +598,8 @@ export const MapLegend = ({ data, selectedDate }) => {
             }`}
         >
             <div className="legend-title">{config.title}</div>
-    
-            {(vartype === "SPI" || vartype === "yieldAnom") ? (
+
+            {vartype === "SPI" ? (
                 <div className="legend-items">
                     {config.labels.map((label, i) => (
                         <div key={i} className="legend-item">
@@ -580,13 +611,13 @@ export const MapLegend = ({ data, selectedDate }) => {
                                         "No information available"}
                                 </div>
                             </div>
-    
+
                             {/* Color swatch */}
                             <div
                                 className="color-box"
                                 style={{ backgroundColor: config.colors[i] }}
                             ></div>
-    
+
                             {/* Label text */}
                             <span className="legend-text">
                                 {legendTexts[label] || label}
@@ -594,7 +625,7 @@ export const MapLegend = ({ data, selectedDate }) => {
                         </div>
                     ))}
                 </div>
-            ) : (vartype === "smpct1") ? (
+            ) : vartype === "smpct1" ? (
                 <div className="legend-items">
                     {config.labels.map((label, i) => (
                         <div key={i} className="legend-item">
@@ -606,13 +637,39 @@ export const MapLegend = ({ data, selectedDate }) => {
                                         "No information available"}
                                 </div>
                             </div> */}
-    
+
                             {/* Color swatch */}
                             <div
                                 className="color-box"
                                 style={{ backgroundColor: config.colors[i] }}
                             ></div>
-    
+
+                            {/* Label text */}
+                            <span className="legend-text">
+                                {legendTexts[label] || label}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            ) : vartype === "yieldAnom" ? (
+                <div className="legend-items">
+                    {config.labels.map((label, i) => (
+                        <div key={i} className="legend-item">
+                            {/* Optional tooltip */}
+                            <div className="info-icon">
+                                ?
+                                <div className="tooltip">
+                                    {tooltipTexts[label] ||
+                                        "No information available"}
+                                </div>
+                            </div>
+
+                            {/* Color swatch */}
+                            <div
+                                className="color-box"
+                                style={{ backgroundColor: config.colors[i] }}
+                            ></div>
+
                             {/* Label text */}
                             <span className="legend-text">
                                 {legendTexts[label] || label}
@@ -625,7 +682,9 @@ export const MapLegend = ({ data, selectedDate }) => {
                     <div
                         className="legend-gradient"
                         style={{
-                            background: `linear-gradient(to right, ${config.colors.join(", ")})`
+                            background: `linear-gradient(to right, ${config.colors.join(
+                                ", "
+                            )})`
                         }}
                     ></div>
                     <div className="legend-labels">
@@ -648,11 +707,16 @@ const tooltipTexts = {
     W1: "Above-normal precipitation, beneficial for agriculture and water supply.",
     W2: "High rainfall, increased runoff, risk of localized flooding.",
     W3: "Unusual flooding, excessive soil moisture, potential waterlogging.",
-    "Significantly Above Normal": "Crop yield is significantly above averag, among the top 20% of all years",
-    "Moderately Above Normal": "Crop yield in this range is higher than usual, among the top 20% to 40% of all years",
-    "Near Normal": "Crop yield is close to the historical average, within the middle 20% of all years",
-    "Moderately Below Normal": "Crop yield is lower than average — among the bottom 20% to 40% of all years",
-    "Significantly Below Normal": "Crop yield is significantly below average, among the lowest 20% of all years"
+    "Significantly Above Normal":
+        "Crop yield is significantly above averag, among the top 20% of all years",
+    "Moderately Above Normal":
+        "Crop yield in this range is higher than usual, among the top 20% to 40% of all years",
+    "Near Normal":
+        "Crop yield is close to the historical average, within the middle 20% of all years",
+    "Moderately Below Normal":
+        "Crop yield is lower than average — among the bottom 20% to 40% of all years",
+    "Significantly Below Normal":
+        "Crop yield is significantly below average, among the lowest 20% of all years"
 };
 
 // SPI 级别的文本标签
