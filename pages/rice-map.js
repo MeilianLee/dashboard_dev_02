@@ -109,7 +109,7 @@
 //         // Set loading states
 //         setDataLoading(true);
 //         setLoadingMessage(`Loading ${varType} data for ${region}...`);
-        
+
 //         // Set map loading state
 //         setMapLoading(true);
 
@@ -123,8 +123,6 @@
 //         try {
 //             // Generate request URL
 //             const url = `/api/get_data?varType=${options.varType}&dateType=${options.dateType}&adminLevel=${options.adminLevel}&region=${options.region}&overview=${options.overview}&selectedDate=${selectedDate}`;
-
-
 
 //             const response = await fetch(url);
 
@@ -513,7 +511,7 @@
 //                             // data={timeSeries}
 //                             // options={options}
 //                             // />
-                            
+
 //                         ) : (
 //                             <div className="no-data-message">
 //                                 <p>
@@ -565,7 +563,6 @@
 //     return "Invalid Date";
 // };
 
-
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -584,22 +581,82 @@ import {
 
 // Dynamic imports to avoid SSR issues
 const ChartComponent = dynamic(
-    () => import("@components/ChartComponent").then(mod => mod.ChartComponent),
+    () =>
+        import("@components/ChartComponent").then((mod) => mod.ChartComponent),
     { ssr: false }
 );
 
 const D3TimeSeriesChart = dynamic(
-    () => import("@components/D3TimeSeriesChart").then(mod => mod.D3TimeSeriesChart),
+    () =>
+        import("@components/D3TimeSeriesChart").then(
+            (mod) => mod.D3TimeSeriesChart
+        ),
     { ssr: false }
 );
 
+/**
+ * Get current date information for dynamic default setting
+ * @returns {Object} Object containing current year, month, and formatted strings
+ */
+const getCurrentDateInfo = () => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // getMonth() returns 0-11, so add 1
+
+    // Format month with leading zero (e.g., "04" instead of "4")
+    const formattedMonth = String(currentMonth).padStart(2, "0");
+
+    // Format for selectedDate (YYYYMM format)
+    const formattedDate = `${currentYear}${formattedMonth}`;
+
+    return {
+        year: currentYear,
+        month: currentMonth,
+        yearString: String(currentYear),
+        monthString: formattedMonth,
+        dateString: formattedDate
+    };
+};
+
+/**
+ * Get intelligent default dates based on overview type
+ * @param {string} overview - "forecast" or "hist"
+ * @returns {Object} Default year and month for the given overview type
+ */
+const getDefaultDates = (overview = "forecast") => {
+    const current = getCurrentDateInfo();
+
+    if (overview === "forecast") {
+        // For forecast, use current date or next month if we're near month end
+        // This ensures we always have recent/relevant forecast data
+        return {
+            year: current.yearString,
+            month: current.monthString
+        };
+    } else {
+        // For historical data, use a recent historical date
+        // You can adjust this logic based on your data availability
+        const historicalYear = current.year - 1; // Use previous year for historical
+        return {
+            year: String(historicalYear),
+            month: current.monthString
+        };
+    }
+};
+
 export default function Home() {
+    // Get dynamic default dates
+    const currentDateInfo = getCurrentDateInfo();
+    const defaultDates = getDefaultDates("forecast"); // Since default overview is "forecast"
+
     // Add loading state variables
     const [isLoading, setIsLoading] = useState(false);
     const [mapLoading, setMapLoading] = useState(true);
     const [dataLoading, setDataLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
-    const [loadingMessage, setLoadingMessage] = useState("Loading application...");
+    const [loadingMessage, setLoadingMessage] = useState(
+        "Loading application..."
+    );
 
     // Responsive state
     const [isMobile, setIsMobile] = useState(false);
@@ -610,13 +667,23 @@ export default function Home() {
     const [currData, setCurrData] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
 
+    // ----Hardcoded date------
+    // const [options, setOptions] = useState({
+    //     varType: "Yield",
+    //     region: "SEA",
+    //     overview: "forecast",
+    //     adminLevel: "Grid",
+    //     dateType: "Monthly",
+    //     date: "202504"
+    // });
+
     const [options, setOptions] = useState({
         varType: "Yield",
         region: "SEA",
         overview: "forecast",
         adminLevel: "Grid",
         dateType: "Monthly",
-        date: "202504"
+        date: currentDateInfo.dateString // Use dynamic date here
     });
 
     const geoJsonLayerRef = useRef(null);
@@ -628,15 +695,23 @@ export default function Home() {
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [timeSeries, setTimeSeries] = useState([]);
 
-    const [selectedDate, setSelectedDate] = useState("20100101");
-    const [selectedYear, setSelectedYear] = useState("2025");
-    const [selectedMonth, setSelectedMonth] = useState("04");
+    // const [selectedDate, setSelectedDate] = useState("20100101");
+    // const [selectedYear, setSelectedYear] = useState("2025");
+    // const [selectedMonth, setSelectedMonth] = useState("04");
+    // const [selectedDay, setSelectedDay] = useState("01");
+
+    // Use dynamic defaults instead of hardcoded values
+    const [selectedDate, setSelectedDate] = useState(
+        currentDateInfo.dateString
+    );
+    const [selectedYear, setSelectedYear] = useState(defaultDates.year);
+    const [selectedMonth, setSelectedMonth] = useState(defaultDates.month);
     const [selectedDay, setSelectedDay] = useState("01");
 
     const [selectedYearEnd, setSelectedYearEnd] = useState("2000");
     const [selectedMonthEnd, setSelectedMonthEnd] = useState("01");
     const [selectedDayEnd, setSelectedDayEnd] = useState("01");
-    
+
     const [selectedFeature, setSelectedFeature] = useState(null);
 
     // Check if mobile on component mount and resize
@@ -644,13 +719,13 @@ export default function Home() {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        
+
         // Check initially
         checkMobile();
-        
+
         // Add resize listener
         window.addEventListener("resize", checkMobile);
-        
+
         // Cleanup
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
@@ -672,7 +747,7 @@ export default function Home() {
         // Set loading states
         setDataLoading(true);
         setLoadingMessage(`Loading ${varType} data for ${region}...`);
-        
+
         // Set map loading state
         setMapLoading(true);
 
@@ -948,7 +1023,7 @@ export default function Home() {
                     content="width=device-width, initial-scale=1.0"
                 />
             </Head>
-            
+
             <div className="dashboard-container">
                 {/* Responsive sidebar that collapses on mobile */}
                 <ResponsiveSidebar
@@ -988,7 +1063,9 @@ export default function Home() {
                 <div className="info-panel">
                     {selectedFeature ? (
                         <div>
-                            <h3 className="text-lg font-bold">{selectedProvince}</h3>
+                            <h3 className="text-lg font-bold">
+                                {selectedProvince}
+                            </h3>
                             {options.overview === "forecast" ? (
                                 <p className="text-sm text-gray-600 italic">
                                     {/* Showing forecast data with ensemble members */}
