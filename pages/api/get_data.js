@@ -164,7 +164,7 @@ export default function handler(req, res) {
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -172,8 +172,8 @@ export default function handler(req, res) {
                 Yield: `${region}_monthly_yield_country.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -181,8 +181,8 @@ export default function handler(req, res) {
                 Yield: `${region}_yield_prov.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -190,8 +190,8 @@ export default function handler(req, res) {
                 Yield: `${region}_monthly_yield_province.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Temp:  `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             }
@@ -370,26 +370,52 @@ export default function handler(req, res) {
 
     // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
     if (varType === "Prcp" && adminLevel === "Grid") {
-        if (overview == 'hist'){
-            directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
+        if (overview == "hist") {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
         } else {
-            directory = "weatherGrid"; //Prcp raster forecast has its own directory
+            directory = path.join(
+                "ECMWF",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
         }
-        
     } else if (varType === "Temp" && adminLevel === "Grid") {
-        if (overview == 'hist'){
-            directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
+        if (overview == "hist") {
+            directory = path.join(
+                "ERA5",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
         } else {
-        directory = "weatherGrid"; //Temp raster forecast has its own directory
+            directory = path.join(
+                "ECMWF",
+                varType,
+                overviewDir,
+                adminLevel,
+                dateType
+            );
         }
     } else if (varType === "Yield" && adminLevel === "Grid") {
         directory = "yield_grid"; //Yield raster forecast has its own directory
-    } else if (varType.startsWith("SPI") &&
-        overview === "hist") {
-            directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
-        }
-    
-    else if (
+    } else if (varType.startsWith("SPI") && overview === "hist") {
+        directory = path.join(
+            "ERA5",
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
+    } else if (
         varType.startsWith("SPI") &&
         overview === "hist" &&
         (adminLevel === "Prov") | (adminLevel === "Country") &&
@@ -427,19 +453,39 @@ export default function handler(req, res) {
         overview === "forecast" &&
         adminLevel !== "Grid"
     ) {
-        directory = "yield_json_forecast"; //yield prov/country forecast has its own directory
+        directory = "yield_json_forecast";
     } else if (overview === "forecast" && varType === "Prcp") {
-        directory = "Precipitation_forecast"; //prcp geojson forecast has its own directory
+        // directory = "Precipitation_forecast";
+        directory = path.join(
+            "ECMWF",
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
     } else if (overview === "forecast" && varType === "Temp") {
-        directory = "Temperature_forecast"; //tempreture geojson forecast has its own directory
+        // directory = "Temperature_forecast";
+        directory = path.join(
+            "ECMWF",
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
     } else if (varType === "Production") {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (varType === "Area") {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
     } else if (varType === "yieldAnom") {
         directory = path.join(varType, overviewDir, adminLevel, dateType);
-    } else if (varType === 'smpct1'){
-        directory = path.join('ERA5',varType, overviewDir, adminLevel, dateType);
+    } else if (varType === "smpct1") {
+        directory = path.join(
+            "ERA5",
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
     }
     // ******************* OLD DIRECTORY DETECT LOGIC ***************************//
 
@@ -496,7 +542,6 @@ export default function handler(req, res) {
     }
 }
 
-
 //----- Use this if all data is well organized and prepared -----//
 
 // function getFileName(
@@ -524,7 +569,7 @@ export default function handler(req, res) {
 //     varType,
 //     region,
 //     selectedDate
-// ) 
+// )
 
 // let directory
 // directory = path.join(
