@@ -108,8 +108,8 @@ export default function handler(req, res) {
                 Yield: `${region}_country_2025.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_annual.geojson`,
-                Temp: `${region}_country_Temperature_annual.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -117,8 +117,8 @@ export default function handler(req, res) {
                 Yield: `${region}_country_2025_monthly.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_country_Precipitation_monthly.geojson`,
-                Temp: `${region}_country_Temperature_monthly.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -126,8 +126,8 @@ export default function handler(req, res) {
                 Yield: `${region}_prov_2025.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_Precipitation_annual.geojson`,
-                Temp: `${region}_Temperature_annual.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
@@ -135,8 +135,8 @@ export default function handler(req, res) {
                 Yield: `${region}_prov_2025_monthly.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${region}_Precipitation_monthly.geojson`,
-                Temp: `${region}_Temperature_monthly.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
