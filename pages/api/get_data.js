@@ -405,6 +405,14 @@ export default function handler(req, res) {
                 dateType
             );
         }
+    } else if (varType.startsWith("SPI") && overview === "forecast") {
+        directory = path.join(
+            "ECMWF",
+            varType,
+            overviewDir,
+            adminLevel,
+            dateType
+        );
     } else if (varType === "Yield" && adminLevel === "Grid") {
         directory = "yield_grid"; //Yield raster forecast has its own directory
     } else if (varType.startsWith("SPI") && overview === "hist") {
