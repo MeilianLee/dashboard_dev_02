@@ -135,8 +135,8 @@ export default function handler(req, res) {
                 Yield: `${region}_prov_2025_monthly.geojson`,
                 Area: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 Production: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
-                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${region}.geojson`,
-                Temp: `${overviewDir}_${adminLevel}_${dateType}_${region}.geojson`,
+                Prcp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
+                Temp: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 smpct1: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`,
                 yieldAnom: `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`
             },
