@@ -55,28 +55,30 @@ export default function handler(req, res) {
             if (overview === "forecast") {
                 if (adminLevel === "Grid") {
                     if (dateType === "Yearly") {
-                        return `${region}_${varType}_${selectedDate}_1.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
+                        // return `${region}_${varType}_${selectedDate}_1.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_${varType}_${selectedDate}_1.tif`;
-                        // return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
+                        // return `${region}_${varType}_${selectedDate}_1.tif`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}_${selectedDate}_1.tif`;
                     }
                 }
                 if (adminLevel === "Country") {
                     if (dateType === "Yearly") {
-                        return `${region}_country_${varType}_forecast_yearly.geojson`; // data is named wrongly, country_monthly and prov_monthly are inversed!
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
+                        // return `${region}_country_${varType}_forecast_yearly.geojson`; // data is named wrongly, country_monthly and prov_monthly are inversed!
                     }
                     if (dateType === "Monthly") {
-                        return `${region}_country_${varType}_forecast_monthly.geojson`;
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
+                        // return `${region}_country_${varType}_forecast_monthly.geojson`;
                     }
                 }
                 if (adminLevel === "Prov") {
                     if (dateType === "Yearly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; // OK
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                     if (dateType === "Monthly") {
-                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`; //no data after Feb, strange
+                        return `${overviewDir}_${adminLevel}_${dateType}_${varType}_${region}.geojson`;
                     }
                 }
             }
