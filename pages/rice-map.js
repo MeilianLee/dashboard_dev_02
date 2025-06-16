@@ -905,93 +905,94 @@ export default function Home() {
     };
 
     // Enhanced time series data extraction that handles both historical and forecast data
-    useEffect(() => {
-        if (selectedFeature) {
-            const { properties } = selectedFeature;
+    // useEffect(() => {
+    //     if (selectedFeature) {
+    //         const { properties } = selectedFeature;
+    //         console.log("AAA selectedFeature data structure:", selectedFeature);
 
-            // Check for different data patterns
-            const historicalKeys = Object.keys(properties).filter(
-                (key) => /^y\d+$/.test(key) && !/^y\d+_\d+$/.test(key)
-            );
+    //         // Check for different data patterns
+    //         const historicalKeys = Object.keys(properties).filter(
+    //             (key) => /^y\d+$/.test(key) && !/^y\d+_\d+$/.test(key)
+    //         );
 
-            const forecastKeys = Object.keys(properties).filter((key) =>
-                /^y\d+_\d+$/.test(key)
-            );
+    //         const forecastKeys = Object.keys(properties).filter((key) =>
+    //             /^y\d+_\d+$/.test(key)
+    //         );
 
-            let extractedData = [];
+    //         let extractedData = [];
 
-            // Process data based on the detected pattern
-            if (historicalKeys.length > 0) {
-                // Historical data pattern (y1990, y2000, etc.)
-                console.log(
-                    "Detected historical data pattern:",
-                    historicalKeys
-                );
+    //         // Process data based on the detected pattern
+    //         if (historicalKeys.length > 0) {
+    //             // Historical data pattern (y1990, y2000, etc.)
+    //             console.log(
+    //                 "Detected historical data pattern:",
+    //                 historicalKeys
+    //             );
 
-                extractedData = historicalKeys
-                    .map((key) => {
-                        const year = parseInt(key.substring(1), 10);
-                        const value = properties[key];
-                        return {
-                            year,
-                            value:
-                                typeof value === "number"
-                                    ? value
-                                    : parseFloat(value)
-                        };
-                    })
-                    .filter(
-                        (item) =>
-                            item.value !== null &&
-                            item.value !== undefined &&
-                            !isNaN(item.value)
-                    );
+    //             extractedData = historicalKeys
+    //                 .map((key) => {
+    //                     const year = parseInt(key.substring(1), 10);
+    //                     const value = properties[key];
+    //                     return {
+    //                         year,
+    //                         value:
+    //                             typeof value === "number"
+    //                                 ? value
+    //                                 : parseFloat(value)
+    //                     };
+    //                 })
+    //                 .filter(
+    //                     (item) =>
+    //                         item.value !== null &&
+    //                         item.value !== undefined &&
+    //                         !isNaN(item.value)
+    //                 );
 
-                // Sort data chronologically
-                extractedData.sort((a, b) => a.year - b.year);
-            } else if (forecastKeys.length > 0) {
-                // Forecast data with ensembles pattern (y2025_1, y2025_2, etc.)
-                console.log("Detected forecast data pattern:", forecastKeys);
+    //             // Sort data chronologically
+    //             extractedData.sort((a, b) => a.year - b.year);
+    //         } else if (forecastKeys.length > 0) {
+    //             // Forecast data with ensembles pattern (y2025_1, y2025_2, etc.)
+    //             console.log("Detected forecast data pattern:", forecastKeys);
 
-                extractedData = forecastKeys
-                    .map((key) => {
-                        const match = key.match(/^y(\d+)_(\d+)$/);
-                        if (match) {
-                            return {
-                                year: parseInt(match[1], 10),
-                                ensemble: parseInt(match[2], 10),
-                                value:
-                                    typeof properties[key] === "number"
-                                        ? properties[key]
-                                        : parseFloat(properties[key])
-                            };
-                        }
-                        return null;
-                    })
-                    .filter(
-                        (item) =>
-                            item !== null &&
-                            item.value !== null &&
-                            item.value !== undefined &&
-                            !isNaN(item.value)
-                    );
-            }
+    //             extractedData = forecastKeys
+    //                 .map((key) => {
+    //                     const match = key.match(/^y(\d+)_(\d+)$/);
+    //                     if (match) {
+    //                         return {
+    //                             year: parseInt(match[1], 10),
+    //                             ensemble: parseInt(match[2], 10),
+    //                             value:
+    //                                 typeof properties[key] === "number"
+    //                                     ? properties[key]
+    //                                     : parseFloat(properties[key])
+    //                         };
+    //                     }
+    //                     return null;
+    //                 })
+    //                 .filter(
+    //                     (item) =>
+    //                         item !== null &&
+    //                         item.value !== null &&
+    //                         item.value !== undefined &&
+    //                         !isNaN(item.value)
+    //                 );
+    //         }
 
-            console.log("Processed time series data:", extractedData);
+    //         console.log("Processed time series data:", extractedData);
 
-            if (extractedData.length > 0) {
-                setTimeSeries(extractedData);
-                setSelectedProvince(properties.name || "Selected Region");
-            } else {
-                console.warn(
-                    "No valid time series data found in properties:",
-                    properties
-                );
-                // You might want to show an error message to the user
-                setTimeSeries([]);
-            }
-        }
-    }, [selectedFeature]);
+    //         if (extractedData.length > 0) {
+    //             setTimeSeries(extractedData);
+    //             setSelectedProvince(properties.name || "Selected Region");
+    //         } else {
+    //             console.warn(
+    //                 "No valid time series data found in properties:",
+    //                 properties
+    //             );
+    //             // You might want to show an error message to the user
+    //             setTimeSeries([]);
+    //         }
+    //     }
+    // }, [selectedFeature]);
 
     return (
         <>
@@ -1082,9 +1083,9 @@ export default function Home() {
                 </div>
                 <div className="chart-panel">
                     <>
-                        {timeSeries.length > 0 ? (
+                        {selectedFeature ? (
                             <ChartComponent
-                                data={timeSeries}
+                                geojsonData={selectedFeature}
                                 options={options}
                             />
                         ) : (
