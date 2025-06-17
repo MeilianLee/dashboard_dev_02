@@ -235,13 +235,17 @@
 //     );
 // };
 
+//
+//
+//
+
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns"; // Required for proper time-scale handling
 
 // Import modular utilities
 import {
-    processData,
+    processSelectedFeature,
     getYearOptions,
     filterDataByYearRange
 } from "./ChartDataProcessor";
@@ -249,7 +253,7 @@ import { createTimeSeriesChart, createEnsembleChart } from "./ChartRenderers";
 import { downloadCSV, downloadImage } from "./ChartExportUtils";
 import { getChartTitle } from "./ChartComponentUtils";
 
-export const ChartComponent = ({ geojsonData, options }) => {
+export const ChartComponent = ({ selectedFeature, options }) => {
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
 
@@ -264,98 +268,53 @@ export const ChartComponent = ({ geojsonData, options }) => {
     const [chartType, setChartType] = useState("standard"); // standard, ensemble, timeSeries, or ensembleWithStats
     const [hasBuiltInStats, setHasBuiltInStats] = useState(false); // Store built-in stats detection result
 
-    // Check for built-in statistics very first using original raw data
-
-    // useEffect(() => {
-    //     // if (!data || data.length === 0) return;
-
-    //     console.log("select inner data property:", data);
-
-    //     // Check if this is GeoJSON format with properties
-    //     if (data[0]?.properties) {
-    //         const properties = data[0].properties;
-    //         const keys = Object.keys(properties);
-
-    //         // Look for keys with _min, _max, or _mean suffixes
-    //         const hasStatKeys = keys.some(
-    //             (key) =>
-    //                 key.includes("_min") ||
-    //                 key.includes("_max") ||
-    //                 key.includes("_mean")
-    //         );
-
-    //         console.log("Built-in stats detection:", hasStatKeys);
-    //         console.log("Sample properties keys:", keys.slice(0, 10));
-    //         setHasBuiltInStats(hasStatKeys);
-    //     } else {
-    //         setHasBuiltInStats(false);
-    //     }
-    // }, [data]);
-
-    // useEffect: 将原始 feature 转换为 timeSeries 数组
+    // Check for built-in statistics very first using original raw selectedFeature data
     useEffect(() => {
-        if (!geojsonData || !geojsonData.properties) {
-            setProcessedData([]);
+        console.log("selectedFeature properties:", selectedFeature.properties);
+        if (!selectedFeature || !selectedFeature.properties) {
+            setHasBuiltInStats(false);
             return;
         }
 
-        const properties = geojsonData.properties;
+        const properties = selectedFeature.properties;
         const keys = Object.keys(properties);
 
-        // 判断是否内置统计字段
-        const hasStats = keys.some(
-            (k) =>
-                k.endsWith("_min") || k.endsWith("_max") || k.endsWith("_mean")
+        // Look for keys with _min, _max, or _mean suffixes
+        const hasStatKeys = keys.some(
+            (key) =>
+                key.includes("_min") ||
+                key.includes("_max") ||
+                key.includes("_mean")
         );
-        setHasBuiltInStats(hasStats);
 
-        // 提取年份字段
-        const historicalKeys = keys.filter(
-            (key) => /^y\d+$/.test(key) && !/^y\d+_\d+$/.test(key)
-        );
-        const forecastKeys = keys.filter((key) => /^y\d+_\d+$/.test(key));
+        console.log("Built-in stats detection:", hasStatKeys);
+        console.log("Sample properties keys:", keys.slice(0, 10));
+        setHasBuiltInStats(hasStatKeys);
+    }, [selectedFeature]);
 
-        let extractedData = [];
-
-        if (historicalKeys.length > 0) {
-            extractedData = historicalKeys.map((key) => ({
-                year: parseInt(key.substring(1), 10),
-                value: parseFloat(properties[key])
-            }));
-        } else if (forecastKeys.length > 0) {
-            extractedData = forecastKeys
-                .map((key) => {
-                    const [_, year, ensemble] =
-                        key.match(/^y(\d+)_(\d+)$/) || [];
-                    return {
-                        year: parseInt(year, 10),
-                        ensemble: parseInt(ensemble, 10),
-                        value: parseFloat(properties[key])
-                    };
-                })
-                .filter((item) => item?.value != null && !isNaN(item.value));
+    // Process selectedFeature when it changes or hasBuiltInStats is determined
+    useEffect(() => {
+        if (!selectedFeature || !selectedFeature.properties) {
+            setData([]);
+            setDataReady(false);
+            return;
         }
 
-        // setProcessedData(extractedData);
-        setDataReady(extractedData.length > 0);
-        setData(extractedData);
-    }, [geojsonData]);
+        console.log("Processing selectedFeature:", selectedFeature);
+        console.log("hasBuiltInStats:", hasBuiltInStats);
 
-    // Process data when it changes
-    useEffect(() => {
-        if (!data || data.length === 0) return;
-
-        // Process data for chart, passing hasBuiltInStats information
-        processData(
-            data,
+        // Process selectedFeature to extract time series data
+        processSelectedFeature(
+            selectedFeature,
+            options,
             setChartType,
             setProcessedData,
             setDataReady,
             setStartYear,
             setEndYear,
-            hasBuiltInStats // Pass the built-in stats detection result
+            hasBuiltInStats
         );
-    }, [data, hasBuiltInStats]);
+    }, [selectedFeature, options, hasBuiltInStats]);
 
     // Filter data when year range or processed data changes
     useEffect(() => {
@@ -444,7 +403,7 @@ export const ChartComponent = ({ geojsonData, options }) => {
         <div className="chart-component">
             {/* Title area */}
             <div className="chart-header">
-                {data && data.length > 0 && (
+                {selectedFeature && (
                     <div className="chart-controls">
                         <div className="range-selector">
                             <div className="year-range">
@@ -534,7 +493,7 @@ export const ChartComponent = ({ geojsonData, options }) => {
 
             {/* Chart container */}
             <div className="chart-container">
-                {data && data.length > 0 ? (
+                {selectedFeature ? (
                     <canvas ref={chartRef}></canvas>
                 ) : (
                     <div className="no-data-message">
@@ -546,55 +505,13 @@ export const ChartComponent = ({ geojsonData, options }) => {
                 )}
 
                 {/* Loading indicator */}
-                {data && data.length > 0 && !dataReady && (
+                {selectedFeature && !dataReady && (
                     <div className="loading-overlay">
                         <div className="loading-spinner"></div>
                         <p>Processing data...</p>
                     </div>
                 )}
             </div>
-
-            {/* Chart footer with explanation for new statistics format */}
-            {(chartType === "ensembleWithStats" || hasBuiltInStats) && (
-                <div className="chart-footer">
-                    <h3>Chart Legend</h3>
-                    <ul>
-                        <li>
-                            <span className="chart-legend-item mean"></span>
-                            <strong>Mean</strong> - Pre-calculated average value
-                            across all ensemble members
-                        </li>
-                        <li>
-                            <span className="chart-legend-item max"></span>
-                            <strong>Max</strong> - Pre-calculated maximum value
-                            across all ensemble members
-                        </li>
-                        <li>
-                            <span className="chart-legend-item min"></span>
-                            <strong>Min</strong> - Pre-calculated minimum value
-                            across all ensemble members
-                        </li>
-                        {filteredData.some(
-                            (d) =>
-                                d.ensembleMembers &&
-                                d.ensembleMembers.length > 0
-                        ) && (
-                            <li>
-                                <span className="chart-legend-item ensemble"></span>
-                                <strong>Individual Ensemble Members</strong> -
-                                Individual forecast scenarios (light gray lines)
-                            </li>
-                        )}
-                    </ul>
-                    <div className="ensemble-explainer">
-                        <em>
-                            This chart displays forecast data with built-in
-                            statistical calculations for improved performance
-                            and consistency.
-                        </em>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

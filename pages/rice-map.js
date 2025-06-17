@@ -904,6 +904,7 @@ export default function Home() {
         setOptions((prev) => ({ ...prev, [key]: value }));
     };
 
+    // -------- deprecated, this part has been moved to inner ChartComponent ------------//
     // Enhanced time series data extraction that handles both historical and forecast data
     // useEffect(() => {
     //     if (selectedFeature) {
@@ -993,6 +994,17 @@ export default function Home() {
     //         }
     //     }
     // }, [selectedFeature]);
+
+    useEffect(() => {
+        if (selectedFeature && selectedFeature.properties) {
+            const properties = selectedFeature.properties;
+            setSelectedProvince(properties.name || "Selected Region");
+            console.log("Selected feature:", selectedFeature);
+            console.log("Selected feature properties:", properties);
+        } else {
+            setSelectedProvince(null);
+        }
+    }, [selectedFeature]);
 
     return (
         <>
@@ -1085,7 +1097,7 @@ export default function Home() {
                     <>
                         {selectedFeature ? (
                             <ChartComponent
-                                geojsonData={selectedFeature}
+                                selectedFeature={selectedFeature}
                                 options={options}
                             />
                         ) : (
